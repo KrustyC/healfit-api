@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2016",
+    "strictNullChecks": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "lib": ["es2015", "es6"],
+    "sourceMap": true,
+    "outDir": "dist",
+    "allowJs": false,
+    "checkJs": false,
+    "noImplicitAny": true,
+    "noUnusedParameters": true,
+    "baseUrl": ".",
+    "paths": {
+      "env/*": ["src/env/*"],
+      "context/*": ["src/context/*"]
+    }
+  },
+  "include": ["./src/**/*"]
+}
