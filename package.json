@@ -6,9 +6,9 @@
   "private": "true",
   "scripts": {
     "dev": "NODE_ENV=development nodemon",
-    "build": "babel src -s -D -d dist --presets es2015,stage-0,stage-1",
+    "build": "tsc -b",
     "prebuild": "./node_modules/.bin/rimraf dist",
-    "start": "NODE_ENV=production ts-node dist/index.js",
+    "start": "NODE_ENV=production ts-node -r tsconfig-paths/register dist/index.js",
     "prettier": "prettier --config .prettierrc.js './**/*.js' './**/*.ts' --write",
     "test": "NODE_ENV=testing jest --runInBand --detectOpenHandles"
   },
