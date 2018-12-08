@@ -1,13 +1,13 @@
 version: "3"
 services:
-  apiboilerplate:
+  keepitfitapi:
     build: .
     volumes:
       - ./:/app
       - node_modules:/app/node_modules
     command: yarn dev
     ports:
-      - "3050:3050"
+      - "3090:3090"
     links:
       - mongodb
   

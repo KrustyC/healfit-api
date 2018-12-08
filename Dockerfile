@@ -4,7 +4,7 @@ RUN mkdir /app
 WORKDIR /app
 ADD . /app
 
-EXPOSE 3050
+EXPOSE 3090
 
 RUN yarn
 
