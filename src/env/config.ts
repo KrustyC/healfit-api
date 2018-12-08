@@ -6,7 +6,7 @@ export const env = process.env.ENVIRONMENT;
 
 // App Configuration
 export const API_PORT = process.env.API_PORT;
-export const JWT_SECRET = process.env.JWT_SECRET;
+export const jwtSecret = process.env.JWT_SECRET;
 
 // Database Configuration
 export const dbConfig = {

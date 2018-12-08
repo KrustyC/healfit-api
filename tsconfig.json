@@ -16,7 +16,9 @@
     "baseUrl": ".",
     "paths": {
       "env/*": ["src/env/*"],
-      "context/*": ["src/context/*"]
+      "types/*": ["src/types/*"],
+      "context/*": ["src/context/*"],
+      "library/*": ["src/library/*"],
     }
   },
   "include": ["./src/**/*"]
