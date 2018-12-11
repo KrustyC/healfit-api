@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import pick from 'lodash/pick'
-import { LoginInput, SignupInput, IAccount } from 'types/global'
+import { LoginInput, SignupInput, IAccount } from 'types/account'
 
 // import { BadRequestError } from '../../library/errors'
 // import Mailer from '../../library/mailer'
@@ -11,16 +11,14 @@ import config from '../../env'
 const generateToken = (account: IAccount) => {
   const payload = pick(account.toObject(), ['_id', 'email', 'firstName', 'lastName', 'kind'])
   return jwt.sign(payload, config('jwtSecret'), { expiresIn: '7d' })
+  
 }
 
 export const signup = async (data: SignupInput) => {
   const doesAccountExist = await AccountContext.exists(data.input.email)
   if (doesAccountExist) {
-    // throw new BadRequestError({ data: { email: 'Email address already exists' } })
+    throw new Error('Email address already exists')
   }
-
-  // @TODO if type not in set then throw the error below
-  // throw Errors.BadRequestError(400, null, null, { msg: 'Types need to be provided' })
 
   const account = await AccountContext.create(data)
 
@@ -38,17 +36,18 @@ export const signup = async (data: SignupInput) => {
 export const login = async (data: LoginInput) => {
   const { email, password } = data.input
   
-  const account: IAccount = await AccountContext.findForLogin(email)
+  const account = await AccountContext.findForLogin(email)
 
   if (!account) {
-    // throw new BadRequestError({ data: { email: 'Email address does not exist' } })
-    return null
+    throw new Error('Email address does not exist')
   }
 
-  const isPasswordCorrect = await account.comparePassword(password)
+  if (!await account.isAccountConfirmed()) {
+    throw new Error('Email address has not been cofnirmed yet')
+  }
 
-  if (!isPasswordCorrect) {
-    // throw new BadRequestError({ data: { password: 'This password is incorrect' } })
+  if (!await account.comparePassword(password)) {
+    throw new Error('Incorrect password, please try again')
   }
 
   const token = generateToken(account)

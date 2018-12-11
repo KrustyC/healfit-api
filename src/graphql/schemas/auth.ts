@@ -1,5 +1,5 @@
 import { gql, makeExecutableSchema } from 'apollo-server'
-import { LoginInput, SignupInput } from 'types/global'
+import { LoginInput, SignupInput } from 'types/account'
 
 import { login, signup } from 'context/auth'
 

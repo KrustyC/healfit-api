@@ -2,5 +2,8 @@
   "watch": ["src"],
   "ext": "ts,js",
   "ignore": ["src/**/*.test.ts"],
-  "exec": "ts-node -r tsconfig-paths/register ./src/index.ts"
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "exec": "yarn start"
 }

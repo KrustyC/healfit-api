@@ -5,12 +5,25 @@
   "main": "src/index.ts",
   "private": "true",
   "scripts": {
-    "dev": "NODE_ENV=development nodemon",
+    "start": "ts-node -r tsconfig-paths/register src/index.ts",
+    "dev": "nodemon --signal SIGTERM",
     "build": "tsc -b",
     "prebuild": "./node_modules/.bin/rimraf dist",
-    "start": "NODE_ENV=production ts-node -r tsconfig-paths/register dist/index.js",
     "prettier": "prettier --config .prettierrc.js './**/*.js' './**/*.ts' --write",
-    "test": "NODE_ENV=testing jest --runInBand --detectOpenHandles"
+    "test": "NODE_ENV=testing jest --runInBand --detectOpenHandles",
+    "test:lint": "eslint src/**/*.ts"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts}": [
+      "pretty-quick --staged",
+      "eslint src/ --fix",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
@@ -51,8 +64,11 @@
     "babel-plugin-transform-regenerator": "^6.24.1",
     "babel-plugin-transform-runtime": "^6.15.0",
     "babel-runtime": "^6.20.0",
+    "husky": "^1.2.0",
     "morgan": "^1.9.1",
-    "nodemon": "^1.9.2",
+    "nodemon": "^1.18.8",
+    "prettier": "^1.15.3",
+    "pretty-quick": "^1.8.0",
     "ts-node": "^7.0.1",
     "tsconfig-paths": "^3.6.0",
     "typescript": "^3.1.3"

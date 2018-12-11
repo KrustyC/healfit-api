@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 mongoose.Promise = global.Promise;
 

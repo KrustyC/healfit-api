@@ -3,8 +3,8 @@ services:
   keepitfitapi:
     build: .
     volumes:
-      - ./:/app
-      - node_modules:/app/node_modules
+      - ./:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
     command: yarn dev
     ports:
       - "3090:3090"
@@ -17,6 +17,3 @@ services:
       - "27017:27017"
     volumes:
       - ./mongo/data:/data/db
-
-volumes:
-  node_modules:
