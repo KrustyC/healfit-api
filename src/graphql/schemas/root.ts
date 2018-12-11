@@ -1,4 +1,4 @@
-import { gql, makeExecutableSchema } from 'apollo-server'
+import { gql, makeExecutableSchema } from 'apollo-server';
 
 export const RootSchema = makeExecutableSchema({
   typeDefs: gql`
@@ -8,14 +8,14 @@ export const RootSchema = makeExecutableSchema({
     type Mutation {
       hello: String
     }
-  `
+  `,
 });
 
 export const RootResolvers = {
   Query: {
-    hello: () => 'Hello! Queries are working!'
+    hello: () => 'Hello! Queries are working!',
   },
   Mutation: {
-    hello: () => 'Hello! Mutations are working!'
-  }
-}
+    hello: () => 'Hello! Mutations are working!',
+  },
+};

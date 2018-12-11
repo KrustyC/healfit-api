@@ -1,7 +1,7 @@
-import { gql, makeExecutableSchema } from 'apollo-server'
-import { LoginInput, SignupInput } from 'types/account'
+import { gql, makeExecutableSchema } from 'apollo-server';
+import { LoginInput, SignupInput } from 'types/account';
 
-import { login, signup } from 'context/auth'
+import { login, signup } from 'context/auth';
 
 export const AuthSchema = makeExecutableSchema({
   typeDefs: gql`
@@ -16,15 +16,15 @@ export const AuthSchema = makeExecutableSchema({
     }
 
     input LoginInput {
-      email: String!,
+      email: String!
       password: String!
     }
 
     input SignupInput {
-      type: Int!,
-      firstName: String!,
-      lastName: String!,
-      email: String!,
+      type: Int!
+      firstName: String!
+      lastName: String!
+      email: String!
       password: String!
     }
 
@@ -32,12 +32,12 @@ export const AuthSchema = makeExecutableSchema({
       login(input: LoginInput): AuthAccount
       signup(input: SignupInput): AuthAccount
     }
-  `
+  `,
 });
 
 export const AuthResolvers = {
   Mutation: {
     login: async (_: Object, data: LoginInput) => login(data),
     signup: async (_: Object, data: SignupInput) => signup(data),
-  }
-}
+  },
+};

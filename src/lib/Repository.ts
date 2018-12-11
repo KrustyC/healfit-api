@@ -16,12 +16,6 @@ export default class Repository {
     this._schema = Schema;
   }
 
-  /**
-   * Count documents
-   *
-   * @param  {Object} query
-   * @return {Number}
-   */
   async count(query: object): Promise<number> {
     return this._schema.find(query).count() || 0;
   }
@@ -74,15 +68,6 @@ export default class Repository {
     return res;
   }
 
-  /**
-   * Find one entry
-   *
-   * @param  {Object}      query
-   * @param  {Object|null} projection
-   * @param  {Object|null} populate
-   * @param  {Object|null} options
-   * @return {Object|null}
-   */
   async findOneBy(
     query: object = {},
     projection?: object,
@@ -94,15 +79,6 @@ export default class Repository {
     return _.first(res) || null;
   }
 
-  /**
-   * Find one entry by ID
-   *
-   * @param  {String}      id
-   * @param  {Object|null} projection
-   * @param  {Object|null} populate
-   * @param  {Object|null} options
-   * @return {Object|null}
-   */
   async findById(
     id: ObjectId,
     projection?: object,
@@ -112,39 +88,14 @@ export default class Repository {
     return this.findOneBy({ _id: id }, projection, populate, options);
   }
 
-  /**
-   * Aggregate special methods across a model
-   *
-   * @param  {Object}      options
-   * @return {Object|null}
-   */
   async aggregate(options: object[]): Promise<any> {
     return this._schema.aggregate(options);
   }
 
-  /**
-   * Return distinct values
-   *
-   * @param  {String} fields
-   * @param  {Object} query
-   * @param  {Object} options
-   * @return {array}
-   */
   async distinct(fields: string, query: object = {}): Promise<any> {
     return this._schema.distinct(fields, query);
   }
 
-  // async save() {
-
-  // }
-
-  /**
-   * Update an entry without returning the new one
-   *
-   * @param  {Object} query
-   * @param  {Object} set      i.e. { $set: { ... } }
-   * @return {Object}
-   */
   async update(
     query: object,
     set: object,
@@ -153,13 +104,6 @@ export default class Repository {
     return this._schema.update(query, set, options || {});
   }
 
-  /**
-   * Update an entry and return the modified one
-   *
-   * @param  {Object} query
-   * @param  {Object} set      i.e. { $set: { ... } }
-   * @return {Object}
-   */
   async findOneAndUpdate(
     query: object,
     set: object,
@@ -178,12 +122,6 @@ export default class Repository {
     return lean && updated ? updated.toObject() : updated;
   }
 
-  /**
-   * Delete all the item that meet the query
-   *
-   * @param  {Object} query
-   * @return {Object}
-   */
   async hardDelete(query: object): Promise<any> {
     return this._schema.remove(query);
   }

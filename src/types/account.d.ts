@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
-import { ObjectId } from 'types/global'
+import { ObjectId } from 'types/global';
 
 export interface LoginInput {
   input: {

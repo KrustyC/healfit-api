@@ -1,17 +1,14 @@
 import { mergeSchemas } from 'apollo-server';
 
-import { RootSchema, RootResolvers } from './schemas/root'
-import { AuthSchema, AuthResolvers } from './schemas/auth'
+import { RootSchema, RootResolvers } from './schemas/root';
+import { AuthSchema, AuthResolvers } from './schemas/auth';
 
 const schema = mergeSchemas({
-  schemas: [
-    RootSchema,
-    AuthSchema
-  ],
+  schemas: [RootSchema, AuthSchema],
   resolvers: {
     ...RootResolvers,
-    ...AuthResolvers
-  }
+    ...AuthResolvers,
+  },
 });
 
-export default schema
+export default schema;
