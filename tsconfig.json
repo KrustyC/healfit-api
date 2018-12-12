@@ -15,10 +15,10 @@
     "noUnusedParameters": true,
     "baseUrl": ".",
     "paths": {
-      "env/*": ["src/env/*"],
+      "config": ["src/config/index.ts"],
       "types/*": ["src/types/*"],
       "context/*": ["src/context/*"],
-      "library/*": ["src/library/*"],
+      "lib/*": ["src/lib/*"]
     }
   },
   "include": ["./src/**/*"]

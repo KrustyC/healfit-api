@@ -1,11 +1,19 @@
-import AccountRepo from './repo';
-import { IAccount, SignupInput } from 'types/account';
+import {
+  IAccount,
+  IAccountWithToken,
+  SignupInput,
+  VerifyAccountInput,
+} from 'types/account';
+import AccountService from './service';
 
-const accountRepo = new AccountRepo();
+const accountService = new AccountService();
 
 export default {
-  exists: (email: string) => accountRepo.exists(email),
-  findForLogin: (email: string): Promise<IAccount | null> =>
-    accountRepo.findForLogin(email),
-  create: (data: SignupInput): Promise<IAccount> => accountRepo.create(data),
+  emailExists: (email: string) => accountService.emailExists(email),
+  findForLogin: (email: string): Promise<IAccount> =>
+    accountService.findForLogin(email),
+  create: (data: SignupInput): Promise<IAccountWithToken> =>
+    accountService.createAccount(data),
+  verifyAccount: (data: VerifyAccountInput): Promise<Boolean> =>
+    accountService.verifyAccount(data),
 };

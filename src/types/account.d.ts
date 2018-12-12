@@ -1,11 +1,39 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
 import { ObjectId } from 'types/global';
 
+export interface IAccount extends Document {
+  _id: ObjectId;
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+  kind: string;
+  comparePassword: Function;
+  isAccountConfirmed: Function;
+}
+
+export interface IAccountToken extends Document {
+  _id: ObjectId;
+  token: string;
+  user: ObjectId;
+  isExpired: Function;
+}
+
+export interface IAccountWithToken {
+  account: IAccount;
+  token: IAccountToken;
+}
+
 export interface LoginInput {
   input: {
     email: string;
     password: string;
   };
+}
+
+export interface LoginOutput {
+  account: IAccount;
+  token: string;
 }
 
 export interface SignupInput {
@@ -18,13 +46,9 @@ export interface SignupInput {
   };
 }
 
-export interface IAccount extends Document {
-  _id: ObjectId;
-  email: string;
-  firstName: string;
-  lastName: string;
-  password: string;
-  kind: string;
-  comparePassword: Function;
-  isAccountConfirmed: Function;
+export interface VerifyAccountInput {
+  input: {
+    email: string;
+    token: string;
+  };
 }

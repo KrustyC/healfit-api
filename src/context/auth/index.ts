@@ -1,60 +1,62 @@
 import jwt from 'jsonwebtoken';
 import pick from 'lodash/pick';
-import { LoginInput, SignupInput, IAccount } from 'types/account';
+import config from 'config';
+import { LoginInput, LoginOutput, SignupInput, IAccount } from 'types/account';
 
-// import { BadRequestError } from '../../library/errors'
-// import Mailer from '../../library/mailer'
+// import Mailer from 'mailer'
 // import { CONFIRM_EMAIL } from '../../library/mailer/types'
 import AccountContext from '../account';
-import config from '../../env';
 
-const generateToken = (account: IAccount) => {
-  const payload = pick(account.toObject(), [
-    '_id',
-    'email',
-    'firstName',
-    'lastName',
-    'kind',
-  ]);
-  return jwt.sign(payload, config('jwtSecret'), { expiresIn: '7d' });
-};
+export default class Auth {
+  async signup(data: SignupInput): Promise<IAccount> {
+    const doesAccountExist = await AccountContext.emailExists(data.input.email);
 
-export const signup = async (data: SignupInput) => {
-  const doesAccountExist = await AccountContext.exists(data.input.email);
-  if (doesAccountExist) {
-    throw new Error('Email address already exists');
+    if (doesAccountExist) {
+      throw new Error('Email address already exists');
+    }
+
+    const { token, account } = await AccountContext.create(data);
+
+    // Send the email with the token
+    // const mailer = new Mailer()
+    // const params = {
+    //   name: account.firstName,
+    //   confirmLink: `${config('appUrl)}/confirm-email?email={account.email}&token=${token.token}`
+    // }
+    // mailer.sendEmail(CONFIRM_EMAIL, [account], params)
+
+    return account;
   }
 
-  const account = await AccountContext.create(data);
+  async login(data: LoginInput): Promise<LoginOutput> {
+    const { email, password } = data.input;
 
-  // const mailer = new Mailer()
-  // const params = {
-  //   name: account.firstName,
-  //   confirmLink: 'https://wwww.example.com'
-  // }
-  // mailer.sendEmail(CONFIRM_EMAIL, [account], params)
+    const account = await AccountContext.findForLogin(email);
 
-  const token = generateToken(account);
-  return { account, token };
-};
+    if (!account) {
+      throw new Error('Email address does not exist');
+    }
 
-export const login = async (data: LoginInput) => {
-  const { email, password } = data.input;
+    if (!(await account.isAccountConfirmed())) {
+      throw new Error('Email address has not been confirmed yet');
+    }
 
-  const account = await AccountContext.findForLogin(email);
+    if (!(await account.comparePassword(password))) {
+      throw new Error('Incorrect password, please try again');
+    }
 
-  if (!account) {
-    throw new Error('Email address does not exist');
+    const token = this._generateToken(account);
+    return { account, token };
   }
 
-  if (!(await account.isAccountConfirmed())) {
-    throw new Error('Email address has not been cofnirmed yet');
-  }
-
-  if (!(await account.comparePassword(password))) {
-    throw new Error('Incorrect password, please try again');
-  }
-
-  const token = generateToken(account);
-  return { account, token };
-};
+  _generateToken = (account: IAccount): string => {
+    const payload = pick(account.toObject(), [
+      '_id',
+      'email',
+      'firstName',
+      'lastName',
+      'kind',
+    ]);
+    return jwt.sign(payload, config('jwtSecret'), { expiresIn: '7d' });
+  };
+}

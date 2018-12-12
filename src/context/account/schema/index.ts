@@ -54,25 +54,6 @@ accountSchema.methods.isAccountConfirmed = function() {
   });
 };
 
-accountSchema.pre<IAccountModel>('update', function(next: Function) {
-  const account = this;
-  const data = {};
-
-  if (account.isModified('password')) {
-    _.set(
-      data,
-      'password',
-      bcrypt.hashSync(account.password, bcrypt.genSaltSync(12))
-    );
-  }
-
-  if (account.isModified('email')) {
-    _.set(data, 'email', account.email.toLowerCase());
-  }
-
-  next();
-});
-
 export const Account: Model<IAccountModel> = mongoose.model<IAccountModel>(
   'Account',
   accountSchema
