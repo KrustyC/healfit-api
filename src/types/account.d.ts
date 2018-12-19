@@ -19,9 +19,21 @@ export interface IAccountToken extends Document {
   isExpired: Function;
 }
 
+export interface IAccountPasswordResetToken extends Document {
+  _id: ObjectId;
+  token: string;
+  user: ObjectId;
+  isExpired: Function;
+}
+
 export interface IAccountWithToken {
   account: IAccount;
   token: IAccountToken;
+}
+
+export interface IAccountWithPasswordResetToken {
+  account: IAccount;
+  token: IAccountPasswordResetToken;
 }
 
 export interface LoginInput {
@@ -50,5 +62,19 @@ export interface VerifyAccountInput {
   input: {
     email: string;
     token: string;
+  };
+}
+
+export interface ForgottenPasswordInput {
+  input: {
+    email: string;
+  };
+}
+
+export interface ResetPasswordInput {
+  input: {
+    email: string;
+    token: string;
+    newPassword: string;
   };
 }

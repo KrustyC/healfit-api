@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt-nodejs';
 import toLower from 'lodash/toLower';
 import { SignupInput, IAccount } from 'types/account';
 import Repository from 'lib/Repository';
@@ -51,6 +52,17 @@ export default class AccountRepo extends Repository {
       },
       {
         $set: { accountConfirmedAt: new Date() },
+      }
+    );
+  }
+
+  async resetPassword(account: IAccount, newPassword: string): Promise<boolean> {
+    return !!this.findOneAndUpdate(
+      {
+        _id: account._id,
+      },
+      {
+        $set: { password: bcrypt.hashSync(newPassword, bcrypt.genSaltSync(12)) },
       }
     );
   }

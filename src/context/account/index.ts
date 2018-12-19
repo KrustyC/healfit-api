@@ -3,6 +3,8 @@ import {
   IAccountWithToken,
   SignupInput,
   VerifyAccountInput,
+  ForgottenPasswordInput,
+  ResetPasswordInput
 } from 'types/account';
 import AccountService from './service';
 
@@ -16,4 +18,8 @@ export default {
     accountService.createAccount(data),
   verifyAccount: (data: VerifyAccountInput): Promise<Boolean> =>
     accountService.verifyAccount(data),
+  forgottenPassword: (data: ForgottenPasswordInput): Promise<Boolean> =>
+    accountService.forgottenPassword(data),
+  resetPassword: (data: ResetPasswordInput): Promise<Boolean> =>
+    accountService.resetPassword(data),
 };

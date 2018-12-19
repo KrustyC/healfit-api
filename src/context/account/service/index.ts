@@ -3,17 +3,22 @@ import {
   IAccountWithToken,
   IAccount,
   VerifyAccountInput,
+  ForgottenPasswordInput,
+  ResetPasswordInput
 } from 'types/account';
 import AccountRepo from '../repo';
 import AccountVerificationTokenRepo from '../repo/accountVerificationTokenRepo';
+import PasswordResetTokenRepo from '../repo/passwordResetTokenRepo';
 
 export default class AccountService {
   accountRepo: AccountRepo;
   accountVerificationTokenRepo: AccountVerificationTokenRepo;
+  passwordResetTokenRepo: PasswordResetTokenRepo;
 
   constructor() {
     this.accountRepo = new AccountRepo();
     this.accountVerificationTokenRepo = new AccountVerificationTokenRepo();
+    this.passwordResetTokenRepo = new PasswordResetTokenRepo();
   }
 
   async findForLogin(email: string): Promise<IAccount> {
@@ -55,11 +60,10 @@ export default class AccountService {
       throw new Error('The provided token is expired!');
     }
 
-    // If here then the token exists and is valid so we invalidate and terminate
     const verifyResult = await this.accountRepo.verify(account);
     if (!verifyResult) {
       throw new Error(
-        'Sorry, we could not verify your accoun! Please try again later!'
+        'Sorry, we could not verify your account! Please try again later!'
       );
     }
 
@@ -69,10 +73,57 @@ export default class AccountService {
 
     if (!invalidateResult) {
       throw new Error(
-        'Sorry, we could not verify your accoun! Please try again later!'
+        'Sorry, we could not verify your account! Please try again later!'
       );
     }
 
     return true;
+  }
+
+  async forgottenPassword(data: ForgottenPasswordInput): Promise<Boolean> {
+    const { input : { email } } = data
+    const account = await this.accountRepo.findOneBy({ email });
+    const token = await this.passwordResetTokenRepo.create(account);
+
+    // Send email with token and shit
+
+    return true
+  }
+
+  async resetPassword(data: ResetPasswordInput): Promise<Boolean> {
+    const { input : { email, newPassword } } = data
+    const account = await this.accountRepo.findOneBy({ email });
+    const token = await this.passwordResetTokenRepo.findForAccount(
+      data.input.token,
+      account
+    );
+
+    // Send email with token and shit
+    if (!token) {
+      throw new Error('The provided token does not exist!');
+    }
+
+    if (await token.isExpired()) {
+      throw new Error('The provided token is expired!');
+    }
+
+    const passwordResetResult = await this.accountRepo.resetPassword(account, newPassword);
+    if (!passwordResetResult) {
+      throw new Error(
+        'Sorry, we could not reset your password! Please try again later!'
+      );
+    }
+
+    const invalidateResult = await this.passwordResetTokenRepo.invalidate(
+      token
+    );
+
+    if (!invalidateResult) {
+      throw new Error(
+        'Sorry, we could not reset your password! Please try again later!'
+      );
+    }
+
+    return true
   }
 }
