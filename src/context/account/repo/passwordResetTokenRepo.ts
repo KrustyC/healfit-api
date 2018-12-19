@@ -25,12 +25,12 @@ export default class AccountRepo extends Repository {
   }
 
   async create(account: IAccount): Promise<IAccountPasswordResetToken> {
-    const token = 'NEED TO GENERATE IT RANDOMLY';
+    const token = Math.random(); // NEED TO GENERATE PROPERLY
 
     const accountPasswordResetToken = new AccountPasswordResetToken({
       token,
       account,
-      expireAt: addDays(new Date(), 1),
+      expireAt: addDays(new Date(), 2),
     });
     return accountPasswordResetToken.save();
   }
