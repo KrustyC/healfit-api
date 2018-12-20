@@ -6,6 +6,7 @@ export const env = process.env.ENVIRONMENT;
 
 // App Configuration
 export const API_PORT = process.env.API_PORT;
+export const appUrl = process.env.APP_URL;
 export const jwtSecret = process.env.JWT_SECRET;
 
 // Database Configuration

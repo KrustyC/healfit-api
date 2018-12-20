@@ -4,7 +4,8 @@ import {
   IAccount,
   VerifyAccountInput,
   ForgottenPasswordInput,
-  ResetPasswordInput
+  ResetPasswordInput,
+  IAccountWithPasswordResetToken
 } from 'types/account';
 import AccountRepo from '../repo';
 import AccountVerificationTokenRepo from '../repo/accountVerificationTokenRepo';
@@ -80,25 +81,25 @@ export default class AccountService {
     return true;
   }
 
-  async forgottenPassword(data: ForgottenPasswordInput): Promise<Boolean> {
-    const { input : { email } } = data
+  async forgottenPassword(data: ForgottenPasswordInput): Promise<IAccountWithPasswordResetToken> {
+    const { input: { email } } = data
     const account = await this.accountRepo.findOneBy({ email });
     const token = await this.passwordResetTokenRepo.create(account);
 
-    // Send email with token and shit
-
-    return true
+    return {
+      account,
+      token
+    }
   }
 
   async resetPassword(data: ResetPasswordInput): Promise<Boolean> {
-    const { input : { email, newPassword } } = data
+    const { input: { email, newPassword } } = data
     const account = await this.accountRepo.findOneBy({ email });
     const token = await this.passwordResetTokenRepo.findForAccount(
       data.input.token,
       account
     );
 
-    // Send email with token and shit
     if (!token) {
       throw new Error('The provided token does not exist!');
     }

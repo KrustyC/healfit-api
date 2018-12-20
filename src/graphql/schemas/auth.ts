@@ -69,7 +69,7 @@ export const AuthResolvers = {
     verifyAccount: async (_: Object, data: VerifyAccountInput) =>
       Account.verifyAccount(data),
     forgottenPassword: async (_: Object, data: ForgottenPasswordInput) =>
-      Account.forgottenPassword(data),
+      auth.forgottenPassword(data),
     resetPassword: async (_: Object, data: ResetPasswordInput) =>
       Account.resetPassword(data),
   },

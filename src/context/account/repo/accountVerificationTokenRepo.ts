@@ -1,5 +1,7 @@
 import { getTime, addDays } from 'date-fns';
 import { IAccount, IAccountToken } from 'types/account';
+import crypto from 'crypto';
+
 import Repository from 'lib/Repository';
 import { AccountVerificationToken } from '../schema/accountVerificationToken';
 
@@ -25,7 +27,7 @@ export default class AccountRepo extends Repository {
   }
 
   async create(account: IAccount): Promise<IAccountToken> {
-    const token = 'NEED TO GENERATE IT RANDOMLY';
+    const token = crypto.randomBytes(32).toString('hex');
 
     const accountVerificationToken = new AccountVerificationToken({
       token,

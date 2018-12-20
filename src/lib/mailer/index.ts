@@ -4,8 +4,19 @@ import request from 'request'
 import config from 'config'
 import * as emailTemplates from './templates';
 
+interface Recipient {
+  email: string;
+}
+
+interface Options {
+  method: string;
+  url: string;
+  headers: Object;
+  json: Boolean;
+}
+
 export default class Mailer {
-  options: Object
+  options: Options
   sender: string
 
   constructor() {
@@ -24,7 +35,7 @@ export default class Mailer {
     if (config('env') === 'development') {
       return [{ email: config('sendInBlue.recipientCatchAll') }]
     }
-    return _.map(recipients, ({ email }: { email: string}) => ({ email }))
+    return _.map(recipients, ({ email }: Recipient) => ({ email }))
   }
 
   getEmailInfo(emailTemplate: string, params: any) {
@@ -35,6 +46,14 @@ export default class Mailer {
           params: {
             NAME: params.name,
             CONFIRM_LINK: params.confirmLink
+          }
+        }
+      case emailTemplates.RESET_PASSWORD_EMAIL:
+        return {
+          templateId: 5,
+          params: {
+            NAME: params.name,
+            RESET_PASSWORD_LINK: params.resetPasswordLink
           }
         }
       default:

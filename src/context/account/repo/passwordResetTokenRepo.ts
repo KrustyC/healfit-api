@@ -1,4 +1,5 @@
 import { addDays } from 'date-fns';
+import crypto from 'crypto';
 import { IAccount, IAccountPasswordResetToken } from 'types/account';
 import Repository from 'lib/Repository';
 import { AccountPasswordResetToken } from '../schema/accountPasswordResetToken';
@@ -25,7 +26,7 @@ export default class AccountRepo extends Repository {
   }
 
   async create(account: IAccount): Promise<IAccountPasswordResetToken> {
-    const token = Math.random(); // NEED TO GENERATE PROPERLY
+    const token = crypto.randomBytes(32).toString('hex');
 
     const accountPasswordResetToken = new AccountPasswordResetToken({
       token,

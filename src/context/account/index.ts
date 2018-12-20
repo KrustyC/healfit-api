@@ -1,6 +1,7 @@
 import {
   IAccount,
   IAccountWithToken,
+  IAccountWithPasswordResetToken,
   SignupInput,
   VerifyAccountInput,
   ForgottenPasswordInput,
@@ -18,7 +19,7 @@ export default {
     accountService.createAccount(data),
   verifyAccount: (data: VerifyAccountInput): Promise<Boolean> =>
     accountService.verifyAccount(data),
-  forgottenPassword: (data: ForgottenPasswordInput): Promise<Boolean> =>
+  forgottenPassword: (data: ForgottenPasswordInput): Promise<IAccountWithPasswordResetToken> =>
     accountService.forgottenPassword(data),
   resetPassword: (data: ResetPasswordInput): Promise<Boolean> =>
     accountService.resetPassword(data),

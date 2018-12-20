@@ -1,13 +1,19 @@
 import jwt from 'jsonwebtoken';
 import pick from 'lodash/pick';
 import config from 'config';
-import { LoginInput, LoginOutput, SignupInput, IAccount } from 'types/account';
+import { LoginInput, LoginOutput, SignupInput, IAccount, ForgottenPasswordInput, IAccountWithPasswordResetToken } from 'types/account';
+import Mailer from 'lib/mailer'
+import { CONFIRM_EMAIL, RESET_PASSWORD_EMAIL } from 'lib/mailer/templates'
 
-// import Mailer from 'mailer'
-// import { CONFIRM_EMAIL } from '../../library/mailer/types'
 import AccountContext from '../account';
 
 export default class Auth {
+  mailer: Mailer
+
+  constructor() {
+    this.mailer = new Mailer()
+  }
+
   async signup(data: SignupInput): Promise<IAccount> {
     const doesAccountExist = await AccountContext.emailExists(data.input.email);
 
@@ -18,12 +24,11 @@ export default class Auth {
     const { token, account } = await AccountContext.create(data);
 
     // Send the email with the token
-    // const mailer = new Mailer()
-    // const params = {
-    //   name: account.firstName,
-    //   confirmLink: `${config('appUrl)}/confirm-email?email={account.email}&token=${token.token}`
-    // }
-    // mailer.sendEmail(CONFIRM_EMAIL, [account], params)
+    const params = {
+      name: account.firstName,
+      confirmLink: `${config('appUrl')}/verify-account?token=${token.token}&email=${account.email}`
+    }
+    this.mailer.sendEmail(CONFIRM_EMAIL, [account], params)
 
     return account;
   }
@@ -47,6 +52,22 @@ export default class Auth {
 
     const token = this._generateToken(account);
     return { account, token };
+  }
+
+  async forgottenPassword(data: ForgottenPasswordInput): Promise<Boolean> {
+    const { account, token } = await AccountContext.forgottenPassword(data);
+
+    if (!account || !token) {
+      throw new Error('Something went wrong!')
+    }
+    // Send email with token and shit
+    const params = {
+      name: account.firstName,
+      resetPasswordLink: `${config('appUrl')}/reset-password?token=${token.token}&email=${account.email}`
+    }
+    this.mailer.sendEmail(RESET_PASSWORD_EMAIL, [account], params)
+
+    return true
   }
 
   _generateToken = (account: IAccount): string => {
