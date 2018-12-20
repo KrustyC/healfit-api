@@ -15,3 +15,16 @@ export const dbConfig = {
   user: process.env.DB_USER,
   pass: process.env.DB_PASSWORD,
 };
+
+export const apolloConfig = {
+  engine: {
+    apiKey: process.env.APOLLO_ENGINE_API_KEY
+  }
+}
+
+// Send In Blue Configuration
+export const sendInBlue = {
+  apiKey: process.env.SENDINBLUE_API_KEY,
+  recipientCatchAll: process.env.RECIPIENT_CATCH_ALL,
+  sender: process.env.EMAIL_SENDER
+}
