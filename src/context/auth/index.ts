@@ -26,7 +26,7 @@ export default class Auth {
     // Send the email with the token
     const params = {
       name: account.firstName,
-      confirmLink: `${config('appUrl')}/verify-account?token=${token.token}&email=${account.email}`
+      confirmLink: `${config('appUrl')}/auth/verify-account?token=${token.token}&email=${account.email}`
     }
     this.mailer.sendEmail(CONFIRM_EMAIL, [account], params)
 
@@ -63,7 +63,7 @@ export default class Auth {
     // Send email with token and shit
     const params = {
       name: account.firstName,
-      resetPasswordLink: `${config('appUrl')}/reset-password?token=${token.token}&email=${account.email}`
+      resetPasswordLink: `${config('appUrl')}/auth/reset-password?token=${token.token}&email=${account.email}`
     }
     this.mailer.sendEmail(RESET_PASSWORD_EMAIL, [account], params)
 
