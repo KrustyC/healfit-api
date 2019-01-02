@@ -1,4 +1,5 @@
-import { gql, makeExecutableSchema } from 'apollo-server';
+import { gql, makeExecutableSchema, AuthenticationError } from 'apollo-server';
+import { combineResolvers } from 'graphql-resolvers'
 import {
   LoginInput,
   SignupInput,
@@ -9,6 +10,7 @@ import {
 
 import Auth from 'context/auth';
 import Account from 'context/account';
+import { authenticatedOnly } from 'helpers/auth';
 
 const auth = new Auth();
 
@@ -52,6 +54,14 @@ export const AuthSchema = makeExecutableSchema({
       newPassword: String!
     }
 
+    type UserInfo {
+      user: User
+    }
+
+    type Query {
+      currentUserInfo: UserInfo
+    }
+
     type Mutation {
       login(input: LoginInput!): AuthAccount
       signup(input: SignupInput!): User
@@ -62,7 +72,14 @@ export const AuthSchema = makeExecutableSchema({
   `,
 });
 
+const currentUserInfo = async (_: Object, __: Object, context: { user: Object }) => { //@TODO This object should be an account of some sort
+  return { user: context.user }
+}
+
 export const AuthResolvers = {
+  Query: {
+    currentUserInfo: authenticatedOnly(currentUserInfo)
+  },
   Mutation: {
     login: async (_: Object, data: LoginInput) => auth.login(data),
     signup: async (_: Object, data: SignupInput) => auth.signup(data),

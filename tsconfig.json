@@ -6,7 +6,10 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "lib": ["es2015", "es6"],
+    "lib": [
+      "es2015",
+      "es6"
+    ],
     "sourceMap": true,
     "outDir": "dist",
     "allowJs": false,
@@ -15,11 +18,24 @@
     "noUnusedParameters": true,
     "baseUrl": ".",
     "paths": {
-      "config": ["src/config/index.ts"],
-      "types/*": ["src/types/*"],
-      "context/*": ["src/context/*"],
-      "lib/*": ["src/lib/*"]
+      "config": [
+        "src/config/index.ts"
+      ],
+      "types/*": [
+        "src/types/*"
+      ],
+      "context/*": [
+        "src/context/*"
+      ],
+      "helpers/*": [
+        "src/helpers/*"
+      ],
+      "lib/*": [
+        "src/lib/*"
+      ]
     }
   },
-  "include": ["./src/**/*"]
+  "include": [
+    "./src/**/*"
+  ]
 }

@@ -11,3 +11,19 @@ export const dbConfig = {
   user: '',
   pass: '',
 };
+
+// App Configurationexport const API_PORT = process.env.API_PORT;
+export const appUrl = process.env.APP_URL;
+
+export const apolloConfig = {
+  engine: {
+    apiKey: ''
+  }
+}
+
+// Send In Blue Configuration
+export const sendInBlue = {
+  apiKey: '',
+  recipientCatchAll: '',
+  sender: ''
+}

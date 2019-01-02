@@ -22,6 +22,10 @@ export default class AccountService {
     this.passwordResetTokenRepo = new PasswordResetTokenRepo();
   }
 
+  async findBy(field: string, fieldName: string) {
+    return this.accountRepo.findOneBy({ [fieldName]: field });
+  }
+
   async findForLogin(email: string): Promise<IAccount> {
     return this.accountRepo.findForLogin(email);
   }
