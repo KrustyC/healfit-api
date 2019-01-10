@@ -5,7 +5,7 @@
   "main": "src/index.ts",
   "private": "true",
   "scripts": {
-    "start": "ts-node -r tsconfig-paths/register src/index.ts",
+    "start": "ts-node -r tsconfig-paths/register --transpileOnly src/index.ts",
     "dev": "nodemon --signal SIGTERM",
     "build": "tsc -b",
     "prebuild": "./node_modules/.bin/rimraf dist",
