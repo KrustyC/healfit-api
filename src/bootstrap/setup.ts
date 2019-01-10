@@ -1,5 +1,6 @@
 import express, { Request } from 'express';
 import cors from 'cors';
+import path from 'path';
 import bodyParser from 'body-parser';
 import { ApolloServer } from 'apollo-server-express';
 import morgan from 'morgan';
@@ -16,6 +17,8 @@ const app = express();
 app.use(cors());
 app.use(compression());
 app.use(bodyParser.json());
+
+app.use(express.static(path.join(__dirname, '/../public')));
 
 // const isDevelopment = config('env') === 'development'
 const isDevelopment = true;
@@ -45,6 +48,10 @@ export function startAPI(config: any) {
   });
 
   server.applyMiddleware({ app, path: '/graphql' });
+
+  app.get('*', (_, res) => {
+    res.sendFile(path.join(__dirname, '/../public/index.html'));
+  });
 
   app.listen({ port }, () =>
     console.log(
