@@ -29,7 +29,7 @@ app.use(bodyParser.json({ type: '*/*', limit: '50mb' }));
 
 const authMiddleware = jwt({
   secret: config('jwtSecret'),
-  credentialsRequired: false
+  credentialsRequired: false,
 });
 
 app.use(authMiddleware);
@@ -41,7 +41,7 @@ export function startAPI(config: any) {
   const port = parseInt(config('API_PORT'), 10) + parseInt(instance, 10);
   const server = new ApolloServer({
     schema,
-    context
+    context,
   });
 
   server.applyMiddleware({ app, path: '/graphql' });

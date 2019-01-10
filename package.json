@@ -1,7 +1,7 @@
 {
   "name": "api-boilerplate",
   "version": "0.1.0",
-  "description": "Keep It Fit - API",
+  "description": "Healfit - API",
   "main": "src/index.ts",
   "private": "true",
   "scripts": {
@@ -27,7 +27,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KrustyC/keep-it-fit-api"
+    "url": "git+https://github.com/KrustyC/healfit-api"
   },
   "author": "",
   "license": "ISC",
