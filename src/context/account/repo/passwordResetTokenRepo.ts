@@ -9,13 +9,11 @@ export default class AccountRepo extends Repository {
     super(AccountPasswordResetToken);
   }
 
-  async findForAccount(
-    value: string,
-    account: IAccount
+  async findByTokenValue(
+    value: string
   ): Promise<IAccountPasswordResetToken | null> {
     const token = await this.findOneBy({
       token: value,
-      account,
     });
 
     if (!token) {

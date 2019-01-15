@@ -99,13 +99,8 @@ export default class AccountService {
   }
 
   async resetPassword(data: ResetPasswordInput): Promise<Boolean> {
-    const {
-      input: { email, newPassword },
-    } = data;
-    const account = await this.accountRepo.findOneBy({ email });
-    const token = await this.passwordResetTokenRepo.findForAccount(
-      data.input.token,
-      account
+    const token = await this.passwordResetTokenRepo.findByTokenValue(
+      data.input.token
     );
 
     if (!token) {
@@ -116,10 +111,13 @@ export default class AccountService {
       throw new Error('The provided token is expired!');
     }
 
+    const account = await this.accountRepo.findById(token.account);
+
     const passwordResetResult = await this.accountRepo.resetPassword(
       account,
-      newPassword
+      data.input.password
     );
+
     if (!passwordResetResult) {
       throw new Error(
         'Sorry, we could not reset your password! Please try again later!'

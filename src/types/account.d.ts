@@ -22,7 +22,7 @@ export interface IAccountToken extends Document {
 export interface IAccountPasswordResetToken extends Document {
   _id: ObjectId;
   token: string;
-  user: ObjectId;
+  account: ObjectId;
   isExpired: Function;
 }
 
@@ -73,8 +73,7 @@ export interface ForgottenPasswordInput {
 
 export interface ResetPasswordInput {
   input: {
-    email: string;
     token: string;
-    newPassword: string;
+    password: string;
   };
 }
