@@ -18,7 +18,7 @@ export default class AccountRepo extends Repository {
     const account = await this.findOneBy({ email: toLower(email) });
 
     if (!account) {
-      throw new Error('Email does not exists!');
+      throw new Error('Invalid email!');
     }
 
     return new Account(account);
@@ -56,13 +56,18 @@ export default class AccountRepo extends Repository {
     );
   }
 
-  async resetPassword(account: IAccount, newPassword: string): Promise<boolean> {
+  async resetPassword(
+    account: IAccount,
+    newPassword: string
+  ): Promise<boolean> {
     return !!this.findOneAndUpdate(
       {
         _id: account._id,
       },
       {
-        $set: { password: bcrypt.hashSync(newPassword, bcrypt.genSaltSync(12)) },
+        $set: {
+          password: bcrypt.hashSync(newPassword, bcrypt.genSaltSync(12)),
+        },
       }
     );
   }
