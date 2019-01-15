@@ -10,13 +10,9 @@ export default class AccountRepo extends Repository {
     super(AccountVerificationToken);
   }
 
-  async findForAccount(
-    value: string,
-    account: IAccount
-  ): Promise<IAccountToken | null> {
+  async findByTokenValue(value: string): Promise<IAccountToken | null> {
     const token = await this.findOneBy({
       token: value,
-      account,
     });
 
     if (!token) {

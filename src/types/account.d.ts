@@ -15,7 +15,7 @@ export interface IAccount extends Document {
 export interface IAccountToken extends Document {
   _id: ObjectId;
   token: string;
-  user: ObjectId;
+  account: ObjectId;
   isExpired: Function;
 }
 

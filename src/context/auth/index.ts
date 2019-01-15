@@ -35,7 +35,7 @@ export default class Auth {
       name: account.firstName,
       confirmLink: `${config('appUrl')}/auth/verify-account?token=${
         token.token
-      }&email=${account.email}`,
+      }`,
     };
     this.mailer.sendEmail(CONFIRM_EMAIL, [account], params);
 

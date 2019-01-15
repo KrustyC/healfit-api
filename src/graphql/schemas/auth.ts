@@ -40,7 +40,6 @@ export const AuthSchema = makeExecutableSchema({
     }
 
     input VerifyAccountInput {
-      email: String!
       token: String!
     }
 
