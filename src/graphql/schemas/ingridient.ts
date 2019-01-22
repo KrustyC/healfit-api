@@ -23,7 +23,7 @@ export const IngridientSchema = makeExecutableSchema({
       name: String!
       calories: Float
       nutrients: [NutrientValue]
-      # createdBy: User @relation(name: "User")
+      # createdBy: User @relation(name: "User") @TODO Find a way to refer this
     }
 
     input InputNutrient {
