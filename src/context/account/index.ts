@@ -1,28 +1,30 @@
 import {
   IAccount,
-  IAccountWithToken,
   IAccountWithPasswordResetToken,
-  SignupInput,
-  VerifyAccountInput,
-  ForgottenPasswordInput,
-  ResetPasswordInput
+  IAccountWithToken,
+  IForgottenPasswordInput,
+  IResetPasswordInput,
+  ISignupInput,
+  IVerifyAccountInput,
 } from 'types/account';
 import AccountService from './service';
 
 const accountService = new AccountService();
 
 export default {
+  create: (data: ISignupInput): Promise<IAccountWithToken> =>
+    accountService.createAccount(data),
   emailExists: (email: string) => accountService.emailExists(email),
   findBy: (field: string, fieldName: string): Promise<IAccount> =>
     accountService.findBy(field, fieldName),
   findForLogin: (email: string): Promise<IAccount> =>
     accountService.findForLogin(email),
-  create: (data: SignupInput): Promise<IAccountWithToken> =>
-    accountService.createAccount(data),
-  verifyAccount: (data: VerifyAccountInput): Promise<Boolean> =>
-    accountService.verifyAccount(data),
-  forgottenPassword: (data: ForgottenPasswordInput): Promise<IAccountWithPasswordResetToken> =>
+  forgottenPassword: (
+    data: IForgottenPasswordInput
+  ): Promise<IAccountWithPasswordResetToken> =>
     accountService.forgottenPassword(data),
-  resetPassword: (data: ResetPasswordInput): Promise<Boolean> =>
+  resetPassword: (data: IResetPasswordInput): Promise<boolean> =>
     accountService.resetPassword(data),
+  verifyAccount: (data: IVerifyAccountInput): Promise<boolean> =>
+    accountService.verifyAccount(data),
 };

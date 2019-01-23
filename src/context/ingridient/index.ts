@@ -1,5 +1,5 @@
-import { ObjectId } from 'types/global';
+import { IObjectId } from 'types/global';
 
 export default {
-  show: (id: ObjectId) => console.log(id)
-}
+  show: (id: IObjectId) => id,
+};

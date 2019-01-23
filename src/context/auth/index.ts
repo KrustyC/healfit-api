@@ -1,27 +1,27 @@
+import Mailer from '@lib/mailer';
+import { CONFIRM_EMAIL, RESET_PASSWORD_EMAIL } from '@lib/mailer/templates';
+import config from 'config';
 import jwt from 'jsonwebtoken';
 import pick from 'lodash/pick';
-import config from 'config';
 import {
-  LoginInput,
-  LoginOutput,
-  SignupInput,
   IAccount,
-  ForgottenPasswordInput,
   IAccountWithPasswordResetToken,
+  IForgottenPasswordInput,
+  ILoginInput,
+  ILoginOutput,
+  ISignupInput,
 } from 'types/account';
-import Mailer from 'lib/mailer';
-import { CONFIRM_EMAIL, RESET_PASSWORD_EMAIL } from 'lib/mailer/templates';
 
 import AccountContext from '../account';
 
 export default class Auth {
-  mailer: Mailer;
+  public mailer: Mailer;
 
   constructor() {
     this.mailer = new Mailer();
   }
 
-  async signup(data: SignupInput): Promise<IAccount> {
+  public async signup(data: ISignupInput): Promise<IAccount> {
     const doesAccountExist = await AccountContext.emailExists(data.input.email);
 
     if (doesAccountExist) {
@@ -32,17 +32,17 @@ export default class Auth {
 
     // Send the email with the token
     const params = {
-      name: account.firstName,
       confirmLink: `${config('appUrl')}/auth/verify-account?token=${
         token.token
       }`,
+      name: account.firstName,
     };
     this.mailer.sendEmail(CONFIRM_EMAIL, [account], params);
 
     return account;
   }
 
-  async login(data: LoginInput): Promise<LoginOutput> {
+  public async login(data: ILoginInput): Promise<ILoginOutput> {
     const { email, password } = data.input;
 
     const account = await AccountContext.findForLogin(email);
@@ -59,11 +59,13 @@ export default class Auth {
       throw new Error('Incorrect password, please try again');
     }
 
-    const token = this._generateToken(account);
+    const token = this.generateToken(account);
     return { account, token };
   }
 
-  async forgottenPassword(data: ForgottenPasswordInput): Promise<Boolean> {
+  public async forgottenPassword(
+    data: IForgottenPasswordInput
+  ): Promise<boolean> {
     const { account, token } = await AccountContext.forgottenPassword(data);
 
     if (!account) {
@@ -83,7 +85,7 @@ export default class Auth {
     return true;
   }
 
-  _generateToken = (account: IAccount): string => {
+  public generateToken = (account: IAccount): string => {
     const payload = pick(account.toObject(), [
       '_id',
       'email',

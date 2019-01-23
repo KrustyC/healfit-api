@@ -1,8 +1,8 @@
 import { mergeSchemas } from 'apollo-server';
 
-import { RootSchema, RootResolvers } from './schemas/root';
-import { AuthSchema, AuthResolvers } from './schemas/auth';
-import { IngridientSchema, IngridientResolvers } from './schemas/ingridient';
+import { AuthResolvers, AuthSchema } from './schemas/auth';
+import { IngridientResolvers, IngridientSchema } from './schemas/ingridient';
+import { RootResolvers, RootSchema } from './schemas/root';
 
 const linkTypeDefs = `
   extend type Ingridient {
@@ -11,12 +11,12 @@ const linkTypeDefs = `
 `;
 
 const schema = mergeSchemas({
-  schemas: [RootSchema, AuthSchema, IngridientSchema, linkTypeDefs],
   resolvers: {
     ...RootResolvers,
     ...AuthResolvers,
     ...IngridientResolvers,
   },
+  schemas: [RootSchema, AuthSchema, IngridientSchema, linkTypeDefs],
 });
 
 export default schema;

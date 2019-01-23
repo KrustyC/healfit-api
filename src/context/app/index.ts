@@ -1,3 +1,3 @@
 export default {
-  welcome: (): string => 'Welcome to this boilerplate'
+  welcome: (): string => 'Welcome to this boilerplate',
 };

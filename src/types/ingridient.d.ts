@@ -1,51 +1,55 @@
-import mongoose, { Schema, Document, Model } from 'mongoose';
-import { ObjectId } from './global';
+import mongoose, { Document, Model, Schema } from 'mongoose';
+import { IObjectId } from './global';
 
-interface CategoryId extends ObjectId {}
-
-export interface Nutrient {
-  id: ObjectId;
+export interface INutrient {
+  id: IObjectId;
   name: string;
   value: number;
 }
 
-export interface IngridientCreateInput {
+export interface IIngridientCreateInput {
   input: {
     name: string;
-    category: CategoryId;
+    category: IObjectId;
     calories: number;
-    nutrients: [{
-      nutrient: Nutrient;
-      value: Number;
-    }]
+    nutrients: [
+      {
+        nutrient: INutrient;
+        value: number;
+      }
+    ];
   };
 }
 
-export interface IngridientEditInput {
+export interface IIngridientEditInput {
   input: {
-    id: ObjectId;
+    id: IObjectId;
     name: string;
-    category: CategoryId;
+    category: IObjectId;
     calories: number;
-    nutrients: [{
-      nutrient: Nutrient;
-      value: Number;
-    }]
+    nutrients: [
+      {
+        nutrient: INutrient;
+        value: number;
+      }
+    ];
   };
 }
 
 export interface IIngridient extends Document {
-  _id: ObjectId;
+  _id: IObjectId;
   name: string;
-  calories: Number;
-  nutrients: [{
-    nutrient: Nutrient;
-    value: Number;
-  }]
+  calories: number;
+  nutrients: [
+    {
+      nutrient: INutrient;
+      value: number;
+    }
+  ];
 }
 
 export interface INutrient extends Document {
-  _id: ObjectId;
+  _id: IObjectId;
   name: string;
   value: number;
 }

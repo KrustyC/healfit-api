@@ -18,7 +18,7 @@ export default function connectToDb(config: any) {
       mongoose.connect(`mongodb://mongodb/${dbName}`);
     }
   } catch (e) {
-    // eslint-disable-next-line
+    // tslint:disable-next-line
     console.log(`Error connecting to db: ${e}`);
   }
 }

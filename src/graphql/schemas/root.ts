@@ -12,10 +12,10 @@ export const RootSchema = makeExecutableSchema({
 });
 
 export const RootResolvers = {
-  Query: {
-    hello: () => 'Hello! Queries are working!',
-  },
   Mutation: {
     hello: () => 'Hello! Mutations are working!',
+  },
+  Query: {
+    hello: () => 'Hello! Queries are working!',
   },
 };

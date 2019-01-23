@@ -1,0 +1,22 @@
+{
+  "extends": [
+    "tslint:latest",
+    "tslint-config-prettier"
+  ],
+  "rulesDirectory": ["tslint-plugin-prettier"],
+  "rules": {
+    "prettier": true,
+    "no-submodule-imports": false,
+    "no-implicit-dependencies": [
+      true,
+      [
+        "morgan",
+        "config",
+        "types",
+        "@context",
+        "@helpers",
+        "@lib"
+      ]
+    ]
+  }
+}

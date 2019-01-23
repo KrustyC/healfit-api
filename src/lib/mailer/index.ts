@@ -1,83 +1,86 @@
-import _ from 'lodash'
-import request from 'request'
+import _ from 'lodash';
+import request from 'request';
 
-import config from 'config'
+import config from 'config';
 import * as emailTemplates from './templates';
 
-interface Recipient {
+interface IRecipient {
   email: string;
 }
 
-interface Options {
+interface IOptions {
   method: string;
   url: string;
-  headers: Object;
-  json: Boolean;
+  headers: object;
+  json: boolean;
 }
 
 export default class Mailer {
-  options: Options
-  sender: string
+  public options: IOptions;
+  public sender: string;
 
   constructor() {
     this.options = {
+      headers: {
+        'api-key': config('sendInBlue.apiKey'),
+      },
+      json: true,
       method: 'POST',
       url: 'https://api.sendinblue.com/v3/smtp/email',
-      headers: {
-        'api-key': config('sendInBlue.apiKey')
-      },
-      json: true
-    }
-    this.sender = config('sendInBlue.sender')
+    };
+    this.sender = config('sendInBlue.sender');
   }
 
-  getRecipients(recipients: Array<Object>) {
+  public getRecipients(recipients: object[]) {
     if (config('env') === 'development') {
-      return [{ email: config('sendInBlue.recipientCatchAll') }]
+      return [{ email: config('sendInBlue.recipientCatchAll') }];
     }
-    return _.map(recipients, ({ email }: Recipient) => ({ email }))
+    return _.map(recipients, ({ email }: IRecipient) => ({ email }));
   }
 
-  getEmailInfo(emailTemplate: string, params: any) {
+  public getEmailInfo(emailTemplate: string, params: any) {
     switch (emailTemplate) {
       case emailTemplates.CONFIRM_EMAIL:
         return {
-          templateId: 1,
           params: {
+            CONFIRM_LINK: params.confirmLink,
             NAME: params.name,
-            CONFIRM_LINK: params.confirmLink
-          }
-        }
+          },
+          templateId: 1,
+        };
       case emailTemplates.RESET_PASSWORD_EMAIL:
         return {
-          templateId: 5,
           params: {
             NAME: params.name,
-            RESET_PASSWORD_LINK: params.resetPasswordLink
-          }
-        }
+            RESET_PASSWORD_LINK: params.resetPasswordLink,
+          },
+          templateId: 69,
+        };
       default:
-        throw new Error('Email type does not exists!')
+        throw new Error('Email type does not exists!');
     }
   }
 
-  sendEmail(emailTemplate: string, recipients: Array<Object>, params: Object) {
-    const emailInfo = this.getEmailInfo(emailTemplate, params)
+  public sendEmail(
+    emailTemplate: string,
+    recipients: object[],
+    params: object
+  ) {
+    const emailInfo = this.getEmailInfo(emailTemplate, params);
 
     const options = {
       ...this.options,
       body: {
         sender: { email: this.sender },
         to: this.getRecipients(recipients),
-        ...emailInfo
-      }
-    }
+        ...emailInfo,
+      },
+    };
 
     request(options, (error: any) => {
       if (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
-      console.log('Email sent')
-    })
+    });
   }
 }

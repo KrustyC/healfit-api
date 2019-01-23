@@ -1,23 +1,23 @@
 import _ from 'lodash';
-import { Schema, Model } from 'mongoose';
-import { ObjectId } from 'types/global';
+import { Model } from 'mongoose';
+import { IObjectId } from 'types/global';
 
-type QueryOptions = {
+interface IQueryOptions {
   lean?: boolean;
   skip?: number;
   limit?: number;
   sort?: any;
-};
+}
 
 export default class Repository {
-  _schema: Model<any>;
+  public schema: Model<any>;
 
   constructor(Schema: Model<any>) {
-    this._schema = Schema;
+    this.schema = Schema;
   }
 
-  async count(query: object): Promise<number> {
-    return this._schema.find(query).count() || 0;
+  public async count(query: object): Promise<number> {
+    return this.schema.find(query).count() || 0;
   }
 
   /**
@@ -29,13 +29,13 @@ export default class Repository {
    * @param  {Object|null} options
    * @return {Object|null}
    */
-  async findBy(
+  public async findBy(
     query: object = {},
     projection?: object,
     populate?: object[],
-    options: QueryOptions = { lean: true }
+    options: IQueryOptions = { lean: true }
   ): Promise<any> {
-    const res = this._schema.find(query, projection);
+    const res = this.schema.find(query, projection);
 
     if (populate) {
       if (_.isArray(populate)) {
@@ -68,61 +68,61 @@ export default class Repository {
     return res;
   }
 
-  async findOneBy(
+  public async findOneBy(
     query: object = {},
     projection?: object,
     populate?: object[],
-    options: QueryOptions = { lean: true }
+    options: IQueryOptions = { lean: true }
   ): Promise<any> {
     const res = await this.findBy(query, projection, populate, options);
 
     return _.first(res) || null;
   }
 
-  async findById(
-    id: ObjectId,
+  public async findById(
+    id: IObjectId,
     projection?: object,
     populate?: object[],
-    options: QueryOptions = { lean: true }
+    options: IQueryOptions = { lean: true }
   ): Promise<any> {
     return this.findOneBy({ _id: id }, projection, populate, options);
   }
 
-  async aggregate(options: object[]): Promise<any> {
-    return this._schema.aggregate(options);
+  public async aggregate(options: object[]): Promise<any> {
+    return this.schema.aggregate(options);
   }
 
-  async distinct(fields: string, query: object = {}): Promise<any> {
-    return this._schema.distinct(fields, query);
+  public async distinct(fields: string, query: object = {}): Promise<any> {
+    return this.schema.distinct(fields, query);
   }
 
-  async update(
+  public async update(
     query: object,
     set: object,
-    options?: QueryOptions
+    options?: IQueryOptions
   ): Promise<any> {
-    return this._schema.update(query, set, options || {});
+    return this.schema.update(query, set, options || {});
   }
 
-  async findOneAndUpdate(
+  public async findOneAndUpdate(
     query: object,
     set: object,
     lean: boolean = true,
-    opts?: QueryOptions
+    opts?: IQueryOptions
   ): Promise<any> {
     const options = {
-      returnOriginal: false,
-      returnNewDocument: true,
       new: true,
+      returnNewDocument: true,
+      returnOriginal: false,
     };
     const merged = opts ? { ...options, ...opts } : options;
 
-    const updated = await this._schema.findOneAndUpdate(query, set, merged);
+    const updated = await this.schema.findOneAndUpdate(query, set, merged);
 
     return lean && updated ? updated.toObject() : updated;
   }
 
-  async hardDelete(query: object): Promise<any> {
-    return this._schema.remove(query);
+  public async hardDelete(query: object): Promise<any> {
+    return this.schema.remove(query);
   }
 }

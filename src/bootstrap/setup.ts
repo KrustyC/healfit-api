@@ -1,15 +1,15 @@
-import express, { Request } from 'express';
-import cors from 'cors';
-import path from 'path';
-import bodyParser from 'body-parser';
 import { ApolloServer } from 'apollo-server-express';
-import morgan from 'morgan';
+import bodyParser from 'body-parser';
 import compression from 'compression';
 import config from 'config';
+import cors from 'cors';
+import express, { Request } from 'express';
 import jwt from 'express-jwt';
-import connectToDb from './dbconnection';
+import morgan from 'morgan';
+import path from 'path';
 import schema from '../graphql/schema';
 import context from './context';
+import connectToDb from './dbconnection';
 
 const app = express();
 
@@ -31,20 +31,20 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(bodyParser.json({ type: '*/*', limit: '50mb' }));
 
 const authMiddleware = jwt({
-  secret: config('jwtSecret'),
   credentialsRequired: false,
+  secret: config('jwtSecret'),
 });
 
 app.use(authMiddleware);
 
-export function startAPI(config: any) {
-  connectToDb(config);
+export function startAPI(configuration: any) {
+  connectToDb(configuration);
 
   const instance = process.env.NODE_APP_INSTANCE || '0';
   const port = parseInt(config('API_PORT'), 10) + parseInt(instance, 10);
   const server = new ApolloServer({
-    schema,
     context,
+    schema,
   });
 
   server.applyMiddleware({ app, path: '/graphql' });
@@ -54,12 +54,11 @@ export function startAPI(config: any) {
   });
 
   app.listen({ port }, () =>
+    // tslint:disable-next-line
     console.log(
       `🚀 Server ready at http://localhost:${port}${server.graphqlPath}`
     )
   );
-
-  console.log('Server listening on: ', port);
 }
 
 export const api = app;

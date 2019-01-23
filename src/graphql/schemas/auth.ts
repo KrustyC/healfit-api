@@ -1,16 +1,16 @@
-import { gql, makeExecutableSchema, AuthenticationError } from 'apollo-server';
+import { AuthenticationError, gql, makeExecutableSchema } from 'apollo-server';
 import { combineResolvers } from 'graphql-resolvers';
 import {
-  LoginInput,
-  SignupInput,
-  VerifyAccountInput,
-  ForgottenPasswordInput,
-  ResetPasswordInput,
+  IForgottenPasswordInput,
+  ILoginInput,
+  IResetPasswordInput,
+  ISignupInput,
+  IVerifyAccountInput,
 } from 'types/account';
 
-import Auth from 'context/auth';
-import Account from 'context/account';
-import { authenticatedOnly } from 'helpers/auth';
+import Account from '@context/account';
+import Auth from '@context/auth';
+import { authenticatedOnly } from '@helpers/auth';
 
 const auth = new Auth();
 
@@ -71,26 +71,26 @@ export const AuthSchema = makeExecutableSchema({
 });
 
 const currentUserInfo = async (
-  _: Object,
-  __: Object,
-  context: { user: Object }
+  _: object,
+  __: object,
+  context: { user: object }
 ) => {
-  //@TODO This object should be an account of some sort
+  // @TODO This object should be an account of some sort
   return { user: context.user };
 };
 
 export const AuthResolvers = {
+  Mutation: {
+    forgottenPassword: async (_: object, data: IForgottenPasswordInput) =>
+      auth.forgottenPassword(data),
+    login: async (_: object, data: ILoginInput) => auth.login(data),
+    resetPassword: async (_: object, data: IResetPasswordInput) =>
+      Account.resetPassword(data),
+    signup: async (_: object, data: ISignupInput) => auth.signup(data),
+    verifyAccount: async (_: object, data: IVerifyAccountInput) =>
+      Account.verifyAccount(data),
+  },
   Query: {
     currentUserInfo: authenticatedOnly(currentUserInfo),
-  },
-  Mutation: {
-    login: async (_: Object, data: LoginInput) => auth.login(data),
-    signup: async (_: Object, data: SignupInput) => auth.signup(data),
-    verifyAccount: async (_: Object, data: VerifyAccountInput) =>
-      Account.verifyAccount(data),
-    forgottenPassword: async (_: Object, data: ForgottenPasswordInput) =>
-      auth.forgottenPassword(data),
-    resetPassword: async (_: Object, data: ResetPasswordInput) =>
-      Account.resetPassword(data),
   },
 };

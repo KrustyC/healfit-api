@@ -1,29 +1,29 @@
-import mongoose, { Schema, Document, Model } from 'mongoose';
-import { ObjectId } from 'types/global';
+import mongoose, { Document, Model, Schema } from 'mongoose';
+import { IObjectId } from 'types/global';
 
 export interface IAccount extends Document {
-  _id: ObjectId;
+  _id: IObjectId;
   email: string;
   firstName: string;
   lastName: string;
   password: string;
   kind: string;
-  comparePassword: Function;
-  isAccountConfirmed: Function;
+  comparePassword: (cadidatePassword: string) => Promise<boolean>;
+  isAccountConfirmed: () => Promise<boolean>;
 }
 
 export interface IAccountToken extends Document {
-  _id: ObjectId;
+  _id: IObjectId;
   token: string;
-  account: ObjectId;
-  isExpired: Function;
+  account: IObjectId;
+  isExpired: () => Promise<boolean>;
 }
 
 export interface IAccountPasswordResetToken extends Document {
-  _id: ObjectId;
+  _id: IObjectId;
   token: string;
-  account: ObjectId;
-  isExpired: Function;
+  account: IObjectId;
+  isExpired: () => Promise<boolean>;
 }
 
 export interface IAccountWithToken {
@@ -36,42 +36,42 @@ export interface IAccountWithPasswordResetToken {
   token: IAccountPasswordResetToken;
 }
 
-export interface LoginInput {
+export interface ILoginInput {
   input: {
     email: string;
     password: string;
   };
 }
 
-export interface LoginOutput {
+export interface ILoginOutput {
   account: IAccount;
   token: string;
 }
 
-export interface SignupInput {
+export interface ISignupInput {
   input: {
     email: string;
     firstName: string;
     lastName: string;
     password: string;
-    type: Number;
+    type: number;
   };
 }
 
-export interface VerifyAccountInput {
+export interface IVerifyAccountInput {
   input: {
     email: string;
     token: string;
   };
 }
 
-export interface ForgottenPasswordInput {
+export interface IForgottenPasswordInput {
   input: {
     email: string;
   };
 }
 
-export interface ResetPasswordInput {
+export interface IResetPasswordInput {
   input: {
     token: string;
     password: string;

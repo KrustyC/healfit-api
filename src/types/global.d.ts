@@ -1,5 +1,6 @@
-import mongoose, { Schema, Document, Model } from 'mongoose';
+import mongoose, { Document, Model, Schema } from 'mongoose';
 
-export interface ObjectId extends mongoose.Types.ObjectId {
+// tslint:disable-next-line
+export interface IObjectId extends mongoose.Types.ObjectId {
   // nothing here
 }

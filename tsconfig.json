@@ -16,7 +16,7 @@
     "checkJs": false,
     "noImplicitAny": true,
     "noUnusedParameters": true,
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
       "config": [
         "src/config/index.ts"
@@ -24,13 +24,13 @@
       "types/*": [
         "src/types/*"
       ],
-      "context/*": [
+      "@context/*": [
         "src/context/*"
       ],
-      "helpers/*": [
+      "@helpers/*": [
         "src/helpers/*"
       ],
-      "lib/*": [
+      "@lib/*": [
         "src/lib/*"
       ]
     }

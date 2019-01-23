@@ -1,7 +1,7 @@
+import Repository from '@lib/Repository';
 import bcrypt from 'bcrypt-nodejs';
 import toLower from 'lodash/toLower';
-import { SignupInput, IAccount } from 'types/account';
-import Repository from 'lib/Repository';
+import { IAccount, ISignupInput } from 'types/account';
 import { Account } from '../schema';
 
 export default class AccountRepo extends Repository {
@@ -9,12 +9,12 @@ export default class AccountRepo extends Repository {
     super(Account);
   }
 
-  async exists(email: string): Promise<boolean> {
+  public async exists(email: string): Promise<boolean> {
     const account = await this.findOneBy({ email: toLower(email) });
     return !!account;
   }
 
-  async findForLogin(email: string): Promise<IAccount> {
+  public async findForLogin(email: string): Promise<IAccount> {
     const account = await this.findOneBy({ email: toLower(email) });
 
     if (!account) {
@@ -24,7 +24,7 @@ export default class AccountRepo extends Repository {
     return new Account(account);
   }
 
-  async create(data: SignupInput): Promise<IAccount> {
+  public async create(data: ISignupInput): Promise<IAccount> {
     const { firstName, lastName, email, password, type } = data.input;
     let kind = null;
 
@@ -45,7 +45,7 @@ export default class AccountRepo extends Repository {
     return account.save();
   }
 
-  async verify(account: IAccount): Promise<boolean> {
+  public async verify(account: IAccount): Promise<boolean> {
     return !!this.findOneAndUpdate(
       {
         _id: account._id,
@@ -56,7 +56,7 @@ export default class AccountRepo extends Repository {
     );
   }
 
-  async resetPassword(
+  public async resetPassword(
     account: IAccount,
     newPassword: string
   ): Promise<boolean> {

@@ -8,8 +8,8 @@ export const tmpFolder = '/tmp';
 export const dbConfig = {
   connectionString: null,
   name: 'musotest',
-  user: '',
   pass: '',
+  user: '',
 };
 
 // App Configurationexport const API_PORT = process.env.API_PORT;
@@ -17,13 +17,13 @@ export const appUrl = process.env.APP_URL;
 
 export const apolloConfig = {
   engine: {
-    apiKey: ''
-  }
-}
+    apiKey: '',
+  },
+};
 
 // Send In Blue Configuration
 export const sendInBlue = {
   apiKey: '',
   recipientCatchAll: '',
-  sender: ''
-}
+  sender: '',
+};

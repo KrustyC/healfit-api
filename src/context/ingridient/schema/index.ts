@@ -4,14 +4,16 @@ import { IIngridient } from 'types/ingridient';
 
 const ingridientSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
     calories: Number,
-    nutrients: [{
+    createdBy: { _id: false, type: 'ObjectId', ref: 'account' },
+    name: { type: String, required: true },
+    nutrients: [
+      {
         id: { _id: false, type: 'ObjectId', ref: 'nutrient' },
         name: String,
         value: Number,
-    }],
-    createdBy: { _id: false, type: 'ObjectId', ref: 'account' },
+      },
+    ],
     // caegory: {}
   },
   { timestamps: true }

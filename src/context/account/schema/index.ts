@@ -1,29 +1,28 @@
-import _ from 'lodash';
 import bcrypt from 'bcrypt-nodejs';
+import _ from 'lodash';
 import mongoose, { Model } from 'mongoose';
 import { IAccount } from 'types/account';
 
 const options = { discriminatorKey: 'kind', timestamps: true };
 
 export interface IAccountModel extends IAccount {
-  comparePassword(): Promise<boolean>;
+  comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
 const accountSchema = new mongoose.Schema(
   {
+    accountConfirmedAt: Date,
     email: { type: String, required: true, unique: true },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     password: { type: String, required: true },
-    accountConfirmedAt: Date,
   },
   options
 );
 
 accountSchema.pre<IAccountModel>('save', function(next) {
-  const account = this;
-  account.password = bcrypt.hashSync(account.password, bcrypt.genSaltSync(12));
-  account.email = account.email.toLowerCase();
+  this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(12));
+  this.email = this.email.toLowerCase();
   next();
 });
 

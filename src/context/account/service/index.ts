@@ -1,20 +1,20 @@
 import {
-  SignupInput,
-  IAccountWithToken,
   IAccount,
-  VerifyAccountInput,
-  ForgottenPasswordInput,
-  ResetPasswordInput,
   IAccountWithPasswordResetToken,
+  IAccountWithToken,
+  IForgottenPasswordInput,
+  IResetPasswordInput,
+  ISignupInput,
+  IVerifyAccountInput,
 } from 'types/account';
 import AccountRepo from '../repo';
 import AccountVerificationTokenRepo from '../repo/accountVerificationTokenRepo';
 import PasswordResetTokenRepo from '../repo/passwordResetTokenRepo';
 
 export default class AccountService {
-  accountRepo: AccountRepo;
-  accountVerificationTokenRepo: AccountVerificationTokenRepo;
-  passwordResetTokenRepo: PasswordResetTokenRepo;
+  public accountRepo: AccountRepo;
+  public accountVerificationTokenRepo: AccountVerificationTokenRepo;
+  public passwordResetTokenRepo: PasswordResetTokenRepo;
 
   constructor() {
     this.accountRepo = new AccountRepo();
@@ -22,19 +22,19 @@ export default class AccountService {
     this.passwordResetTokenRepo = new PasswordResetTokenRepo();
   }
 
-  async findBy(field: string, fieldName: string) {
+  public async findBy(field: string, fieldName: string) {
     return this.accountRepo.findOneBy({ [fieldName]: field });
   }
 
-  async findForLogin(email: string): Promise<IAccount> {
+  public async findForLogin(email: string): Promise<IAccount> {
     return this.accountRepo.findForLogin(email);
   }
 
-  async emailExists(email: string): Promise<boolean> {
+  public async emailExists(email: string): Promise<boolean> {
     return this.accountRepo.exists(email);
   }
 
-  async createAccount(data: SignupInput): Promise<IAccountWithToken> {
+  public async createAccount(data: ISignupInput): Promise<IAccountWithToken> {
     if (await this.accountRepo.exists(data.input.email)) {
       throw new Error('An account with this email already exists');
     }
@@ -48,7 +48,7 @@ export default class AccountService {
     };
   }
 
-  async verifyAccount(data: VerifyAccountInput): Promise<Boolean> {
+  public async verifyAccount(data: IVerifyAccountInput): Promise<boolean> {
     const token = await this.accountVerificationTokenRepo.findByTokenValue(
       data.input.token
     );
@@ -83,8 +83,8 @@ export default class AccountService {
     return true;
   }
 
-  async forgottenPassword(
-    data: ForgottenPasswordInput
+  public async forgottenPassword(
+    data: IForgottenPasswordInput
   ): Promise<IAccountWithPasswordResetToken> {
     const {
       input: { email },
@@ -98,7 +98,7 @@ export default class AccountService {
     };
   }
 
-  async resetPassword(data: ResetPasswordInput): Promise<Boolean> {
+  public async resetPassword(data: IResetPasswordInput): Promise<boolean> {
     const token = await this.passwordResetTokenRepo.findByTokenValue(
       data.input.token
     );
