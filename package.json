@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "description": "Healfit - API",
   "main": "src/index.ts",
-  "private": "true",
+  "private": true,
   "scripts": {
     "dev": "ts-node -r tsconfig-paths/register src/index.ts",
     "build": "tsc -b",
     "start": "ts-node -r tsconfig-paths/register --transpileOnly src/index.ts",
     "prebuild": "./node_modules/.bin/rimraf dist",
     "test": "NODE_ENV=testing jest --runInBand --detectOpenHandles",
-    "test:lint": "tslint --project tsconfig.json --fix  src/**/*.ts"
+    "test:lint": "tslint --project tsconfig.json --fix  src/**/*.ts -t verbose"
   },
   "husky": {
     "hooks": {
@@ -20,7 +20,7 @@
   "lint-staged": {
     "*.{ts}": [
       "pretty-quick --staged",
-      "tslint --project tsconfig.json --fix  src/**/*.ts",
+      "./node_modules/tslint/bin/tslint --project tsconfig.json --fix  src/**/*.ts",
       "git add"
     ]
   },
