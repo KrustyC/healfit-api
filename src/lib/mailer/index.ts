@@ -54,7 +54,7 @@ export default class Mailer {
             NAME: params.name,
             RESET_PASSWORD_LINK: params.resetPasswordLink,
           },
-          templateId: 69,
+          templateId: 5,
         };
       default:
         throw new Error('Email type does not exists!');
@@ -81,6 +81,7 @@ export default class Mailer {
       if (error) {
         throw new Error(error);
       }
+      console.log('EMAIL');
     });
   }
 }

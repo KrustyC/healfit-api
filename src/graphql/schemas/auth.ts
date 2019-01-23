@@ -83,7 +83,7 @@ export const AuthResolvers = {
   Mutation: {
     forgottenPassword: async (_: object, data: IForgottenPasswordInput) =>
       auth.forgottenPassword(data),
-    login: async (_: object, data: ILoginInput) => auth.login(data),
+    login: async (_: object, data: ILoginInput) => console.log(data),
     resetPassword: async (_: object, data: IResetPasswordInput) =>
       Account.resetPassword(data),
     signup: async (_: object, data: ISignupInput) => auth.signup(data),

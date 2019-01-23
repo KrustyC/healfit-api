@@ -16,7 +16,7 @@ const schema = mergeSchemas({
     ...AuthResolvers,
     ...IngridientResolvers,
   },
-  schemas: [RootSchema, AuthSchema, IngridientSchema, linkTypeDefs],
+  schemas: [RootSchema, AuthSchema, IngridientSchema],
 });
 
 export default schema;

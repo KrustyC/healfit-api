@@ -1,4 +1,3 @@
-import bcrypt from 'bcrypt-nodejs';
 import _ from 'lodash';
 import mongoose, { Model } from 'mongoose';
 import { INutrient } from 'types/ingridient';
@@ -6,6 +5,11 @@ import { INutrient } from 'types/ingridient';
 const nutrientSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
+    subNutrients: [
+      {
+        name: { type: String, required: true },
+      },
+    ],
   },
   { timestamps: true }
 );

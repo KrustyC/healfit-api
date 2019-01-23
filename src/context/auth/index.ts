@@ -22,6 +22,7 @@ export default class Auth {
   }
 
   public async signup(data: ISignupInput): Promise<IAccount> {
+    console.log('Here', data);
     const doesAccountExist = await AccountContext.emailExists(data.input.email);
 
     if (doesAccountExist) {

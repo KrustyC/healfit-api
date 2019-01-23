@@ -1,16 +1,19 @@
-import { AuthenticationError, gql, makeExecutableSchema } from 'apollo-server';
-import { combineResolvers } from 'graphql-resolvers';
+import { gql, makeExecutableSchema } from 'apollo-server';
 import { IObjectId } from 'types/global';
-import { IIngridientCreateInput, IIngridientEditInput } from 'types/ingridient';
 
 import Ingridient from '@context/ingridient';
-import { authenticatedOnly } from '@helpers/auth';
+import { adminOnly } from '@helpers/auth';
 
 export const IngridientSchema = makeExecutableSchema({
   typeDefs: gql`
+    type SubNutrient {
+      name: String!
+    }
+
     type Nutrient {
       id: ID!
       name: String!
+      subString: [SubNutrient]
     }
 
     type NutrientValue {
@@ -51,32 +54,35 @@ export const IngridientSchema = makeExecutableSchema({
       nutrients: [NutrientValueInput]
     }
 
+    input SubNutrientsInput {
+      name: String!
+    }
+
+    input NutrientCreateInput {
+      name: String!
+      subNutrients: [SubNutrientsInput]
+    }
+
     type Query {
       showIngridient(id: ID!): Ingridient
       # list: [Ingridient]
       # search(query: String!): [Ingridient]
     }
 
-    # type Mutation {
-    #   create(input: IIngridientCreateInput!): Ingridient
-    #   edit(input: IIngridientCreateInput!): Ingridient
-    #   delete(id: ID!): Boolean
-    # }
+    type IngridientMutation {
+      createNutrient(input: NutrientCreateInput!): Nutrient
+      #   edit(input: IIngridientCreateInput!): Ingridient
+      #   delete(id: ID!): Boolean
+    }
   `,
 });
 
 export const IngridientResolvers = {
-  Query: {
-    showIngridient: async (_: object, id: IObjectId) => Ingridient.show(id),
+  IngridientMutation: {
+    createNutrient: adminOnly(Ingridient.nutrient.create),
   },
-  // Mutation: {
-  //   login: async (_: object, data: LoginInput) => auth.login(data),
-  //   signup: async (_: object, data: SignupInput) => auth.signup(data),
-  //   verifyAccount: async (_: object, data: VerifyAccountInput) =>
-  //     Account.verifyAccount(data),
-  //   forgottenPassword: async (_: object, data: ForgottenPasswordInput) =>
-  //     auth.forgottenPassword(data),
-  //   resetPassword: async (_: object, data: ResetPasswordInput) =>
-  //     Account.resetPassword(data),
-  // },
+  Query: {
+    showIngridient: async (_: object, id: IObjectId) =>
+      Ingridient.ingridient.show(id),
+  },
 };

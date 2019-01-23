@@ -8,6 +8,7 @@ export interface IAccount extends Document {
   lastName: string;
   password: string;
   kind: string;
+  isAdmin: boolean;
   comparePassword: (cadidatePassword: string) => Promise<boolean>;
   isAccountConfirmed: () => Promise<boolean>;
 }

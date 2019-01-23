@@ -5,5 +5,5 @@
   "env": {
     "NODE_ENV": "development"
   },
-  "exec": "yarn start"
+  "exec": "yarn start:dev"
 }

@@ -1,10 +1,14 @@
 import mongoose, { Document, Model, Schema } from 'mongoose';
 import { IObjectId } from './global';
 
-export interface INutrient {
+export interface INutrient extends Document {
   id: IObjectId;
   name: string;
-  value: number;
+  subNutrients: [
+    {
+      name: string
+    }
+  ]
 }
 
 export interface IIngridientCreateInput {
@@ -36,6 +40,17 @@ export interface IIngridientEditInput {
   };
 }
 
+export interface INutrientCreateInput {
+  input: {
+    name: string;
+    subNutrients: [
+      {
+        name: string;
+      }
+    ];
+  }
+}
+
 export interface IIngridient extends Document {
   _id: IObjectId;
   name: string;
@@ -46,10 +61,4 @@ export interface IIngridient extends Document {
       value: number;
     }
   ];
-}
-
-export interface INutrient extends Document {
-  _id: IObjectId;
-  name: string;
-  value: number;
 }

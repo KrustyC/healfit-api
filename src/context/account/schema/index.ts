@@ -14,6 +14,7 @@ const accountSchema = new mongoose.Schema(
     accountConfirmedAt: Date,
     email: { type: String, required: true, unique: true },
     firstName: { type: String, required: true },
+    isAdmin: Boolean,
     lastName: { type: String, required: true },
     password: { type: String, required: true },
   },
