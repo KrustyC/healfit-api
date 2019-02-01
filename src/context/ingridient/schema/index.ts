@@ -9,7 +9,10 @@ const ingridientSchema = new mongoose.Schema(
     createdBy: { _id: false, type: 'ObjectId', ref: 'account' },
     name: { type: String, required: true },
     nutrients: {
-      carbohydrate: { fiber: Number, sugar: Number },
+      carbohydrate: {
+        fiber: Number,
+        sugar: Number,
+      },
       cholesterol: Number,
       fat: {
         monounsaturated: Number,
