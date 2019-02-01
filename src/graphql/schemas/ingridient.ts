@@ -6,74 +6,66 @@ import { adminOnly } from '@helpers/auth';
 
 export const IngridientSchema = makeExecutableSchema({
   typeDefs: gql`
-    type NutrientValue {
-      nutrient: Nutrient!
-      value: Float!
+    type Carbohydrates {
+      fiber: Float
+      sugar: Float
+    }
+
+    type Fats {
+      monounsaturated: Float
+      polyunsaturated: Float
+      saturated: Float
+    }
+
+    type Nutrients {
+      carbohydrate: Carbohydrates
+      cholesterol: Float
+      fat: Fats
+      potassium: Float
+      protein: Float
+      sodium: Float
     }
 
     type Ingridient {
       id: ID
       name: String!
-      calories: Float
-      nutrients: {
-        carbohydrate: {
-          fiber: Number
-          sugar: Number
-        }
-        cholesterol: Number
-        fat: {
-          monounsaturated: Number
-          polyunsaturated: Number
-          saturated: Number
-        }
-        potassium: Number
-        protein: Number
-        sodium: Number
-      }
-      # createdBy: User @relation(name: "User") @TODO Find a way to refer this
+      calories: Int
+      nutrients: Nutrients
+    }
+
+    input CarbohydratesInput {
+      fiber: Float
+      sugar: Float
+    }
+
+    input FatsInput {
+      monounsaturated: Float
+      polyunsaturated: Float
+      saturated: Float
+    }
+
+    input NutrientsInput {
+      carbohydrate: CarbohydratesInput
+      cholesterol: Float
+      fat: FatsInput
+      potassium: Float
+      protein: Float
+      sodium: Float
     }
 
     input IngridientCreateInput {
       name: String!
       category: ID
-      calories: Float
-      nutrients: {
-        carbohydrate: {
-          fiber: Number
-          sugar: Number
-        }
-        cholesterol: Number
-        fat: {
-          monounsaturated: Number
-          polyunsaturated: Number
-          saturated: Number
-        }
-        potassium: Number
-        protein: Number
-        sodium: Number
-      }
+      calories: Int
+      nutrients: NutrientsInput
     }
 
     input IngridientEditInput {
       id: ID!
       name: String
       category: ID
-      calories: Float
-      nutrients: {
-        carbohydrate: {
-          fiber: Number
-          sugar: Number
-        }
-        cholesterol: Number
-        fat: {
-          monounsaturated: Number
-          polyunsaturated: Number
-          saturated: Number
-        }
-        potassium: Number
-        protein: Number
-        sodium: Number
-      }
+      calories: Int
+      nutrients: NutrientsInput
     }
 
     type Query {
@@ -82,8 +74,8 @@ export const IngridientSchema = makeExecutableSchema({
       # search(query: String!): [Ingridient]
     }
 
-    extend type Mutation {
-      addNutrient(input: NutrientCreateInput!): Nutrient
+    type Mutation {
+      addIngridient(input: IngridientCreateInput!): Ingridient
       #   edit(input: IIngridientCreateInput!): Ingridient
       #   delete(id: ID!): Boolean
     }
@@ -91,7 +83,7 @@ export const IngridientSchema = makeExecutableSchema({
 });
 
 export const IngridientResolvers = {
-  IngridientMutation: {
+  Mutation: {
     addIngridient: adminOnly(Ingridient.create),
   },
   Query: {

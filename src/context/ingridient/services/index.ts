@@ -9,10 +9,9 @@ export default class IngridientService {
     this.ingridientRepo = new IngridientRepo();
   }
 
-  public async create(
-    ingridient: IIngridientCreateInput
-  ): Promise<IIngridient> {
-    return this.ingridientRepo.create(ingridient);
+  public async create(data: IIngridientCreateInput): Promise<IIngridient> {
+    console.log(data);
+    return this.ingridientRepo.create(data);
   }
 
   public async list(limit = Infinity, skip = 0): Promise<IIngridient[]> {

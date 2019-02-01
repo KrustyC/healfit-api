@@ -13,13 +13,14 @@ const checkUserIsAuthenticated = async (
 };
 
 const checkUserIsAdmin = async (
-  _: object,
-  __: object,
+  first: object,
+  args: object,
   context: { user: IAccount | null }
 ) => {
-  if (!context.user || !context.user.isAdmin) {
-    throw new AuthenticationError('Must be admin');
-  }
+  // if (!context.user || !context.user.isAdmin) {
+  //   throw new AuthenticationError('Must be admin');
+  // }
+  console.log(first, args, context);
 };
 
 export const authenticatedOnly = (resolver: any) =>

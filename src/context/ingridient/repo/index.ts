@@ -7,10 +7,8 @@ export default class IngridientRepo extends Repository {
     super(Ingridient);
   }
 
-  public async create(
-    ingridientInput: IIngridientCreateInput
-  ): Promise<IIngridient> {
-    const ingridient = new Ingridient(ingridientInput);
+  public async create(data: IIngridientCreateInput): Promise<IIngridient> {
+    const ingridient = new Ingridient(data.input);
     return ingridient.save();
   }
 }
