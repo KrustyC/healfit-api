@@ -1,27 +1,23 @@
 import mongoose, { Document, Model, Schema } from 'mongoose';
 import { IObjectId } from './global';
 
-export interface INutrient extends Document {
-  id: IObjectId;
-  name: string;
-  subNutrients: [
-    {
-      name: string
-    }
-  ]
-}
-
 export interface IIngridientCreateInput {
   input: {
     name: string;
     category: IObjectId;
     calories: number;
-    nutrients: [
-      {
-        nutrient: INutrient;
-        value: number;
-      }
-    ];
+    nutrients: {
+      carbohydrate: { fiber: number; sugar: number };
+      cholesterol: number;
+      fat: {
+        monounsaturated: number;
+        polyunsaturated: number;
+        saturated: number;
+      };
+      potassium: number;
+      protein: number;
+      sodium: number;
+    };
   };
 }
 
@@ -31,34 +27,35 @@ export interface IIngridientEditInput {
     name: string;
     category: IObjectId;
     calories: number;
-    nutrients: [
-      {
-        nutrient: INutrient;
-        value: number;
-      }
-    ];
+    nutrients: {
+      carbohydrate: { fiber: number; sugar: number };
+      cholesterol: number;
+      fat: {
+        monounsaturated: number;
+        polyunsaturated: number;
+        saturated: number;
+      };
+      potassium: number;
+      protein: number;
+      sodium: number;
+    };
   };
-}
-
-export interface INutrientCreateInput {
-  input: {
-    name: string;
-    subNutrients: [
-      {
-        name: string;
-      }
-    ];
-  }
 }
 
 export interface IIngridient extends Document {
   _id: IObjectId;
   name: string;
   calories: number;
-  nutrients: [
-    {
-      nutrient: INutrient;
-      value: number;
-    }
-  ];
+  nutrients: {
+    carbohydrate: { fiber: number; sugar: number };
+    cholesterol: number;
+    fat: {
+      monounsaturated: number;
+      polyunsaturated: number;
+      saturated: number;
+    };
+    potassium: number;
+    protein: number;
+    sodium: number;
+  };
 }

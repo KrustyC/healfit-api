@@ -4,17 +4,22 @@ import { IIngridient } from 'types/ingridient';
 
 const ingridientSchema = new mongoose.Schema(
   {
+    // allergens: [{ _id: false, type: 'ObjectId', ref: 'allergens' }],
     calories: Number,
     createdBy: { _id: false, type: 'ObjectId', ref: 'account' },
     name: { type: String, required: true },
-    nutrients: [
-      {
-        id: { _id: false, type: 'ObjectId', ref: 'nutrient' },
-        name: String,
-        value: Number,
+    nutrients: {
+      carbohydrate: { fiber: Number, sugar: Number },
+      cholesterol: Number,
+      fat: {
+        monounsaturated: Number,
+        polyunsaturated: Number,
+        saturated: Number,
       },
-    ],
-    // caegory: {}
+      potassium: Number,
+      protein: Number,
+      sodium: Number,
+    },
   },
   { timestamps: true }
 );

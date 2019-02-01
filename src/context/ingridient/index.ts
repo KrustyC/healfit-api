@@ -1,16 +1,13 @@
 import { IObjectId } from 'types/global';
-import { INutrient, INutrientCreateInput } from 'types/ingridient';
-import NutrientService from './services/nutrient';
+import { IIngridient, IIngridientCreateInput } from 'types/ingridient';
+import IngridientService from './services';
 
-const nutrientService = new NutrientService();
+const ingridientService = new IngridientService();
 
 export default {
-  ingridient: {
-    show: (id: IObjectId) => console.log(id),
-  },
-  nutrient: {
-    create: (nutrient: INutrientCreateInput): Promise<INutrient> =>
-      nutrientService.create(nutrient),
-    list: (): Promise<INutrient[]> => nutrientService.list(),
-  },
+  create: (ingridient: IIngridientCreateInput): Promise<IIngridient> =>
+    ingridientService.create(ingridient),
+  list: (limit?: number, skip?: number): Promise<IIngridient[]> =>
+    ingridientService.list(limit, skip),
+  show: (id: IObjectId): Promise<IIngridient> => ingridientService.show(id),
 };
