@@ -92,6 +92,7 @@ export default class Auth {
       'email',
       'firstName',
       'lastName',
+      'roles',
       'kind',
     ]);
     return jwt.sign(payload, config('jwtSecret'), { expiresIn: '7d' });

@@ -17,6 +17,7 @@ const accountSchema = new mongoose.Schema(
     isAdmin: Boolean,
     lastName: { type: String, required: true },
     password: { type: String, required: true },
+    roles: { type: [String], enum: ['ADMIN', 'USER'], default: 'USER' },
   },
   options
 );

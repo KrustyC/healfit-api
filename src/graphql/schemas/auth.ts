@@ -1,5 +1,5 @@
-import { AuthenticationError, gql, makeExecutableSchema } from 'apollo-server';
-import { combineResolvers } from 'graphql-resolvers';
+import { gql, makeExecutableSchema } from 'apollo-server';
+
 import {
   IForgottenPasswordInput,
   ILoginInput,
@@ -83,7 +83,7 @@ export const AuthResolvers = {
   Mutation: {
     forgottenPassword: async (_: object, data: IForgottenPasswordInput) =>
       auth.forgottenPassword(data),
-    login: async (_: object, data: ILoginInput) => console.log(data),
+    login: async (_: object, data: ILoginInput) => auth.login(data),
     resetPassword: async (_: object, data: IResetPasswordInput) =>
       Account.resetPassword(data),
     signup: async (_: object, data: ISignupInput) => auth.signup(data),

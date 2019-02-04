@@ -42,6 +42,8 @@ export function startAPI(configuration: any) {
 
   const instance = process.env.NODE_APP_INSTANCE || '0';
   const port = parseInt(config('API_PORT'), 10) + parseInt(instance, 10);
+
+  // @TODO move this stuff and schemaDirectives to graphql folder
   const server = new ApolloServer({
     context,
     schema,

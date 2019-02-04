@@ -1,8 +1,7 @@
-import { gql, makeExecutableSchema } from 'apollo-server';
-import { IObjectId } from 'types/global';
-
 import Ingridient from '@context/ingridient';
-import { adminOnly } from '@helpers/auth';
+import { gql, makeExecutableSchema } from 'apollo-server';
+import { ILimitSkipInput, IObjectId } from 'types/global';
+import { IIngridientCreateInput } from 'types/ingridient';
 
 export const IngridientSchema = makeExecutableSchema({
   typeDefs: gql`
@@ -70,12 +69,21 @@ export const IngridientSchema = makeExecutableSchema({
 
     type Query {
       showIngridient(id: ID!): Ingridient
-      # list: [Ingridient]
+      ingridients(limit: Int, skip: Int): [Ingridient]
       # search(query: String!): [Ingridient]
     }
 
+    enum Role {
+      ADMIN
+      USER
+    }
+
+    directive @auth(role: Role = USER) on OBJECT | FIELD_DEFINITION
+
     type Mutation {
       addIngridient(input: IngridientCreateInput!): Ingridient
+        @auth(role: ADMIN)
+      #
       #   edit(input: IIngridientCreateInput!): Ingridient
       #   delete(id: ID!): Boolean
     }
@@ -84,9 +92,12 @@ export const IngridientSchema = makeExecutableSchema({
 
 export const IngridientResolvers = {
   Mutation: {
-    addIngridient: adminOnly(Ingridient.create),
+    addIngridient: async (_: object, data: IIngridientCreateInput) =>
+      Ingridient.create(data),
   },
   Query: {
+    ingridients: async (_: object, args: ILimitSkipInput) =>
+      Ingridient.list(args),
     showIngridient: async (_: object, id: IObjectId) => Ingridient.show(id),
   },
 };

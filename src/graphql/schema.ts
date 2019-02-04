@@ -1,4 +1,6 @@
 import { mergeSchemas } from 'apollo-server';
+import merge from 'lodash/merge';
+import schemaDirectives from './directives';
 
 import { AuthResolvers, AuthSchema } from './schemas/auth';
 import { IngridientResolvers, IngridientSchema } from './schemas/ingridient';
@@ -11,12 +13,9 @@ const linkTypeDefs = `
 `;
 
 const schema = mergeSchemas({
-  resolvers: {
-    ...RootResolvers,
-    ...AuthResolvers,
-    ...IngridientResolvers,
-  },
-  schemas: [RootSchema, AuthSchema, IngridientSchema],
+  resolvers: merge(RootResolvers, AuthResolvers, IngridientResolvers),
+  schemaDirectives,
+  schemas: [RootSchema, AuthSchema, IngridientSchema, linkTypeDefs],
 });
 
 export default schema;

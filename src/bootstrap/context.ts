@@ -7,13 +7,8 @@ const context = async ({ req }: { req: Request }) => {
   if (!req.user) {
     return null;
   }
-  const user = await AccountContext.findBy(req.user.email, 'email');
-
-  if (!user) {
-    throw new AuthenticationError('The provided token is not valid!');
-  }
-
-  return { user };
+  console.log(req.user);
+  return { user: req.user };
 };
 
 export default context;
