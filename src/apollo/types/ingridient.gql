@@ -1,0 +1,80 @@
+type Carbohydrates {
+  fiber: Float
+  sugar: Float
+}
+
+type Fats {
+  monounsaturated: Float
+  polyunsaturated: Float
+  saturated: Float
+}
+
+type Nutrients {
+  carbohydrate: Carbohydrates
+  cholesterol: Float
+  fat: Fats
+  potassium: Float
+  protein: Float
+  sodium: Float
+}
+
+type Ingridient {
+  id: ID
+  name: String!
+  calories: Int
+  nutrients: Nutrients
+}
+
+input CarbohydratesInput {
+  fiber: Float
+  sugar: Float
+}
+
+input FatsInput {
+  monounsaturated: Float
+  polyunsaturated: Float
+  saturated: Float
+}
+
+input NutrientsInput {
+  carbohydrate: CarbohydratesInput
+  cholesterol: Float
+  fat: FatsInput
+  potassium: Float
+  protein: Float
+  sodium: Float
+}
+
+input IngridientCreateInput {
+  name: String!
+  category: ID
+  calories: Int
+  nutrients: NutrientsInput
+}
+
+input IngridientEditInput {
+  id: ID!
+  name: String
+  category: ID
+  calories: Int
+  nutrients: NutrientsInput
+}
+
+type Query {
+  showIngridient(id: ID!): Ingridient
+  ingridients(limit: Int, skip: Int): [Ingridient]
+  # search(query: String!): [Ingridient]
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+type Mutation {
+  addIngridient(input: IngridientCreateInput!): Ingridient
+    @auth(role: ADMIN)
+  #
+  #   edit(input: IIngridientCreateInput!): Ingridient
+  #   delete(id: ID!): Boolean
+}

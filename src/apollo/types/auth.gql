@@ -1,0 +1,47 @@
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input SignupInput {
+  type: Int!
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+}
+
+input VerifyAccountInput {
+  token: String!
+}
+
+input ForgottenPassword {
+  email: String!
+}
+
+input ResetPasswordInput {
+  token: String!
+  password: String!
+}
+
+type User {
+  firstName: String
+  lastName: String
+}
+
+type AuthAccount {
+  account: User
+  token: String
+}
+
+type Query {
+  currentUserInfo: User
+}
+
+type Mutation {
+  login(input: LoginInput!): AuthAccount
+  signup(input: SignupInput!): User
+  verifyAccount(input: VerifyAccountInput!): Boolean
+  forgottenPassword(input: ForgottenPassword): Boolean
+  resetPassword(input: ResetPasswordInput): Boolean
+}

@@ -15,7 +15,6 @@ export default class AuthDirective extends SchemaDirectiveVisitor {
             'You are not authorized to view this resource.'
           );
         }
-        console.log('si si ');
         return resolve.apply(this, args);
       }
       throw new AuthenticationError(
