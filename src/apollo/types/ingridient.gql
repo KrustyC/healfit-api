@@ -61,14 +61,9 @@ input IngridientEditInput {
 }
 
 type Query {
-  showIngridient(id: ID!): Ingridient
+  ingridient(id: ID!): Ingridient
   ingridients(limit: Int, skip: Int): [Ingridient]
   # search(query: String!): [Ingridient]
-}
-
-enum Role {
-  ADMIN
-  USER
 }
 
 type Mutation {

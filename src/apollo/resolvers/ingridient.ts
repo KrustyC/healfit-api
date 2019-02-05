@@ -8,8 +8,8 @@ export default {
       Ingridient.create(data),
   },
   Query: {
+    ingridient: async (_: object, id: IObjectId) => Ingridient.show(id),
     ingridients: async (_: object, args: ILimitSkipInput) =>
       Ingridient.list(args),
-    showIngridient: async (_: object, id: IObjectId) => Ingridient.show(id),
   },
 };
