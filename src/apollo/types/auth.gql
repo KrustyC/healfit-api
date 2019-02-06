@@ -24,23 +24,24 @@ input ResetPasswordInput {
   password: String!
 }
 
-type User {
+type Account {
   firstName: String
   lastName: String
+  roles: [String]
 }
 
 type AuthAccount {
-  account: User
+  account: Account
   token: String
 }
 
 type Query {
-  currentUserInfo: User
+  currentAccountInfo: Account @auth(role: USER)
 }
 
 type Mutation {
   login(input: LoginInput!): AuthAccount
-  signup(input: SignupInput!): User
+  signup(input: SignupInput!): Account
   verifyAccount(input: VerifyAccountInput!): Boolean
   forgottenPassword(input: ForgottenPassword): Boolean
   resetPassword(input: ResetPasswordInput): Boolean

@@ -10,3 +10,9 @@ export interface ILimitSkipInput {
   limit: number;
   skip: number;
 }
+
+export interface IContext {
+  user: {
+    _id: IObjectId
+  }
+}

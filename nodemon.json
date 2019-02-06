@@ -1,6 +1,6 @@
 {
   "watch": ["src"],
-  "ext": "ts,js",
+  "ext": "ts,js,gql",
   "ignore": ["src/**/*.test.ts"],
   "env": {
     "NODE_ENV": "development"

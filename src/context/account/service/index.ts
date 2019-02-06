@@ -7,6 +7,7 @@ import {
   ISignupInput,
   IVerifyAccountInput,
 } from 'types/account';
+import { IContext } from 'types/global';
 import AccountRepo from '../repo';
 import AccountVerificationTokenRepo from '../repo/accountVerificationTokenRepo';
 import PasswordResetTokenRepo from '../repo/passwordResetTokenRepo';
@@ -32,6 +33,10 @@ export default class AccountService {
 
   public async emailExists(email: string): Promise<boolean> {
     return this.accountRepo.exists(email);
+  }
+
+  public async currentAccountInfo(context: IContext): Promise<IAccount> {
+    return this.accountRepo.findOneBy({ _id: context.user._id });
   }
 
   public async createAccount(data: ISignupInput): Promise<IAccountWithToken> {

@@ -5,21 +5,12 @@ import {
   ISignupInput,
   IVerifyAccountInput,
 } from 'types/account';
+import { IContext } from 'types/global';
 
 import Account from '@context/account';
 import Auth from '@context/auth';
-import { authenticatedOnly } from '@helpers/auth';
 
 const auth = new Auth();
-
-const currentUserInfo = async (
-  _: object,
-  __: object,
-  context: { user: object }
-) => {
-  // @TODO This object should be an account of some sort
-  return { user: context.user };
-};
 
 export default {
   Mutation: {
@@ -33,6 +24,7 @@ export default {
       Account.verifyAccount(data),
   },
   Query: {
-    currentUserInfo: authenticatedOnly(currentUserInfo),
+    currentAccountInfo: (_: any, __: any, context: IContext) =>
+      Account.currentAccountInfo(context),
   },
 };

@@ -7,6 +7,7 @@ import {
   ISignupInput,
   IVerifyAccountInput,
 } from 'types/account';
+import { IContext } from 'types/global';
 import AccountService from './service';
 
 const accountService = new AccountService();
@@ -14,6 +15,8 @@ const accountService = new AccountService();
 export default {
   create: (data: ISignupInput): Promise<IAccountWithToken> =>
     accountService.createAccount(data),
+  currentAccountInfo: (context: IContext): Promise<IAccount> =>
+    accountService.currentAccountInfo(context),
   emailExists: (email: string) => accountService.emailExists(email),
   findBy: (field: string, fieldName: string): Promise<IAccount> =>
     accountService.findBy(field, fieldName),
