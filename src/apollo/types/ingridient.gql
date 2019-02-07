@@ -69,7 +69,6 @@ type Query {
 type Mutation {
   addIngridient(input: IngridientCreateInput!): Ingridient
     @auth(role: ADMIN)
-  #
-  #   edit(input: IIngridientCreateInput!): Ingridient
-  #   delete(id: ID!): Boolean
+  deleteIngridient(id: ID!): Boolean @auth(role: ADMIN)
+  updateIngridient(input: IngridientEditInput!): Boolean @auth(role: ADMIN)
 }

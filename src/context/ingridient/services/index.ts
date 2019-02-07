@@ -1,5 +1,9 @@
 import { ILimitSkipInput, IObjectId } from 'types/global';
-import { IIngridient, IIngridientCreateInput } from 'types/ingridient';
+import {
+  IIngridient,
+  IIngridientCreateInput,
+  IIngridientEditInput,
+} from 'types/ingridient';
 import IngridientRepo from '../repo';
 
 export default class IngridientService {
@@ -10,8 +14,36 @@ export default class IngridientService {
   }
 
   public async create(data: IIngridientCreateInput): Promise<IIngridient> {
-    console.log(data);
     return this.ingridientRepo.create(data);
+  }
+
+  public async update(data: IIngridientEditInput): Promise<boolean> {
+    const ingridient = data.input;
+    try {
+      await this.ingridientRepo.findOneAndUpdate(
+        { _id: ingridient.id },
+        {
+          $set: {
+            calories: ingridient.calories,
+            category: ingridient.category,
+            name: ingridient.name,
+            nutrients: ingridient.nutrients,
+          },
+        }
+      );
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  public async delete(id: IObjectId): Promise<boolean> {
+    try {
+      await this.ingridientRepo.hardDelete({ _id: id });
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 
   public async list(data: ILimitSkipInput): Promise<IIngridient[]> {
