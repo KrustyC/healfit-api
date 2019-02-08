@@ -5,8 +5,17 @@ enum Role {
   USER
 }
 
+type ValueObject {
+  id: Int
+  name: String
+}
+
+type InitialData {
+  ingridientsCategories: [ValueObject]
+}
+
 type Query {
-  hello: String
+  init: InitialData
 }
 
 type Mutation {
