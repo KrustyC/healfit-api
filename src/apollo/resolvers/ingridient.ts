@@ -10,6 +10,10 @@ interface IDeleteData {
   id: IObjectId;
 }
 
+interface INameInput {
+  name: string;
+}
+
 export default {
   Mutation: {
     addIngridient: async (
@@ -30,5 +34,9 @@ export default {
       _: object,
       args: ILimitSkipInput
     ): Promise<IIngridient[]> => Ingridient.list(args),
+    searchIngridientsByName: async (
+      _: object,
+      args: INameInput
+    ): Promise<IIngridient[]> => Ingridient.searchByName(args.name),
   },
 };

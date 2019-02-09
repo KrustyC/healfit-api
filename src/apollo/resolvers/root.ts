@@ -1,6 +1,6 @@
 import IngridientsCategories from '@valueobjects/IngridientsCategories';
 
-const initialData = {
+const globalData = {
   ingridientsCategories: IngridientsCategories.indexedList(),
 };
 
@@ -9,6 +9,6 @@ export default {
     hello: () => 'Hello! Mutations are working!',
   },
   Query: {
-    init: () => initialData,
+    globalData: () => globalData,
   },
 };

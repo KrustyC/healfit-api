@@ -10,12 +10,12 @@ type ValueObject {
   name: String
 }
 
-type InitialData {
+type GlobalData {
   ingridientsCategories: [ValueObject]
 }
 
 type Query {
-  init: InitialData
+  globalData: GlobalData
 }
 
 type Mutation {

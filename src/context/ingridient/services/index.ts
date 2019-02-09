@@ -46,6 +46,26 @@ export default class IngridientService {
     }
   }
 
+  public async searchByName(name: string): Promise<IIngridient[]> {
+    const regex = new RegExp(name.split(' ').join('|'), 'gi');
+    const query = {
+      $or: [
+        {
+          $text: {
+            $search: name,
+          },
+        },
+        {
+          name: {
+            $regex: regex,
+          },
+        },
+      ],
+    };
+
+    return this.ingridientRepo.findBy(query, {}, [], { limit: 25 });
+  }
+
   public async list(data: ILimitSkipInput): Promise<IIngridient[]> {
     const limitQuery = { limit: data.limit || 5000, skip: data.skip || 0 };
 

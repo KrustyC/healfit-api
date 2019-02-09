@@ -14,6 +14,8 @@ export default {
   delete: (id: IObjectId): Promise<boolean> => ingridientService.delete(id),
   list: (data: ILimitSkipInput): Promise<IIngridient[]> =>
     ingridientService.list(data),
+  searchByName: (name: string): Promise<IIngridient[]> =>
+    ingridientService.searchByName(name),
   show: (id: IObjectId): Promise<IIngridient> => ingridientService.show(id),
   update: (data: IIngridientEditInput): Promise<boolean> =>
     ingridientService.update(data),

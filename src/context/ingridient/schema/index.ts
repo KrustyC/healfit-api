@@ -27,6 +27,8 @@ const ingridientSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+ingridientSchema.index({ name: 'text' });
+
 export const Ingridient: Model<IIngridient> = mongoose.model<IIngridient>(
   'Ingridient',
   ingridientSchema
