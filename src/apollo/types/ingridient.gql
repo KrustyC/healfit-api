@@ -63,7 +63,7 @@ input IngridientEditInput {
 type Query {
   ingridient(id: ID!): Ingridient
   ingridients(limit: Int, skip: Int): [Ingridient]
-  searchIngridientsByName(name: String): [Ingridient]
+  ingridientsByName(name: String): [Ingridient]
 }
 
 type Mutation {

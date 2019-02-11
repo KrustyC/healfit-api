@@ -12,6 +12,7 @@ type ValueObject {
 
 type GlobalData {
   ingridientsCategories: [ValueObject]
+  measurements: [ValueObject]
 }
 
 type Query {

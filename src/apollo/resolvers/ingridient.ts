@@ -34,7 +34,7 @@ export default {
       _: object,
       args: ILimitSkipInput
     ): Promise<IIngridient[]> => Ingridient.list(args),
-    searchIngridientsByName: async (
+    ingridientsByName: async (
       _: object,
       args: INameInput
     ): Promise<IIngridient[]> => Ingridient.searchByName(args.name),
