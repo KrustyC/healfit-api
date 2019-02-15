@@ -1,0 +1,105 @@
+type RecipeLevel {
+  id: Int
+  name: String
+}
+
+type RecipeCategory {
+  id: Int
+  name: String
+}
+
+type RecipeMeasurement {
+  label: String
+  value: Int
+}
+
+type RecipeIngridient {
+  id: ID
+  name: String
+  measurement: RcipeMeasurement
+  quantity: Float
+}
+
+type Recipe {
+  id: ID
+  title: String
+  servings: Int
+  totalTime: Int
+  category: RecipeCategory
+  level: Int
+  ingridients: [RecipeIngridient]
+  method: Object
+  picture: String
+  calories: Int
+  carbohydrates: Float
+  protein: Float
+  fat: Float
+}
+
+# INPUT
+input RecipeLevelInput {
+  id: Int
+  name: String
+}
+
+input RecipeCategoryInput {
+  id: Int
+  name: String
+}
+
+input RecipeMeasurementInput {
+  label: String
+  value: Int
+}
+
+input RecipeIngridientInput {
+  id: ID
+  name: String
+  measurement: RecipeMeasurementInput
+  quantity: Float
+}
+
+input RecipeCreateInput {
+  title: String
+  servings: Int
+  totalTime: Int
+  category: RecipeCategoryInput
+  level: Int
+  ingridients: [RecipeIngridientInput]
+  method: Object
+  picture: String
+  calories: Int
+  carbohydrates: Float
+  protein: Float
+  fat: Float
+}
+
+input RecipeEditInput {
+  id: ID
+  title: String
+  servings: Int
+  totalTime: Int
+  category: RecipeCategoryInput
+  level: Int
+  ingridients: [RecipeIngridientInput]
+  method: Object
+  picture: String
+  calories: Int
+  carbohydrates: Float
+  protein: Float
+  fat: Float
+}
+
+# type Query {
+#   recipe(id: ID!): Recipe
+#   recipes(limit: Int, skip: Int): [Recipe]
+#   recipiesByName(name: String): [Ingridient]
+# }
+
+type Mutation {
+  createRecipe(input: RecipeCreateInput!): Recipe
+    @auth(role: USER)
+  # deleteRecipe(id: ID!): Boolean @auth(role: USER)
+  # eidtRecipe(input: RecipeEditInput!): Recipe
+  #   @auth(role: USER)
+}
