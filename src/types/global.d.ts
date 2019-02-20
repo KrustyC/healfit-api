@@ -14,5 +14,15 @@ export interface ILimitSkipInput {
 export interface IContext {
   user: {
     _id: IObjectId
+    email: string;
+    firstName: string;
+    lastName: string;
   }
+}
+
+export interface IContext {
+  _id: IObjectId;
+  email: string;
+  firstName: string;
+  lastName: string;
 }

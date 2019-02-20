@@ -1,5 +1,5 @@
-// import Recipe from '@context/Recipe';
-import { ILimitSkipInput, IObjectId } from 'types/global';
+import Recipe from '@context/recipe';
+import { IContext, ILimitSkipInput, IObjectId } from 'types/global';
 import {
   IRecipe,
   IRecipeCreateInput,
@@ -16,11 +16,11 @@ interface INameInput {
 
 export default {
   Mutation: {
-    createRecipe: async (_: object, data: IRecipeCreateInput) => console.log(data),
-    // createRecipe: async (
-    //   _: object,
-    //   data: IRecipeCreateInput
-    // ): Promise<IRecipe> => Recipe.create(data),
+    createRecipe: async (
+      _: object,
+      data: IRecipeCreateInput,
+      account: IContext
+    ): Promise<IRecipe> => Recipe.create(data, account),
     // deleteRecipe: async (_: object, data: IDeleteData): Promise<boolean> =>
     //   Recipe.delete(data.id),
     // editRecipe: async (
@@ -28,16 +28,12 @@ export default {
     //   data: IRecipeEditInput
     // ): Promise<boolean> => Recipe.update(data),
   },
-  // Query: {
-  //   Recipe: async (_: object, id: IObjectId): Promise<IRecipe> =>
-  //     Recipe.show(id),
-  //   Recipes: async (
-  //     _: object,
-  //     args: ILimitSkipInput
-  //   ): Promise<IRecipe[]> => Recipe.list(args),
-  //   RecipesByName: async (
-  //     _: object,
-  //     args: INameInput
-  //   ): Promise<IRecipe[]> => Recipe.searchByName(args.name),
-  // },
+  Query: {
+    recipe: async (_: object, id: IObjectId): Promise<IRecipe> =>
+      Recipe.show(id),
+    recipes: async (_: object, args: ILimitSkipInput): Promise<IRecipe[]> =>
+      Recipe.list(args),
+    recipesByName: async (_: object, args: INameInput): Promise<IRecipe[]> =>
+      Recipe.searchByName(args.name),
+  },
 };

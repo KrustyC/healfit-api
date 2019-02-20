@@ -17,8 +17,9 @@ export default {
     accountService.createAccount(data),
   currentAccountInfo: (context: IContext): Promise<IAccount> =>
     accountService.currentAccountInfo(context),
-  emailExists: (email: string) => accountService.emailExists(email),
-  findBy: (field: string, fieldName: string): Promise<IAccount> =>
+  emailExists: (email: string): Promise<boolean> =>
+    accountService.emailExists(email),
+  findBy: (field: any, fieldName: string): Promise<IAccount> =>
     accountService.findBy(field, fieldName),
   findForLogin: (email: string): Promise<IAccount> =>
     accountService.findForLogin(email),
@@ -31,3 +32,16 @@ export default {
   verifyAccount: (data: IVerifyAccountInput): Promise<boolean> =>
     accountService.verifyAccount(data),
 };
+
+export interface IAccountContext {
+  create: (data: ISignupInput) => Promise<IAccountWithToken>;
+  currentAccountInfo: (context: IContext) => Promise<IAccount>;
+  emailExists: (email: string) => Promise<boolean>;
+  findBy: (field: any, fieldName: string) => Promise<IAccount>;
+  findForLogin: (email: string) => Promise<IAccount>;
+  forgottenPassword: (
+    data: IForgottenPasswordInput
+  ) => Promise<IAccountWithPasswordResetToken>;
+  resetPassword: (data: IResetPasswordInput) => Promise<boolean>;
+  verifyAccount: (data: IVerifyAccountInput) => Promise<boolean>;
+}

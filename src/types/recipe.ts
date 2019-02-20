@@ -25,7 +25,7 @@ export interface IRecipeCreateInput {
         quantity: number;
       }
     ];
-    method: object;
+    method: string;
     picture: string;
     calories: number;
     carbohydrates: number;
@@ -37,38 +37,65 @@ export interface IRecipeCreateInput {
 export interface IRecipeEditInput {
   input: {
     id: IObjectId;
-    name: string;
-    category: IObjectId;
-    calories: number;
-    nutrients: {
-      carbohydrate: { fiber: number; sugar: number };
-      cholesterol: number;
-      fat: {
-        monounsaturated: number;
-        polyunsaturated: number;
-        saturated: number;
-      };
-      potassium: number;
-      protein: number;
-      sodium: number;
+    title: string;
+    servings: number;
+    totalTime: number;
+    category: {
+      id: number;
+      name: string;
     };
+    level: {
+      id: number;
+      name: string;
+    };
+    ingridients: [
+      {
+        id: number;
+        name: string;
+        measurement: {
+          label: string;
+          value: number;
+        };
+        quantity: number;
+      }
+    ];
+    method: string;
+    picture: string;
+    calories: number;
+    carbohydrates: number;
+    protein: number;
+    fat: number;
   };
 }
 
 export interface IRecipe extends Document {
   _id: IObjectId;
-  name: string;
-  calories: number;
-  nutrients: {
-    carbohydrate: { fiber: number; sugar: number };
-    cholesterol: number;
-    fat: {
-      monounsaturated: number;
-      polyunsaturated: number;
-      saturated: number;
-    };
-    potassium: number;
-    protein: number;
-    sodium: number;
+  title: string;
+  servings: number;
+  totalTime: number;
+  category: {
+    id: number;
+    name: string;
   };
+  level: {
+    id: number;
+    name: string;
+  };
+  ingridients: [
+    {
+      id: number;
+      name: string;
+      measurement: {
+        label: string;
+        value: number;
+      };
+      quantity: number;
+    }
+  ];
+  method: string;
+  picture: string;
+  calories: number;
+  carbohydrates: number;
+  protein: number;
+  fat: number;
 }

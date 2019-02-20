@@ -9,14 +9,14 @@ type RecipeCategory {
 }
 
 type RecipeMeasurement {
-  label: String
-  value: Int
+  id: Int
+  name: String
 }
 
 type RecipeIngridient {
   id: ID
   name: String
-  measurement: RcipeMeasurement
+  measurement: RecipeMeasurement
   quantity: Float
 }
 
@@ -26,9 +26,9 @@ type Recipe {
   servings: Int
   totalTime: Int
   category: RecipeCategory
-  level: Int
+  level: RecipeLevel
   ingridients: [RecipeIngridient]
-  method: Object
+  method: String
   picture: String
   calories: Int
   carbohydrates: Float
@@ -48,8 +48,8 @@ input RecipeCategoryInput {
 }
 
 input RecipeMeasurementInput {
-  label: String
-  value: Int
+  id: Int
+  name: String
 }
 
 input RecipeIngridientInput {
@@ -60,41 +60,41 @@ input RecipeIngridientInput {
 }
 
 input RecipeCreateInput {
-  title: String
-  servings: Int
-  totalTime: Int
-  category: RecipeCategoryInput
-  level: Int
-  ingridients: [RecipeIngridientInput]
-  method: Object
-  picture: String
-  calories: Int
-  carbohydrates: Float
-  protein: Float
-  fat: Float
+  title: String!
+  servings: Int!
+  totalTime: Int!
+  category: RecipeCategoryInput!
+  level: RecipeLevelInput!
+  ingridients: [RecipeIngridientInput]!
+  method: String!
+  picture: String!
+  calories: Int!
+  carbohydrates: Float!
+  protein: Float!
+  fat: Float!
 }
 
 input RecipeEditInput {
-  id: ID
-  title: String
-  servings: Int
-  totalTime: Int
-  category: RecipeCategoryInput
-  level: Int
-  ingridients: [RecipeIngridientInput]
-  method: Object
-  picture: String
-  calories: Int
-  carbohydrates: Float
-  protein: Float
-  fat: Float
+  id: ID!
+  title: String!
+  servings: Int!
+  totalTime: Int!
+  category: RecipeCategoryInput!
+  level: RecipeLevelInput!
+  ingridients: [RecipeIngridientInput]!
+  method: String!
+  picture: String!
+  calories: Int!
+  carbohydrates: Float!
+  protein: Float!
+  fat: Float!
 }
 
-# type Query {
-#   recipe(id: ID!): Recipe
-#   recipes(limit: Int, skip: Int): [Recipe]
-#   recipiesByName(name: String): [Ingridient]
-# }
+type Query {
+  recipe(id: ID!): Recipe
+  recipes(limit: Int, skip: Int): [Recipe]
+  recipesByName(name: String): [Ingridient]
+}
 
 type Mutation {
   createRecipe(input: RecipeCreateInput!): Recipe

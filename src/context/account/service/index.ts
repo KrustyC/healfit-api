@@ -23,7 +23,7 @@ export default class AccountService {
     this.passwordResetTokenRepo = new PasswordResetTokenRepo();
   }
 
-  public async findBy(field: string, fieldName: string) {
+  public async findBy(field: any, fieldName: string) {
     return this.accountRepo.findOneBy({ [fieldName]: field });
   }
 
