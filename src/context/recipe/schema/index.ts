@@ -35,8 +35,8 @@ const recipeSchema = new mongoose.Schema(
     picture: { type: String, required: true },
     protein: { type: Number, required: true },
     servings: { type: Number, required: true },
+    slug: { type: String, required: true },
     title: { type: String, required: true },
-
     totalTime: { type: Number, required: true },
   },
   { timestamps: true }

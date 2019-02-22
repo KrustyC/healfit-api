@@ -22,7 +22,9 @@ type RecipeIngridient {
 
 type Recipe {
   id: ID
+  slug: String
   title: String
+  description: String
   servings: Int
   totalTime: Int
   category: RecipeCategory
@@ -62,6 +64,7 @@ input RecipeIngridientInput {
 input RecipeCreateInput {
   title: String!
   servings: Int!
+  description: String!
   totalTime: Int!
   category: RecipeCategoryInput!
   level: RecipeLevelInput!
@@ -75,8 +78,9 @@ input RecipeCreateInput {
 }
 
 input RecipeEditInput {
-  id: ID!
+  slug: String!
   title: String!
+  description: String!
   servings: Int!
   totalTime: Int!
   category: RecipeCategoryInput!
@@ -91,7 +95,7 @@ input RecipeEditInput {
 }
 
 type Query {
-  recipe(id: ID!): Recipe
+  recipe(slug: String!): Recipe
   recipes(limit: Int, skip: Int): [Recipe]
   recipesByName(name: String): [Ingridient]
 }

@@ -2,10 +2,6 @@ import Recipe from '@context/recipe';
 import { IContext, ILimitSkipInput, IObjectId } from 'types/global';
 import { IRecipe, IRecipeCreateInput, IRecipeEditInput } from 'types/recipe';
 
-interface IDeleteData {
-  id: IObjectId;
-}
-
 interface INameInput {
   name: string;
 }
@@ -26,11 +22,11 @@ export default {
     ): Promise<IRecipe> => Recipe.edit(data, ctx),
   },
   Query: {
-    recipe: async (_: object, { id }: { id: IObjectId }): Promise<IRecipe> =>
-      Recipe.show(id),
+    recipe: async (_: object, { slug }: { slug: string }): Promise<IRecipe> =>
+      Recipe.show(slug),
     recipes: async (_: object, args: ILimitSkipInput): Promise<IRecipe[]> =>
       Recipe.list(args),
-    recipesByName: async (_: object, args: INameInput): Promise<IRecipe[]> =>
-      Recipe.searchByName(args.name),
+    recipesByName: async (_: object, { name }: { name: string }): Promise<IRecipe[]> =>
+      Recipe.searchByName(name),
   },
 };

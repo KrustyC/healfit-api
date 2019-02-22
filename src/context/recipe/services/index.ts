@@ -1,11 +1,8 @@
 import AccountContext, { IAccountContext } from '@context/account';
 import { AuthenticationError } from 'apollo-server';
-import mongoose from 'mongoose';
 import { IContext, ILimitSkipInput, IObjectId } from 'types/global';
 import { IRecipe, IRecipeCreateInput, IRecipeEditInput } from 'types/recipe';
 import RecipeRepo from '../repo';
-
-const { ObjectId } = mongoose.Types;
 
 export default class RecipeService {
   public recipeRepo: RecipeRepo;
@@ -20,15 +17,17 @@ export default class RecipeService {
     data: IRecipeCreateInput,
     ctx: IContext
   ): Promise<IRecipe> {
+    console.log('here')
     const creator = await this.accountContext.findBy(ctx.user._id, '_id');
+    console.log('here 2', creator);
     return this.recipeRepo.create(data, creator);
   }
 
   public async edit(data: IRecipeEditInput, ctx: IContext): Promise<IRecipe> {
-    const newRecipe = data.input;
+    const { input } = data;
 
     const recipe = await this.recipeRepo.findOneBy({
-      _id: newRecipe.id,
+      slug: input.slug,
     });
 
     const isUserOwner =
@@ -41,19 +40,20 @@ export default class RecipeService {
 
     try {
       const updated = await this.recipeRepo.findOneAndUpdate(
-        { _id: data.input.id },
+        { slug: input.slug },
         {
           $set: {
-            calories: newRecipe.calories,
-            carbohydrates: newRecipe.carbohydrates,
-            category: newRecipe.category,
-            fat: newRecipe.fat,
-            ingridients: newRecipe.ingridients,
-            level: newRecipe.level,
-            protein: newRecipe.protein,
-            servings: newRecipe.servings,
-            title: newRecipe.title,
-            totalTime: newRecipe.totalTime,
+            calories: input.calories,
+            carbohydrates: input.carbohydrates,
+            category: input.category,
+            description: input.description,
+            fat: input.fat,
+            ingridients: input.ingridients,
+            level: input.level,
+            protein: input.protein,
+            servings: input.servings,
+            title: input.title,
+            totalTime: input.totalTime,
           },
         }
       );
@@ -113,8 +113,7 @@ export default class RecipeService {
     return this.recipeRepo.findOneBy({ [fieldName]: field });
   }
 
-  public async show(id: IObjectId): Promise<IRecipe> {
-    console.log('here', id);
-    return this.recipeRepo.findOneBy({ _id: id });
+  public async show(slug: string): Promise<IRecipe> {
+    return this.recipeRepo.findOneBy({ slug });
   }
 }

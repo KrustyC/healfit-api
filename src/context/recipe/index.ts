@@ -13,5 +13,5 @@ export default {
   list: (data: ILimitSkipInput): Promise<IRecipe[]> => recipeService.list(data),
   searchByName: (name: string): Promise<IRecipe[]> =>
     recipeService.searchByName(name),
-  show: (id: IObjectId): Promise<IRecipe> => recipeService.show(id),
+  show: (slug: string): Promise<IRecipe> => recipeService.show(slug),
 };

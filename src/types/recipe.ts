@@ -5,6 +5,7 @@ export interface IRecipeCreateInput {
   input: {
     title: string;
     servings: number;
+    description: string;
     totalTime: number;
     category: {
       id: number;
@@ -36,9 +37,10 @@ export interface IRecipeCreateInput {
 
 export interface IRecipeEditInput {
   input: {
-    id: IObjectId;
+    slug: string;
     title: string;
     servings: number;
+    description: string;
     totalTime: number;
     category: {
       id: number;
@@ -71,8 +73,10 @@ export interface IRecipeEditInput {
 export interface IRecipe extends Document {
   _id: IObjectId;
   title: string;
+  slug: string;
   servings: number;
   totalTime: number;
+  description: string;
   category: {
     id: number;
     name: string;
