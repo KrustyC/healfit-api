@@ -20,16 +20,20 @@ export default {
       _: object,
       data: IIngridientCreateInput
     ): Promise<IIngridient> => Ingridient.create(data),
-    deleteIngridient: async (_: object, data: IDeleteData): Promise<boolean> =>
-      Ingridient.delete(data.id),
+    deleteIngridient: async (
+      _: object,
+      { id }: { id: IObjectId }
+    ): Promise<boolean> => Ingridient.delete(id),
     updateIngridient: async (
       _: object,
       data: IIngridientEditInput
     ): Promise<boolean> => Ingridient.update(data),
   },
   Query: {
-    ingridient: async (_: object, id: IObjectId): Promise<IIngridient> =>
-      Ingridient.show(id),
+    ingridient: async (
+      _: object,
+      { id }: { id: IObjectId }
+    ): Promise<IIngridient> => Ingridient.show(id),
     ingridients: async (
       _: object,
       args: ILimitSkipInput

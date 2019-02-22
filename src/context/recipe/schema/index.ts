@@ -14,6 +14,7 @@ const recipeSchema = new mongoose.Schema(
       id: { _id: false, type: 'ObjectId', ref: 'account' },
       name: String,
     },
+    description: { type: String, required: true },
     fat: { type: Number, required: true },
     ingridients: [
       {

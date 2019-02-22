@@ -5,7 +5,6 @@ export interface IObjectId extends mongoose.Types.ObjectId {
   // nothing here
 }
 
-
 export interface ILimitSkipInput {
   limit: number;
   skip: number;

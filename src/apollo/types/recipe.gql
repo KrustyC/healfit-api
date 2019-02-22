@@ -99,6 +99,8 @@ type Query {
 type Mutation {
   createRecipe(input: RecipeCreateInput!): Recipe
     @auth(role: USER)
+  editRecipe(input: RecipeEditInput!): Recipe
+    @auth(role: USER)
   # deleteRecipe(id: ID!): Boolean @auth(role: USER)
   # eidtRecipe(input: RecipeEditInput!): Recipe
   #   @auth(role: USER)

@@ -1,7 +1,11 @@
 import AccountContext, { IAccountContext } from '@context/account';
+import { AuthenticationError } from 'apollo-server';
+import mongoose from 'mongoose';
 import { IContext, ILimitSkipInput, IObjectId } from 'types/global';
 import { IRecipe, IRecipeCreateInput, IRecipeEditInput } from 'types/recipe';
 import RecipeRepo from '../repo';
+
+const { ObjectId } = mongoose.Types;
 
 export default class RecipeService {
   public recipeRepo: RecipeRepo;
@@ -17,30 +21,48 @@ export default class RecipeService {
     ctx: IContext
   ): Promise<IRecipe> {
     const creator = await this.accountContext.findBy(ctx.user._id, '_id');
-    const rec = await this.recipeRepo.create(data, creator);
-    console.log(rec);
-    return rec;
+    return this.recipeRepo.create(data, creator);
   }
 
-  // public async update(data: IRecipeEditInput): Promise<boolean> {
-  //   const recipe = data.input;
-  //   try {
-  //     await this.recipeRepo.findOneAndUpdate(
-  //       { _id: recipe.id },
-  //       {
-  //         $set: {
-  //           calories: recipe.calories,
-  //           category: recipe.category,
-  //           name: recipe.name,
-  //           nutrients: recipe.nutrients,
-  //         },
-  //       }
-  //     );
-  //     return true;
-  //   } catch (error) {
-  //     return false;
-  //   }
-  // }
+  public async edit(data: IRecipeEditInput, ctx: IContext): Promise<IRecipe> {
+    const newRecipe = data.input;
+
+    const recipe = await this.recipeRepo.findOneBy({
+      _id: newRecipe.id,
+    });
+
+    const isUserOwner =
+      ctx.user._id.toString() === recipe.createdBy.id.toString();
+    if (!isUserOwner) {
+      throw new AuthenticationError(
+        'You are not authorized to edit this recipe.'
+      );
+    }
+
+    try {
+      const updated = await this.recipeRepo.findOneAndUpdate(
+        { _id: data.input.id },
+        {
+          $set: {
+            calories: newRecipe.calories,
+            carbohydrates: newRecipe.carbohydrates,
+            category: newRecipe.category,
+            fat: newRecipe.fat,
+            ingridients: newRecipe.ingridients,
+            level: newRecipe.level,
+            protein: newRecipe.protein,
+            servings: newRecipe.servings,
+            title: newRecipe.title,
+            totalTime: newRecipe.totalTime,
+          },
+        }
+      );
+      console.log(updated);
+      return updated;
+    } catch (error) {
+      throw Error('Could not edit this recipe');
+    }
+  }
 
   public async delete(id: IObjectId): Promise<boolean> {
     try {
@@ -92,6 +114,7 @@ export default class RecipeService {
   }
 
   public async show(id: IObjectId): Promise<IRecipe> {
+    console.log('here', id);
     return this.recipeRepo.findOneBy({ _id: id });
   }
 }

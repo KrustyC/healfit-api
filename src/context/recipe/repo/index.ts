@@ -15,7 +15,7 @@ export default class RecipeRepo extends Repository {
     const recipeData = {
       ...data.input,
       createdBy: {
-        id: user.id,
+        id: user._id,
         name: `${user.firstName} ${user.lastName}`,
       },
     };
