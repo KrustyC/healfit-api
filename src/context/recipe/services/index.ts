@@ -17,9 +17,7 @@ export default class RecipeService {
     data: IRecipeCreateInput,
     ctx: IContext
   ): Promise<IRecipe> {
-    console.log('here')
     const creator = await this.accountContext.findBy(ctx.user._id, '_id');
-    console.log('here 2', creator);
     return this.recipeRepo.create(data, creator);
   }
 
@@ -48,7 +46,7 @@ export default class RecipeService {
             category: input.category,
             description: input.description,
             fat: input.fat,
-            ingridients: input.ingridients,
+            ingredients: input.ingredients,
             level: input.level,
             protein: input.protein,
             servings: input.servings,
@@ -57,7 +55,7 @@ export default class RecipeService {
           },
         }
       );
-      console.log(updated);
+
       return updated;
     } catch (error) {
       throw Error('Could not edit this recipe');

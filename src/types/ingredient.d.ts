@@ -1,7 +1,7 @@
 import mongoose, { Document, Model, Schema } from 'mongoose';
 import { IObjectId } from './global';
 
-export interface IIngridientCreateInput {
+export interface IIngredientCreateInput {
   input: {
     name: string;
     category: IObjectId;
@@ -21,7 +21,7 @@ export interface IIngridientCreateInput {
   };
 }
 
-export interface IIngridientEditInput {
+export interface IIngredientEditInput {
   input: {
     id: IObjectId;
     name: string;
@@ -42,7 +42,7 @@ export interface IIngridientEditInput {
   };
 }
 
-export interface IIngridient extends Document {
+export interface IIngredient extends Document {
   _id: IObjectId;
   name: string;
   calories: number;

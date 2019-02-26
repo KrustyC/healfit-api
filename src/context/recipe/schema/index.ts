@@ -16,9 +16,9 @@ const recipeSchema = new mongoose.Schema(
     },
     description: { type: String, required: true },
     fat: { type: Number, required: true },
-    ingridients: [
+    ingredients: [
       {
-        id: { _id: false, type: 'ObjectId', ref: 'ingridient' },
+        id: { _id: false, type: 'ObjectId', ref: 'ingredient' },
         measurement: {
           id: { type: Number, required: true },
           name: { type: String, required: true },

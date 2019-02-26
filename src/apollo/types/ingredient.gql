@@ -18,7 +18,7 @@ type Nutrients {
   sodium: Float
 }
 
-type Ingridient {
+type Ingredient {
   id: ID
   name: String!
   calories: Int
@@ -45,14 +45,14 @@ input NutrientsInput {
   sodium: Float
 }
 
-input IngridientCreateInput {
+input IngredientCreateInput {
   name: String!
   category: ID
   calories: Int
   nutrients: NutrientsInput
 }
 
-input IngridientEditInput {
+input IngredientEditInput {
   id: ID!
   name: String
   category: ID
@@ -61,14 +61,14 @@ input IngridientEditInput {
 }
 
 type Query {
-  ingridient(id: ID!): Ingridient
-  ingridients(limit: Int, skip: Int): [Ingridient]
-  ingridientsByName(name: String): [Ingridient]
+  ingredient(id: ID!): Ingredient
+  ingredients(limit: Int, skip: Int): [Ingredient]
+  ingredientsByName(name: String): [Ingredient]
 }
 
 type Mutation {
-  addIngridient(input: IngridientCreateInput!): Ingridient
+  addIngredient(input: IngredientCreateInput!): Ingredient
     @auth(role: ADMIN)
-  deleteIngridient(id: ID!): Boolean @auth(role: ADMIN)
-  updateIngridient(input: IngridientEditInput!): Boolean @auth(role: ADMIN)
+  deleteIngredient(id: ID!): Boolean @auth(role: ADMIN)
+  updateIngredient(input: IngredientEditInput!): Boolean @auth(role: ADMIN)
 }

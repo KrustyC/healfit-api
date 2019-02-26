@@ -6,10 +6,10 @@ const TYPES = {
   3: 'Poultry',
 };
 
-class IngridientsCategories extends ValueObject {
+class IngredientsCategories extends ValueObject {
   constructor() {
     super(TYPES);
   }
 }
 
-export default new IngridientsCategories();
+export default new IngredientsCategories();

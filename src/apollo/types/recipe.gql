@@ -13,7 +13,7 @@ type RecipeMeasurement {
   name: String
 }
 
-type RecipeIngridient {
+type RecipeIngredient {
   id: ID
   name: String
   measurement: RecipeMeasurement
@@ -29,7 +29,7 @@ type Recipe {
   totalTime: Int
   category: RecipeCategory
   level: RecipeLevel
-  ingridients: [RecipeIngridient]
+  ingredients: [RecipeIngredient]
   method: String
   picture: String
   calories: Int
@@ -54,7 +54,7 @@ input RecipeMeasurementInput {
   name: String
 }
 
-input RecipeIngridientInput {
+input RecipeIngredientInput {
   id: ID
   name: String
   measurement: RecipeMeasurementInput
@@ -68,7 +68,7 @@ input RecipeCreateInput {
   totalTime: Int!
   category: RecipeCategoryInput!
   level: RecipeLevelInput!
-  ingridients: [RecipeIngridientInput]!
+  ingredients: [RecipeIngredientInput]!
   method: String!
   picture: String!
   calories: Int
@@ -85,7 +85,7 @@ input RecipeEditInput {
   totalTime: Int!
   category: RecipeCategoryInput!
   level: RecipeLevelInput!
-  ingridients: [RecipeIngridientInput]!
+  ingredients: [RecipeIngredientInput]!
   method: String!
   picture: String!
   calories: Int!
@@ -97,7 +97,7 @@ input RecipeEditInput {
 type Query {
   recipe(slug: String!): Recipe
   recipes(limit: Int, skip: Int): [Recipe]
-  recipesByName(name: String): [Ingridient]
+  recipesByName(name: String): [Ingredient]
 }
 
 type Mutation {

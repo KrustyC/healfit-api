@@ -1,8 +1,8 @@
-import IngridientsCategories from '@valueobjects/IngridientsCategories';
+import IngredientsCategories from '@valueobjects/IngredientsCategories';
 import Measurements from '@valueobjects/Measurements';
 
 const globalData = {
-  ingridientsCategories: IngridientsCategories.indexedList(),
+  ingredientsCategories: IngredientsCategories.indexedList(),
   measurements: Measurements.indexedList(),
 };
 

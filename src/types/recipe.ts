@@ -15,7 +15,7 @@ export interface IRecipeCreateInput {
       id: number;
       name: string;
     };
-    ingridients: [
+    ingredients: [
       {
         id: number;
         name: string;
@@ -50,7 +50,7 @@ export interface IRecipeEditInput {
       id: number;
       name: string;
     };
-    ingridients: [
+    ingredients: [
       {
         id: number;
         name: string;
@@ -85,7 +85,7 @@ export interface IRecipe extends Document {
     id: number;
     name: string;
   };
-  ingridients: [
+  ingredients: [
     {
       id: number;
       name: string;

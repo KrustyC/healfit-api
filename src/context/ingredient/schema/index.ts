@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import mongoose, { Model } from 'mongoose';
-import { IIngridient } from 'types/ingridient';
+import { IIngredient } from 'types/ingredient';
 
-const ingridientSchema = new mongoose.Schema(
+const ingredientSchema = new mongoose.Schema(
   {
     // allergens: [{ _id: false, type: 'ObjectId', ref: 'allergens' }],
     calories: Number,
@@ -27,9 +27,9 @@ const ingridientSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-ingridientSchema.index({ name: 'text' });
+ingredientSchema.index({ name: 'text' });
 
-export const Ingridient: Model<IIngridient> = mongoose.model<IIngridient>(
-  'Ingridient',
-  ingridientSchema
+export const Ingredient: Model<IIngredient> = mongoose.model<IIngredient>(
+  'Ingredient',
+  ingredientSchema
 );
