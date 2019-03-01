@@ -30,6 +30,7 @@ export interface IRecipeCreateInput {
     picture: string;
     calories: number;
     carbohydrates: number;
+    fiber: number;
     protein: number;
     fat: number;
   };
@@ -64,6 +65,7 @@ export interface IRecipeEditInput {
     method: string;
     picture: string;
     calories: number;
+    fiber: number;
     carbohydrates: number;
     protein: number;
     fat: number;
@@ -100,6 +102,7 @@ export interface IRecipe extends Document {
   picture: string;
   calories: number;
   carbohydrates: number;
+  fiber: number;
   protein: number;
   fat: number;
 }

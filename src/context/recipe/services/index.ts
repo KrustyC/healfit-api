@@ -48,6 +48,7 @@ export default class RecipeService {
             fat: input.fat,
             ingredients: input.ingredients,
             level: input.level,
+            method: input.method,
             protein: input.protein,
             servings: input.servings,
             title: input.title,

@@ -34,6 +34,7 @@ type Recipe {
   picture: String
   calories: Int
   carbohydrates: Float
+  fiber: Float
   protein: Float
   fat: Float
 }
@@ -73,6 +74,7 @@ input RecipeCreateInput {
   picture: String!
   calories: Int
   carbohydrates: Float
+  fiber: Float
   protein: Float
   fat: Float
 }
@@ -90,6 +92,7 @@ input RecipeEditInput {
   picture: String!
   calories: Int!
   carbohydrates: Float!
+  fiber: Float
   protein: Float!
   fat: Float!
 }

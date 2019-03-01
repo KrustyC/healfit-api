@@ -16,6 +16,7 @@ const recipeSchema = new mongoose.Schema(
     },
     description: { type: String, required: true },
     fat: { type: Number, required: true },
+    fiber: { type: Number, required: true },
     ingredients: [
       {
         id: { _id: false, type: 'ObjectId', ref: 'ingredient' },
