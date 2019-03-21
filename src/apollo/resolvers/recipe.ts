@@ -1,6 +1,12 @@
 import Recipe from '@context/recipe';
 import { IContext, ILimitSkipInput, IObjectId } from 'types/global';
-import { IRecipe, IRecipeCreateInput, IRecipeEditInput } from 'types/recipe';
+import {
+  IRecipe,
+  IRecipeCreateInput,
+  IRecipeEditInput,
+  IRecipeRateInput,
+  IRecipeRating,
+} from 'types/recipe';
 
 interface INameInput {
   name: string;
@@ -20,6 +26,11 @@ export default {
       data: IRecipeEditInput,
       ctx: IContext
     ): Promise<IRecipe> => Recipe.edit(data, ctx),
+    rateRecipe: async (
+      _: object,
+      data: IRecipeRateInput,
+      ctx: IContext
+    ): Promise<IRecipeRating> => Recipe.rate(data, ctx),
   },
   Query: {
     recipe: async (_: object, { slug }: { slug: string }): Promise<IRecipe> =>

@@ -20,6 +20,7 @@ type RecipeIngredient {
   quantity: Float
 }
 
+
 type Recipe {
   id: ID
   slug: String
@@ -37,6 +38,12 @@ type Recipe {
   fiber: Float
   protein: Float
   fat: Float
+}
+
+type RecipeRating {
+  recipeId: ID
+  userId: ID
+  rating: Int
 }
 
 # INPUT
@@ -97,10 +104,19 @@ input RecipeEditInput {
   fat: Float!
 }
 
+input RecipeRateInput {
+  slug: String!
+  rate: Int!
+}
+
+input RecipeLikeInput {
+  slug: String!
+}
+
 type Query {
   recipe(slug: String!): Recipe
   recipes(limit: Int, skip: Int): [Recipe]
-  recipesByName(name: String): [Ingredient]
+  recipesByName(name: String): [Ingredient],
 }
 
 type Mutation {
@@ -108,7 +124,7 @@ type Mutation {
     @auth(role: USER)
   editRecipe(input: RecipeEditInput!): Recipe
     @auth(role: USER)
+  rateRecipe(input: RecipeRateInput!): RecipeRating
+    @auth(role: USER)
   # deleteRecipe(id: ID!): Boolean @auth(role: USER)
-  # eidtRecipe(input: RecipeEditInput!): Recipe
-  #   @auth(role: USER)
 }

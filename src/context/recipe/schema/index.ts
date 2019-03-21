@@ -32,6 +32,7 @@ const recipeSchema = new mongoose.Schema(
       id: { type: Number, required: true },
       name: { type: String, required: true },
     },
+    likedBy: [{ _id: false, type: 'ObjectId', ref: 'account' }],
     method: { type: String, required: true },
     picture: { type: String, required: true },
     protein: { type: Number, required: true },

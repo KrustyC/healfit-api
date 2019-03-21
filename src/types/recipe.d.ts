@@ -72,6 +72,19 @@ export interface IRecipeEditInput {
   };
 }
 
+export interface IRecipeRateInput {
+  input: {
+    slug: string;
+    rate: number;
+  };
+}
+
+export interface IRecipeLikeInput {
+  input: {
+    slug: string;
+  };
+}
+
 export interface IRecipe extends Document {
   _id: IObjectId;
   title: string;
@@ -105,4 +118,12 @@ export interface IRecipe extends Document {
   fiber: number;
   protein: number;
   fat: number;
+}
+
+
+export interface IRecipeRating extends Document {
+  _id: IObjectId;
+  recipeId: IObjectId;
+  userId: IObjectId;
+  rating: number;
 }

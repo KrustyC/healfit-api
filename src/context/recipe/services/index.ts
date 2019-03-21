@@ -1,15 +1,25 @@
 import AccountContext, { IAccountContext } from '@context/account';
 import { AuthenticationError } from 'apollo-server';
 import { IContext, ILimitSkipInput, IObjectId } from 'types/global';
-import { IRecipe, IRecipeCreateInput, IRecipeEditInput } from 'types/recipe';
+import {
+  IRecipe,
+  IRecipeCreateInput,
+  IRecipeEditInput,
+  IRecipeLikeInput,
+  IRecipeRateInput,
+  IRecipeRating,
+} from 'types/recipe';
 import RecipeRepo from '../repo';
+import RecipeRatingRepo from '../repo/rating';
 
 export default class RecipeService {
   public recipeRepo: RecipeRepo;
+  public recipeRatingsRepo: RecipeRatingRepo;
   public accountContext: IAccountContext;
 
   constructor() {
     this.recipeRepo = new RecipeRepo();
+    this.recipeRatingsRepo = new RecipeRatingRepo();
     this.accountContext = AccountContext;
   }
 
@@ -102,10 +112,46 @@ export default class RecipeService {
     return this.recipeRepo.findBy(regexQuery, projection, [], options);
   }
 
+  public async like(data: IRecipeLikeInput, ctx: IContext): Promise<IRecipe> {
+    try {
+      const updated = await this.recipeRepo.findOneAndUpdate(
+        { slug: data.input.slug },
+        { $push: { likedBy: ctx.user._id } }
+      );
+      return updated;
+    } catch (error) {
+      throw Error('Could not like this recipe');
+    }
+  }
+
   public async list(data: ILimitSkipInput): Promise<IRecipe[]> {
     const limitQuery = { limit: data.limit || 5000, skip: data.skip || 0 };
 
     return this.recipeRepo.findBy({}, {}, [], limitQuery);
+  }
+
+  public async rate(
+    data: IRecipeRateInput,
+    ctx: IContext
+  ): Promise<IRecipeRating> {
+    const user = await this.accountContext.findBy(ctx.user._id, '_id');
+    const recipe = await this.recipeRepo.findOneBy({ slug: data.input.slug });
+
+    const lookUpData = { recipeId: recipe.id, userId: user.id };
+
+    const recipeRating = await this.recipeRatingsRepo.findBy(lookUpData);
+    console.log('hello', recipeRating);
+
+    if (recipeRating.length > 0) {
+      const set = { $set: { rating: data.input.rate } };
+      return this.recipeRatingsRepo.findOneAndUpdate(lookUpData, set);
+    }
+
+    return this.recipeRatingsRepo.create(data.input.rate, recipe, user);
+  }
+
+  public async ratings(recipeId: IObjectId): Promise<IRecipeRating[]> {
+    return this.recipeRatingsRepo.findBy({ recipeId });
   }
 
   public async findBy(field: string, fieldName: string) {

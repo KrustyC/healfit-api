@@ -25,7 +25,6 @@ export default class RecipeRepo extends Repository {
     };
 
     const recipe = new Recipe(recipeData);
-    console.log('here 3', recipe)
     return recipe.save();
   }
 }
