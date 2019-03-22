@@ -21,6 +21,12 @@ type RecipeIngredient {
 }
 
 
+type RecipeRating {
+  recipeId: ID
+  userId: ID
+  rating: Int
+}
+
 type Recipe {
   id: ID
   slug: String
@@ -38,12 +44,8 @@ type Recipe {
   fiber: Float
   protein: Float
   fat: Float
-}
-
-type RecipeRating {
-  recipeId: ID
-  userId: ID
   rating: Int
+  ratings: [RecipeRating]
 }
 
 # INPUT

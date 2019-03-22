@@ -42,4 +42,10 @@ export default {
       { name }: { name: string }
     ): Promise<IRecipe[]> => Recipe.searchByName(name),
   },
+  Recipe: {
+    rating: async (recipe: { _id: IObjectId }): Promise<number> =>
+      Recipe.rating(recipe._id),
+    ratings: async (recipe: { _id: IObjectId }): Promise<IRecipeRating[]> =>
+      Recipe.ratings(recipe._id),
+  },
 };

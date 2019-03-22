@@ -15,8 +15,8 @@ export default class RecipeRatingRepo extends Repository {
   ): Promise<IRecipeRating> {
     const ratingData = {
       rating,
-      recipeId: recipe.id,
-      userId: user.id,
+      recipeId: recipe._id,
+      userId: user._id,
     };
 
     const recipeRating = new RecipeRating(ratingData);

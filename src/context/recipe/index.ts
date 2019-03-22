@@ -22,6 +22,8 @@ export default {
   list: (data: ILimitSkipInput): Promise<IRecipe[]> => recipeService.list(data),
   rate: (data: IRecipeRateInput, ctx: IContext): Promise<IRecipeRating> =>
     recipeService.rate(data, ctx),
+  rating: (recipeId: IObjectId): Promise<number> =>
+    recipeService.rating(recipeId),
   ratings: (recipeId: IObjectId): Promise<IRecipeRating[]> =>
     recipeService.ratings(recipeId),
   searchByName: (name: string): Promise<IRecipe[]> =>

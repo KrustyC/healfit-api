@@ -140,7 +140,6 @@ export default class RecipeService {
     const lookUpData = { recipeId: recipe.id, userId: user.id };
 
     const recipeRating = await this.recipeRatingsRepo.findBy(lookUpData);
-    console.log('hello', recipeRating);
 
     if (recipeRating.length > 0) {
       const set = { $set: { rating: data.input.rate } };
@@ -148,6 +147,20 @@ export default class RecipeService {
     }
 
     return this.recipeRatingsRepo.create(data.input.rate, recipe, user);
+  }
+
+  public async rating(recipeId: IObjectId): Promise<number> {
+    const result = await this.recipeRatingsRepo.aggregate([
+      { $match: { recipeId } },
+      { $group: { _id: null, avgRate: { $avg: '$rating' } } },
+      { $project: { rating: '$avgRate' } },
+    ]);
+
+    if (result.length === 0) {
+      return 0;
+    }
+
+    return result[0].rating;
   }
 
   public async ratings(recipeId: IObjectId): Promise<IRecipeRating[]> {
