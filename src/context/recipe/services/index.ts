@@ -112,16 +112,29 @@ export default class RecipeService {
     return this.recipeRepo.findBy(regexQuery, projection, [], options);
   }
 
-  public async like(data: IRecipeLikeInput, ctx: IContext): Promise<IRecipe> {
-    try {
-      const updated = await this.recipeRepo.findOneAndUpdate(
+  public async likeOrDislike(
+    data: IRecipeLikeInput,
+    ctx: IContext
+  ): Promise<boolean> {
+    const recipe = await this.recipeRepo.findOneBy({
+      likedBy: { $in: [ctx.user._id] },
+      slug: data.input.slug,
+    });
+
+    if (!recipe) {
+      await this.recipeRepo.findOneAndUpdate(
         { slug: data.input.slug },
         { $push: { likedBy: ctx.user._id } }
       );
-      return updated;
-    } catch (error) {
-      throw Error('Could not like this recipe');
+      return true;
     }
+
+    await this.recipeRepo.findOneAndUpdate(
+      { slug: data.input.slug },
+      { $pull: { likedBy: ctx.user._id } }
+    );
+
+    return true;
   }
 
   public async list(data: ILimitSkipInput): Promise<IRecipe[]> {
@@ -137,7 +150,7 @@ export default class RecipeService {
     const user = await this.accountContext.findBy(ctx.user._id, '_id');
     const recipe = await this.recipeRepo.findOneBy({ slug: data.input.slug });
 
-    const lookUpData = { recipeId: recipe.id, userId: user.id };
+    const lookUpData = { recipeId: recipe._id, userId: user._id };
 
     const recipeRating = await this.recipeRatingsRepo.findBy(lookUpData);
 
@@ -160,7 +173,7 @@ export default class RecipeService {
       return 0;
     }
 
-    return result[0].rating;
+    return Math.round(result[0].rating);
   }
 
   public async ratings(recipeId: IObjectId): Promise<IRecipeRating[]> {

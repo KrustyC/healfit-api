@@ -4,6 +4,7 @@ import {
   IRecipe,
   IRecipeCreateInput,
   IRecipeEditInput,
+  IRecipeLikeInput,
   IRecipeRateInput,
   IRecipeRating,
 } from 'types/recipe';
@@ -26,6 +27,11 @@ export default {
       data: IRecipeEditInput,
       ctx: IContext
     ): Promise<IRecipe> => Recipe.edit(data, ctx),
+    likeOrDislikeRecipe: async (
+      _: object,
+      data: IRecipeLikeInput,
+      ctx: IContext
+    ): Promise<boolean> => Recipe.likeOrDislike(data, ctx),
     rateRecipe: async (
       _: object,
       data: IRecipeRateInput,

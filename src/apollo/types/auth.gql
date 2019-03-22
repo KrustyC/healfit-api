@@ -25,6 +25,7 @@ input ResetPasswordInput {
 }
 
 type Account {
+  _id: ID
   firstName: String
   lastName: String
   roles: [String]

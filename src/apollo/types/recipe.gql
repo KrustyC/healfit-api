@@ -46,6 +46,7 @@ type Recipe {
   fat: Float
   rating: Int
   ratings: [RecipeRating]
+  likedBy: [ID]
 }
 
 # INPUT
@@ -125,6 +126,8 @@ type Mutation {
   createRecipe(input: RecipeCreateInput!): Recipe
     @auth(role: USER)
   editRecipe(input: RecipeEditInput!): Recipe
+    @auth(role: USER)
+  likeOrDislikeRecipe(input: RecipeLikeInput!): Boolean
     @auth(role: USER)
   rateRecipe(input: RecipeRateInput!): RecipeRating
     @auth(role: USER)
