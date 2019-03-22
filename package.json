@@ -8,7 +8,7 @@
     "dev": "nodemon",
     "build": "tsc -b",
     "start:dev": "ts-node -r tsconfig-paths/register src/index.ts",
-    "start": "ts-node -r tsconfig-paths/register --transpileOnly src/index.ts",
+    "start": "ts-node -r tsconfig-paths/register --transpile-only src/index.ts",
     "prebuild": "./node_modules/.bin/rimraf dist",
     "test": "NODE_ENV=testing jest --runInBand --detectOpenHandles",
     "test:lint": "tslint --project tsconfig.json --fix  src/**/*.ts -t verbose"
