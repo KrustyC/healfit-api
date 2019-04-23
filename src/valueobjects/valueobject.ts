@@ -13,13 +13,13 @@ export default class ValueObject {
 
   public indexedList(label: string = 'name'): any[] {
     return _.map(this.data, (val: any, key: any) => ({
-      id: parseInt(key, 10),
+      id: key,
       [label]: val,
     }));
   }
 
   public validIds(): any[] {
-    return _.map(_.keys(this.data), x => parseInt(x, 10));
+    return _.map(_.keys(this.data), x => x);
   }
 
   public getMinId(): number {
@@ -30,28 +30,24 @@ export default class ValueObject {
     return _.max(this.validIds());
   }
 
-  public fromInt(theInt: number): any {
-    return _.get(this.data, theInt);
-  }
-
   public fromString(
     theString: string,
     ignoreCase: boolean = false
-  ): number | undefined {
-    let id = 0;
+  ): string | undefined {
+    let id;
     _.forEach(this.data, (val, key: string) => {
       if (ignoreCase) {
         // @ts-ignore
         if (val.toLowerCase() === theString.toLowerCase()) {
-          id = parseInt(key, 10);
+          id = key;
         }
         // @ts-ignore
       } else if (val === theString) {
-        id = parseInt(key, 10);
+        id = key;
       }
     });
 
-    return id > 0 ? id : undefined;
+    return id;
   }
 
   public isValid(type: any, ignoreCase = false) {
@@ -66,32 +62,6 @@ export default class ValueObject {
 
     const ids = this.validIds();
     return _.indexOf(ids, type) > -1;
-  }
-
-  public listFromString(list: string): any[] {
-    if (!list || !_.isString(list) || list === '') {
-      return [];
-    }
-
-    const split = _.split(list, ',');
-
-    return _.map(split, s => {
-      const trimmed = _.trim(s);
-
-      if (parseInt(trimmed, 10)) {
-        const asInt = parseInt(trimmed, 10);
-        return this.isValid(asInt) && asInt;
-      }
-      return this.isValid(trimmed) && this.fromString(trimmed);
-    });
-  }
-
-  public listFromArray(array: any): any[] {
-    if (!array || !_.isArray(array) || array.length === 0) {
-      return [];
-    }
-
-    return _.map(array, s => this.isValid(s) && this.fromInt(s));
   }
 
   public commaListFromArray(array: any[]): string {

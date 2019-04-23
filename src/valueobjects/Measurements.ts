@@ -1,13 +1,13 @@
 import ValueObject from './valueobject';
 
 const TYPES = {
-  1: 'Grams',
-  2: 'Oz',
-  3: 'Teaspoon',
-  4: 'Tablespoon',
-  5: 'Cup',
-  6: 'Pint',
-  7: 'Litre',
+  'm-1': 'Grams',
+  'm-2': 'Oz',
+  'm-3': 'Teaspoon',
+  'm-4': 'Tablespoon',
+  'm-5': 'Cup',
+  'm-6': 'Pint',
+  'm-7': 'Litre',
 };
 
 class Measurements extends ValueObject {

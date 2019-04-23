@@ -6,13 +6,15 @@ enum Role {
 }
 
 type ValueObject {
-  id: Int
+  id: String
   name: String
 }
 
 type GlobalData {
   ingredientsCategories: [ValueObject]
   measurements: [ValueObject]
+  recipeCategories: [ValueObject]
+  recipeLevels: [ValueObject]
 }
 
 type Query {
