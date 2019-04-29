@@ -8,11 +8,11 @@ export interface IRecipeCreateInput {
     description: string;
     totalTime: number;
     category: {
-      id: number;
+      id: string;
       name: string;
     };
     level: {
-      id: number;
+      id: string;
       name: string;
     };
     ingredients: [
@@ -44,11 +44,11 @@ export interface IRecipeEditInput {
     description: string;
     totalTime: number;
     category: {
-      id: number;
+      id: string;
       name: string;
     };
     level: {
-      id: number;
+      id: string;
       name: string;
     };
     ingredients: [
@@ -93,11 +93,11 @@ export interface IRecipe extends Document {
   totalTime: number;
   description: string;
   category: {
-    id: number;
+    id: string;
     name: string;
   };
   level: {
-    id: number;
+    id: string;
     name: string;
   };
   ingredients: [

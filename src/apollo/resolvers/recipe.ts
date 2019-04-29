@@ -1,3 +1,4 @@
+import Account from '@context/account';
 import Recipe from '@context/recipe';
 import { IContext, ILimitSkipInput, IObjectId } from 'types/global';
 import {
@@ -8,6 +9,8 @@ import {
   IRecipeRateInput,
   IRecipeRating,
 } from 'types/recipe';
+
+import { IAccount } from 'types/account';
 
 interface INameInput {
   name: string;
@@ -49,6 +52,8 @@ export default {
     ): Promise<IRecipe[]> => Recipe.searchByName(name),
   },
   Recipe: {
+    createdBy: async (recipe: { createdBy: IObjectId }): Promise<IAccount> =>
+      Account.findBy(recipe.createdBy, '_id'),
     rating: async (recipe: { _id: IObjectId }): Promise<number> =>
       Recipe.rating(recipe._id),
     ratings: async (recipe: { _id: IObjectId }): Promise<IRecipeRating[]> =>

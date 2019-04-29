@@ -47,21 +47,22 @@ type Recipe {
   rating: Int
   ratings: [RecipeRating]
   likedBy: [ID]
+  createdBy: Account
 }
 
 # INPUT
 input RecipeLevelInput {
-  id: Int
+  id: String
   name: String
 }
 
 input RecipeCategoryInput {
-  id: Int
+  id: String
   name: String
 }
 
 input RecipeMeasurementInput {
-  id: Int
+  id: String
   name: String
 }
 

@@ -15,10 +15,7 @@ export default class RecipeRepo extends Repository {
   ): Promise<IRecipe> {
     const recipeData = {
       ...data.input,
-      createdBy: {
-        id: user._id,
-        name: `${user.firstName} ${user.lastName}`,
-      },
+      createdBy: user._id,
       slug: slugify(data.input.title, {
         lower: true,
       }),

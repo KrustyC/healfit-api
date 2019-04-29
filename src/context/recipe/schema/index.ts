@@ -7,13 +7,10 @@ const recipeSchema = new mongoose.Schema(
     calories: { type: Number, required: true },
     carbohydrates: { type: Number, required: true },
     category: {
-      id: { type: Number, required: true },
+      id: { type: String, required: true },
       name: { type: String, required: true },
     },
-    createdBy: {
-      id: { _id: false, type: 'ObjectId', ref: 'account' },
-      name: String,
-    },
+    createdBy: { _id: false, type: 'ObjectId', ref: 'account' },
     description: { type: String, required: true },
     fat: { type: Number, required: true },
     fiber: { type: Number, required: true },
@@ -21,7 +18,7 @@ const recipeSchema = new mongoose.Schema(
       {
         id: { _id: false, type: 'ObjectId', ref: 'ingredient' },
         measurement: {
-          id: { type: Number, required: true },
+          id: { type: String, required: true },
           name: { type: String, required: true },
         },
         name: { type: String, required: true },
@@ -29,7 +26,7 @@ const recipeSchema = new mongoose.Schema(
       },
     ],
     level: {
-      id: { type: Number, required: true },
+      id: { type: String, required: true },
       name: { type: String, required: true },
     },
     likedBy: [{ _id: false, type: 'ObjectId', ref: 'account' }],
