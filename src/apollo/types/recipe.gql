@@ -1,15 +1,15 @@
 type RecipeLevel {
-  id: Int
+  id: String
   name: String
 }
 
 type RecipeCategory {
-  id: Int
+  id: String
   name: String
 }
 
 type RecipeMeasurement {
-  id: Int
+  id: String
   name: String
 }
 

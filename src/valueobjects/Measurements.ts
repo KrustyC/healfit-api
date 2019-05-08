@@ -8,6 +8,7 @@ const TYPES = {
   'm-5': 'Cup',
   'm-6': 'Pint',
   'm-7': 'Litre',
+  'm-8': 'Unit',
 };
 
 class Measurements extends ValueObject {
