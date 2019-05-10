@@ -78,7 +78,7 @@ export default class IngredientService {
 
   public async list(data: ILimitSkipInput): Promise<IIngredient[]> {
     const options = {
-      limit: data.limit || 5000,
+      limit: data.limit || 50,
       skip: data.skip || 0,
       sort: 'name',
     };
