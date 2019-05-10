@@ -38,8 +38,8 @@ export default class RecipeService {
       slug: input.slug,
     });
 
-    const isUserOwner =
-      ctx.user._id.toString() === recipe.createdBy.id.toString();
+    const isUserOwner = ctx.user._id.toString() === recipe.createdBy.toString();
+
     if (!isUserOwner) {
       throw new AuthenticationError(
         'You are not authorized to edit this recipe.'
