@@ -77,9 +77,13 @@ export default class IngredientService {
   }
 
   public async list(data: ILimitSkipInput): Promise<IIngredient[]> {
-    const limitQuery = { limit: data.limit || 5000, skip: data.skip || 0 };
+    const options = {
+      limit: data.limit || 5000,
+      skip: data.skip || 0,
+      sort: 'name',
+    };
 
-    return this.ingredientRepo.findBy({}, {}, [], limitQuery);
+    return this.ingredientRepo.findBy({}, {}, [], options);
   }
 
   public async findBy(field: string, fieldName: string) {
