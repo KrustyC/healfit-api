@@ -23,7 +23,7 @@ export interface IRecipeCreateInput {
           label: string;
           value: number;
         };
-        quantity: number;
+        quantity: string;
       }
     ];
     method: string;
@@ -59,7 +59,7 @@ export interface IRecipeEditInput {
           label: string;
           value: number;
         };
-        quantity: number;
+        quantity: string;
       }
     ];
     method: string;
@@ -108,7 +108,7 @@ export interface IRecipe extends Document {
         label: string;
         value: number;
       };
-      quantity: number;
+      quantity: string;
     }
   ];
   method: string;

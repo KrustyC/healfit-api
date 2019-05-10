@@ -51,7 +51,7 @@ export default class IngredientService {
     const options = { limit: 25 };
     const textSearchQuery = {
       $text: {
-        $search: name,
+        $search: `"${name}"`,
       },
     };
 

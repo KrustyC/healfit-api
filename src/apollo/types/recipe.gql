@@ -17,7 +17,7 @@ type RecipeIngredient {
   id: ID
   name: String
   measurement: RecipeMeasurement
-  quantity: Float
+  quantity: String
 }
 
 
@@ -70,7 +70,7 @@ input RecipeIngredientInput {
   id: ID
   name: String
   measurement: RecipeMeasurementInput
-  quantity: Int
+  quantity: String
 }
 
 input RecipeCreateInput {
