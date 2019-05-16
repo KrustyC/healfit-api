@@ -1,3 +1,4 @@
+/* tslint:disable:object-literal-sort-keys */
 import ValueObject from './valueobject';
 
 const TYPES = {
@@ -10,6 +11,7 @@ const TYPES = {
   'rc-7': 'Vegetarian',
   'rc-8': 'Vegan',
   'rc-9': 'Salads',
+  'rc-10': 'Snack',
 };
 
 class RecipeCategories extends ValueObject {
