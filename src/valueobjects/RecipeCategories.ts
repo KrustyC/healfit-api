@@ -12,6 +12,7 @@ const TYPES = {
   'rc-8': 'Vegan',
   'rc-9': 'Salads',
   'rc-10': 'Snack',
+  'rc-11': 'Dessert',
 };
 
 class RecipeCategories extends ValueObject {
