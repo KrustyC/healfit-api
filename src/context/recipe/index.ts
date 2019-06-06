@@ -26,7 +26,7 @@ export default {
     recipeService.rating(recipeId),
   ratings: (recipeId: IObjectId): Promise<IRecipeRating[]> =>
     recipeService.ratings(recipeId),
-  searchByName: (name: string): Promise<IRecipe[]> =>
-    recipeService.searchByName(name),
+  searchByTitle: (name: string): Promise<IRecipe[]> =>
+    recipeService.searchByTitle(name),
   show: (slug: string): Promise<IRecipe> => recipeService.show(slug),
 };

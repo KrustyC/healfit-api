@@ -120,7 +120,7 @@ input RecipeLikeInput {
 type Query {
   recipe(slug: String!): Recipe
   recipes(limit: Int, skip: Int): [Recipe]
-  recipesByName(name: String): [Ingredient],
+  recipesByTitle(title: String): [Recipe],
 }
 
 type Mutation {
@@ -132,6 +132,5 @@ type Mutation {
     @auth(role: USER)
   rateRecipe(input: RecipeRateInput!): RecipeRating
     @auth(role: USER)
-  recipesByName(name: String): [Recipe]
   # deleteRecipe(id: ID!): Boolean @auth(role: USER)
 }

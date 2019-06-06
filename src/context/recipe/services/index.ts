@@ -82,7 +82,7 @@ export default class RecipeService {
     }
   }
 
-  public async searchByName(title: string): Promise<IRecipe[]> {
+  public async searchByTitle(title: string): Promise<IRecipe[]> {
     const projection = {};
     const options = { limit: 25 };
     const textSearchQuery = {

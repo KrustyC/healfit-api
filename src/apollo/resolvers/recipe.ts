@@ -46,10 +46,10 @@ export default {
       Recipe.show(slug),
     recipes: async (_: object, args: ILimitSkipInput): Promise<IRecipe[]> =>
       Recipe.list(args),
-    recipesByName: async (
+    recipesByTitle: async (
       _: object,
-      { name }: { name: string }
-    ): Promise<IRecipe[]> => Recipe.searchByName(name),
+      { title }: { title: string }
+    ): Promise<IRecipe[]> => Recipe.searchByTitle(title),
   },
   Recipe: {
     createdBy: async (recipe: { createdBy: IObjectId }): Promise<IAccount> =>
