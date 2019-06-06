@@ -82,12 +82,12 @@ export default class RecipeService {
     }
   }
 
-  public async searchByName(name: string): Promise<IRecipe[]> {
+  public async searchByName(title: string): Promise<IRecipe[]> {
     const projection = {};
     const options = { limit: 25 };
     const textSearchQuery = {
       $text: {
-        $search: name,
+        $search: title,
       },
     };
 
@@ -104,8 +104,8 @@ export default class RecipeService {
 
     // If it doesn't match a full text, then we'll look for a regex
     const regexQuery = {
-      name: {
-        $regex: new RegExp(name.split(' ').join('|'), 'gi'),
+      title: {
+        $regex: new RegExp(title.split(' ').join('|'), 'gi'),
       },
     };
 
