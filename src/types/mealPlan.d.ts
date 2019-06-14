@@ -20,3 +20,19 @@ export interface IMealEvent extends Document {
   recipes: [];
   mealType: number;
 }
+
+export interface IMealPlanRangeInput extends Document {
+  input: {
+    startDay: Date;
+    endDay: Date;
+  }
+}
+
+export interface IMealEventAddInput extends Document {
+  input: {
+    startTime: string;
+    endTime: string;
+    recipes: [IObjectId];
+    mealType: number;
+  };
+}

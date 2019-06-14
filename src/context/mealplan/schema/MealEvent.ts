@@ -9,6 +9,6 @@ const MealEventSchema = new mongoose.Schema({
 });
 
 export const MealEvent: Model<IMealEvent> = MealPlanEvent.discriminator(
-  'MealPlanEvent',
+  'MealEvent',
   MealEventSchema
 );

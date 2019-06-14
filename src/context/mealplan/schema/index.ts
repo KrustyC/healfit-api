@@ -32,5 +32,3 @@ const MealPlanEventSchema = new mongoose.Schema(
 export const MealPlanEvent: Model<IMealPlanEvent> = mongoose.model<
   IMealPlanEvent
 >('MealPlanEvent', MealPlanEventSchema);
-
-const MealPlanSchema = new mongoose.Schema({ recipes: [], mealType: Number });
