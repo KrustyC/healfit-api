@@ -16,6 +16,7 @@
     "prebuild": "./node_modules/.bin/rimraf dist",
     "postbuild": "cp -r src/apollo/types dist/apollo",
     "test": "NODE_ENV=testing mocha -r ts-node/register -r tsconfig-paths/register src/**/*.spec.ts",
+    "test:circle": "NODE_ENV=ci mocha -r ts-node/register -r tsconfig-paths/register src/**/*.spec.ts",
     "test:lint": "tslint --project tsconfig.json --fix  src/**/*.ts -t verbose"
   },
   "husky": {
@@ -39,6 +40,7 @@
   "dependencies": {
     "@types/bcrypt-nodejs": "^0.0.30",
     "@types/crypto-random-string": "^1.0.0",
+    "@types/faker": "^4.1.5",
     "@types/glob": "^7.1.1",
     "@types/graphql": "^14.0.7",
     "@types/graphql-resolvers": "^0.2.0",
@@ -58,6 +60,7 @@
     "dotenv": "^6.0.0",
     "express": "^4.13.4",
     "express-jwt": "^5.3.1",
+    "faker": "^4.1.0",
     "glob": "^7.1.4",
     "graphql": "^14.1.1",
     "graphql-resolvers": "^0.3.2",

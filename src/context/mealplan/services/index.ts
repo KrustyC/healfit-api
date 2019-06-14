@@ -1,7 +1,9 @@
 import AccountContext, { IAccountContext } from '@context/account';
 import { AuthenticationError } from 'apollo-server';
+import moment from 'moment';
 import { IContext, IObjectId } from 'types/global';
 import {
+  IMealEvent,
   IMealEventAddInput,
   IMealPlanEvent,
   IMealPlanRangeInput,
@@ -21,18 +23,30 @@ export default class MealPlanService {
     range: IMealPlanRangeInput,
     ctx: IContext
   ): Promise<IMealPlanEvent> {
-    // return this.mealPlanEventRepo;
-    return [];
+    const startDate = moment(range.input.startDay).unix() / 86400;
+    const endDate = moment(range.input.endDay).unix() / 86400;
+
+    const query = {
+      day: {
+        $gte: startDate,
+        $lt: endDate,
+      },
+      owner: ctx.user._id,
+    };
+
+    return this.mealPlanEventRepo.findBy(query);
   }
 
   public async addMealEvent(
     data: IMealEventAddInput,
     ctx: IContext
-  ): Promise<boolean> {
+  ): Promise<IMealEvent> {
     const creator = await this.accountContext.findBy(ctx.user._id, '_id');
+
     if (!creator) {
       throw new AuthenticationError('Provided user does not exist ');
     }
-    return true;
+
+    return this.mealPlanEventRepo.createMealEvent(data, creator);
   }
 }

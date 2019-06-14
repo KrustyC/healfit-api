@@ -21,18 +21,18 @@ export interface IMealEvent extends Document {
   mealType: number;
 }
 
-export interface IMealPlanRangeInput extends Document {
+export interface IMealPlanRangeInput {
   input: {
     startDay: Date;
     endDay: Date;
   }
 }
 
-export interface IMealEventAddInput extends Document {
+export interface IMealEventAddInput {
   input: {
-    startTime: string;
-    endTime: string;
+    startTime: Date;
+    endTime: Date;
     recipes: [IObjectId];
-    mealType: number;
+    mealType: string;
   };
 }

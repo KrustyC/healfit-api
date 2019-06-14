@@ -1,6 +1,8 @@
 import Repository from '@lib/Repository';
 import moment from 'moment';
 import { IAccount } from 'types/account';
+import { ITimezonedDate } from 'types/global';
+
 import { IMealEventAddInput, IMealPlanEvent } from 'types/mealPlan';
 import { MealPlanEvent } from '../schema';
 import { MealEvent } from '../schema/MealEvent';
@@ -36,21 +38,10 @@ export default class IMealPlanEventRepo extends Repository {
     return null;
   }
 
-  private getFormattedDates(startDate: string, endDate: string) {
-    const date =
-      moment(startDate)
-        .utc()
-        .format('X') / 86400;
-
-    const startTime =
-      moment(startDate)
-        .utc()
-        .format('X') % 86400;
-
-    const endTime =
-      moment(endDate)
-        .utc()
-        .format('X') % 86400;
+  private getFormattedDates(startDate: Date, endDate: Date) {
+    const date = moment(startDate).unix() / 86400;
+    const startTime = moment(startDate).unix() % 86400;
+    const endTime = moment(endDate).unix() % 86400;
 
     return {
       date,
