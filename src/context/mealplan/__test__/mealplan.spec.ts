@@ -1,4 +1,5 @@
-import { expect } from 'chai';
+import chai, { expect } from 'chai';
+import chaiDatetime from 'chai-datetime';
 import 'mocha';
 import moment from 'moment';
 import mongoose from 'mongoose';
@@ -16,6 +17,8 @@ import { fakeWorkoutEvent } from '../../../../tests/stub/workoutEvent';
 
 import { Account } from '../../account/schema';
 import MealPlanContext from '../index';
+
+chai.use(chaiDatetime);
 
 describe('Meal Plan Context', () => {
   const user1 = fakeAccount({
@@ -110,7 +113,7 @@ describe('Meal Plan Context', () => {
   it('should create a new MealEvent', async () => {
     const data: IMealEventAddInput = {
       input: {
-        endTime: new Date('2019-08-28T12:30:00'),
+        endTime: new Date('2019-08-28T13:30:00'),
         mealType: 'mt-1',
         recipes: [recipe1._id],
         startTime: new Date('2019-08-28T12:30:00'),
@@ -130,8 +133,12 @@ describe('Meal Plan Context', () => {
 
     expect(result).to.have.property('_id');
     expect(result).to.have.property('owner');
-    expect(result).to.have.property('startTime', 21600);
-    expect(result).to.have.property('endTime', 25200);
+    expect(result)
+      .to.have.property('startTime')
+      .to.equalDate(new Date('2019-08-28T12:30:00'));
+    expect(result)
+      .to.have.property('endTime')
+      .to.equalDate(new Date('2019-08-28T13:30:00'));
     expect(result).to.have.property('mealType', 'mt-1');
     expect(result).to.have.property('type', 'MealEvent');
     expect(result.recipes)
@@ -160,8 +167,12 @@ describe('Meal Plan Context', () => {
 
     expect(result).to.have.property('_id');
     expect(result).to.have.property('owner');
-    // expect(result).to.have.property('startTime', 21600);
-    // expect(result).to.have.property('endTime', 25200);
+    expect(result)
+      .to.have.property('startTime')
+      .to.equalDate(new Date('2019-08-28T12:30:00'));
+    expect(result)
+      .to.have.property('endTime')
+      .to.equalDate(new Date('2019-08-28T13:30:00'));
     expect(result).to.have.property('type', 'WorkoutEvent');
   });
 });

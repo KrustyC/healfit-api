@@ -39,6 +39,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/bcrypt-nodejs": "^0.0.30",
+    "@types/chai-datetime": "^0.0.32",
     "@types/crypto-random-string": "^1.0.0",
     "@types/faker": "^4.1.5",
     "@types/glob": "^7.1.1",
@@ -53,6 +54,7 @@
     "apollo-tracing": "^0.4.0",
     "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.15.0",
+    "chai-datetime": "^1.5.0",
     "compression": "^1.7.3",
     "cors": "^2.8.1",
     "crypto-random-string": "^1.0.0",
