@@ -61,7 +61,7 @@ describe('Meal Plan Context', () => {
     date: new Date('2019-09-28'),
     endTime: new Date('2019-09-28T12:30:00+05:30'),
     owner: user1._id,
-    startTime: new Date('2019-0*-28T12:30:00+05:30'),
+    startTime: new Date('2019-09-28T12:30:00+05:30'),
   });
 
   before(async () => {
@@ -81,7 +81,7 @@ describe('Meal Plan Context', () => {
     }
   });
 
-  it('should find all events within a given range of dates', async () => {
+  it.only('should find all events within a given range of dates', async () => {
     const data: IMealPlanRangeInput = {
       input: {
         endDay: new Date('2018-08-28'),
@@ -98,13 +98,13 @@ describe('Meal Plan Context', () => {
       },
     };
 
-    const result = await MealPlanContext.addWorkoutEvent(data, ctx);
-
-    expect(result).to.have.property('_id');
-    expect(result).to.have.property('owner');
-    expect(result).to.have.property('startTime', 21600);
-    expect(result).to.have.property('endTime', 25200);
-    expect(result).to.have.property('type', 'WorkoutEvent');
+    const events = await MealPlanContext.findWithinRange(data, ctx);
+    console.log(events);
+    expect(events).to.be.an('array');
+    // expect(result).to.have.property('owner');
+    // expect(result).to.have.property('startTime', 21600);
+    // expect(result).to.have.property('endTime', 25200);
+    // expect(result).to.have.property('type', 'WorkoutEvent');
   });
 
   it('should create a new MealEvent', async () => {
