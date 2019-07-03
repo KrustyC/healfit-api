@@ -36,3 +36,10 @@ export interface IMealEventAddInput {
     mealType: string;
   };
 }
+
+export interface IWorkoutEventAddInput {
+  input: {
+    startTime: Date;
+    endTime: Date;
+  };
+}

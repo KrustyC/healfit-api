@@ -7,6 +7,8 @@ import {
   IMealEventAddInput,
   IMealPlanEvent,
   IMealPlanRangeInput,
+  IWorkoutEvent,
+  IWorkoutEventAddInput,
 } from 'types/mealPlan';
 import MealPlanRepo from '../repo';
 
@@ -48,5 +50,18 @@ export default class MealPlanService {
     }
 
     return this.mealPlanEventRepo.createMealEvent(data, creator);
+  }
+
+  public async addWorkoutEvent(
+    data: IWorkoutEventAddInput,
+    ctx: IContext
+  ): Promise<IWorkoutEvent> {
+    const creator = await this.accountContext.findBy(ctx.user._id, '_id');
+
+    if (!creator) {
+      throw new AuthenticationError('Provided user does not exist ');
+    }
+
+    return this.mealPlanEventRepo.createWorkoutEvent(data, creator);
   }
 }

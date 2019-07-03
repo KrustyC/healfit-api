@@ -1,11 +1,10 @@
 import mongoose from 'mongoose';
 
 const isCI = process.env.NODE_ENV === 'ci';
-const host = isCI ? 'localhost:27018' : 'mongodb';
+const host = isCI ? 'localhost:27018' : 'mongodbtest';
 
 const dbName = 'mongodbtest';
 const connectionString = `mongodb://${host}/${dbName}`;
-
 mongoose.Promise = global.Promise;
 
 before(done => {
@@ -20,7 +19,15 @@ before(done => {
     });
 });
 
-afterEach(done => {
+after(async () => {
+  const collections = await mongoose.connection.db.collections();
+
+  for (const collection of collections) {
+    await collection.deleteMany({});
+  }
+});
+
+after(done => {
   mongoose.disconnect();
   return done();
 });

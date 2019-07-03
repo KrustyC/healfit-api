@@ -5,21 +5,6 @@ import '../../../../tests';
 import { MealEvent } from '../schema/MealEvent';
 
 describe('Meal Plan Schema', () => {
-  // MealEvent.collection.drop();
-  // beforeEach(done => {
-  //   const newMealEvent = new MealEvent({
-  //     lastName: 'man',
-  //     name: 'Bat',
-  //   });
-  //   newMealEvent.save(err => {
-  //     done();
-  //   });
-  // });
-  // afterEach(done => {
-  //   MealEvent.collection.drop();
-  //   done();
-  // });
-
   it('should create a new MealEvent', async () => {
     const date = moment().unix() / 86400;
 
