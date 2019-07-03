@@ -3,6 +3,7 @@ import {
   IMealEvent,
   IMealEventAddInput,
   IMealPlanEvent,
+  IMealPlanRangeInput,
   IWorkoutEvent,
   IWorkoutEventAddInput,
 } from 'types/mealPlan';
@@ -19,6 +20,10 @@ export default {
     data: IWorkoutEventAddInput,
     ctx: IContext
   ): Promise<IWorkoutEvent> => mealPlanService.addWorkoutEvent(data, ctx),
+  findWithinRange: (
+    data: IMealPlanRangeInput,
+    ctx: IContext
+  ): Promise<[IMealPlanEvent]> => mealPlanService.findWithinRange(data, ctx),
 
   hello: () => 'Hello world!',
   // list: (): Promise<IMealPlanEvent> => mealPlanService.list(),

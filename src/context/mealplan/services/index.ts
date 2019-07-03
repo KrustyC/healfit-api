@@ -21,10 +21,10 @@ export default class MealPlanService {
     this.accountContext = AccountContext;
   }
 
-  public async findForUserInRange(
+  public async findWithinRange(
     range: IMealPlanRangeInput,
     ctx: IContext
-  ): Promise<IMealPlanEvent> {
+  ): Promise<[IMealPlanEvent]> {
     const startDate = moment(range.input.startDay).unix() / 86400;
     const endDate = moment(range.input.endDay).unix() / 86400;
 

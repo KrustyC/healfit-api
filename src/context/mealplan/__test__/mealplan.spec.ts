@@ -3,10 +3,16 @@ import 'mocha';
 import moment from 'moment';
 import mongoose from 'mongoose';
 import { IContext } from 'types/global';
-import { IMealEventAddInput, IWorkoutEventAddInput } from 'types/mealPlan';
+import {
+  IMealEventAddInput,
+  IMealPlanRangeInput,
+  IWorkoutEventAddInput,
+} from 'types/mealPlan';
 import '../../../../tests';
 import { fakeAccount } from '../../../../tests/stub/account';
+import { fakeMealEvent } from '../../../../tests/stub/mealEvent';
 import { fakeRecipe } from '../../../../tests/stub/recipe';
+import { fakeWorkoutEvent } from '../../../../tests/stub/workoutEvent';
 
 import { Account } from '../../account/schema';
 import MealPlanContext from '../index';
@@ -19,11 +25,56 @@ describe('Meal Plan Context', () => {
   const recipe1 = fakeRecipe({ createdBy: user1._id });
   const recipe2 = fakeRecipe({ createdBy: user1._id });
 
+  const mealEvent1 = fakeMealEvent({
+    date: new Date('2019-08-28'),
+    endTime: new Date('2019-08-28T12:30:00+05:30'),
+    owner: user1._id,
+    startTime: new Date('2019-08-28T12:30:00+05:30'),
+  });
+  const mealEvent2 = fakeMealEvent({
+    date: new Date('2019-08-29'),
+    endTime: new Date('2019-08-29T12:30:00+05:30'),
+    owner: user1._id,
+    startTime: new Date('2019-08-29T12:30:00+05:30'),
+  });
+  const mealEvent3 = fakeMealEvent({
+    date: new Date('2019-08-30'),
+    endTime: new Date('2019-08-30T12:30:00+05:30'),
+    owner: user1._id,
+    startTime: new Date('2019-08-30T12:30:00+05:30'),
+  });
+  const mealEvent4 = fakeMealEvent({
+    date: new Date('2019-09-28'),
+    endTime: new Date('2019-09-28T12:30:00+05:30'),
+    owner: user1._id,
+    startTime: new Date('2019-08-28T12:30:00+05:30'),
+  });
+
+  const workoutEvent1 = fakeWorkoutEvent({
+    date: new Date('2019-08-28'),
+    endTime: new Date('2019-08-28T12:30:00+05:30'),
+    owner: user1._id,
+    startTime: new Date('2019-08-28T12:30:00+05:30'),
+  });
+
+  const workoutEvent2 = fakeWorkoutEvent({
+    date: new Date('2019-09-28'),
+    endTime: new Date('2019-09-28T12:30:00+05:30'),
+    owner: user1._id,
+    startTime: new Date('2019-0*-28T12:30:00+05:30'),
+  });
+
   before(async () => {
     try {
       await user1.save();
       await recipe1.save();
       await recipe2.save();
+      await mealEvent1.save();
+      await mealEvent2.save();
+      await mealEvent3.save();
+      await mealEvent4.save();
+      await workoutEvent1.save();
+      await workoutEvent2.save();
     } catch (e) {
       // tslint:disable-next-line:no-console
       console.log('Error here', e);
@@ -31,10 +82,10 @@ describe('Meal Plan Context', () => {
   });
 
   it('should find all events within a given range of dates', async () => {
-    const data: IWorkoutEventAddInput = {
+    const data: IMealPlanRangeInput = {
       input: {
-        endTime: new Date('2018-08-28T12:30:00+05:30'),
-        startTime: new Date('2018-08-28T12:30:00+06:30'),
+        endDay: new Date('2018-08-28'),
+        startDay: new Date('2018-08-28'),
       },
     };
 
@@ -76,7 +127,7 @@ describe('Meal Plan Context', () => {
     };
 
     const result = await MealPlanContext.addMealEvent(data, ctx);
-
+    console.log(result);
     expect(result).to.have.property('_id');
     expect(result).to.have.property('owner');
     expect(result).to.have.property('startTime', 21600);
