@@ -1,0 +1,100 @@
+# type MealEventRecipe {
+#   id: ID
+#   slug: String
+#   title: String
+#   picutre: String
+# }
+
+type MealEvent {
+  id: ID
+  startTime: Date
+  endTime: Date
+  mealType: String
+  recipes: [Recipe]
+  owner: Account
+}
+
+# INPUT
+input RecipeLevelInput {
+  id: String
+  name: String
+}
+
+input RecipeCategoryInput {
+  id: String
+  name: String
+}
+
+input RecipeMeasurementInput {
+  id: String
+  name: String
+}
+
+input RecipeIngredientInput {
+  id: ID
+  name: String
+  measurement: RecipeMeasurementInput
+  quantity: String
+}
+
+input RecipeCreateInput {
+  title: String!
+  servings: Int!
+  description: String!
+  totalTime: Int!
+  category: RecipeCategoryInput!
+  level: RecipeLevelInput!
+  ingredients: [RecipeIngredientInput]!
+  method: String!
+  picture: String!
+  calories: Int
+  carbohydrates: Float
+  fiber: Float
+  protein: Float
+  fat: Float
+}
+
+input RecipeEditInput {
+  slug: String!
+  title: String!
+  description: String!
+  servings: Int!
+  totalTime: Int!
+  category: RecipeCategoryInput!
+  level: RecipeLevelInput!
+  ingredients: [RecipeIngredientInput]!
+  method: String!
+  picture: String!
+  calories: Int!
+  carbohydrates: Float!
+  fiber: Float
+  protein: Float!
+  fat: Float!
+}
+
+input RecipeRateInput {
+  slug: String!
+  rate: Int!
+}
+
+input RecipeLikeInput {
+  slug: String!
+}
+
+type Query {
+  recipe(slug: String!): Recipe
+  recipes(limit: Int, skip: Int): [Recipe]
+  recipesByTitle(title: String): [Recipe],
+}
+
+type Mutation {
+  createRecipe(input: RecipeCreateInput!): Recipe
+    @auth(role: USER)
+  editRecipe(input: RecipeEditInput!): Recipe
+    @auth(role: USER)
+  likeOrDislikeRecipe(input: RecipeLikeInput!): Boolean
+    @auth(role: USER)
+  rateRecipe(input: RecipeRateInput!): RecipeRating
+    @auth(role: USER)
+  # deleteRecipe(id: ID!): Boolean @auth(role: USER)
+}
