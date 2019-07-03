@@ -23,18 +23,13 @@ export default class IMealPlanEventRepo extends Repository {
     data: IMealEventAddInput,
     user: IAccount
   ): Promise<IMealEvent> {
-    const { date, startTime, endTime } = this.getFormattedDates(
-      data.input.startTime,
-      data.input.endTime
-    );
-
     const mealEventData = {
-      date,
-      endTime,
+      endTime: data.input.endTime,
       mealType: data.input.mealType,
       owner: user._id,
       recipes: data.input.recipes,
-      startTime,
+      startTime: data.input.startTime,
+      timezoneOffset: data.input.startTime.getTimezoneOffset(),
     };
 
     const recipe = new MealEvent(mealEventData);
@@ -45,31 +40,14 @@ export default class IMealPlanEventRepo extends Repository {
     data: IWorkoutEventAddInput,
     user: IAccount
   ): Promise<IWorkoutEvent> {
-    const { date, startTime, endTime } = this.getFormattedDates(
-      data.input.startTime,
-      data.input.endTime
-    );
-
     const workoutEventData = {
-      date,
-      endTime,
+      endTime: data.input.endTime,
       owner: user._id,
-      startTime,
+      startTime: data.input.startTime,
+      timezoneOffset: data.input.startTime.getTimezoneOffset(),
     };
 
     const recipe = new WorkoutEvent(workoutEventData);
     return recipe.save();
-  }
-
-  private getFormattedDates(startDate: Date, endDate: Date) {
-    const date = moment(startDate).unix() / 86400;
-    const startTime = moment(startDate).unix() % 86400;
-    const endTime = moment(endDate).unix() % 86400;
-
-    return {
-      date,
-      endTime,
-      startTime,
-    };
   }
 }

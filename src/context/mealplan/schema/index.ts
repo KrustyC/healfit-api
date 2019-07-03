@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment';
 import mongoose, { Model } from 'mongoose';
 import { IMealPlanEvent } from 'types/mealPlan';
 
@@ -10,24 +11,28 @@ import { IMealPlanEvent } from 'types/mealPlan';
 
 const MealPlanEventSchema = new mongoose.Schema(
   {
-    // date only represent tha actuale day without time
-    date: Number,
-    // endTime is an integer representing the hour of the day where the event terminates
-    endTime: Number,
+    endTime: { type: Date, required: true },
     owner: { _id: false, type: 'ObjectId', ref: 'account' },
-    // startTime is an integer representing the hour of the day where the event terminates
-    startTime: Number,
+    startTime: { type: Date, required: true },
+    timezoneOffset: Number,
   },
-  { discriminatorKey: 'type', timestamps: true }
+  {
+    discriminatorKey: 'type',
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
 );
 
-// @TODO @TODO @TODO @TODO @TODO @TODO @TODO @TODO @
-// @                                               @
-// @----ADD TEST----ADD TEST----ADD TEST----ADD TES@
-// @                                               @
-// @TODO @TODO @TODO @TODO @TODO @TODO @TODO @TODO @
-
 // MealPlanEventSchema.index({ name: 'text' });
+
+MealPlanEventSchema.virtual('start').get(function() {
+  return new Date(this.startTime.getTime() - this.timezoneOffset * 60000);
+});
+
+MealPlanEventSchema.virtual('end').get(function() {
+  return new Date(this.endTime.getTime() - this.timezoneOffset * 60000);
+});
 
 export const MealPlanEvent: Model<IMealPlanEvent> = mongoose.model<
   IMealPlanEvent

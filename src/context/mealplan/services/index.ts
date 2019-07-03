@@ -25,15 +25,34 @@ export default class MealPlanService {
     range: IMealPlanRangeInput,
     ctx: IContext
   ): Promise<[IMealPlanEvent]> {
-    const startDate = moment(range.input.startDay).unix() / 86400;
-    const endDate = moment(range.input.endDay).unix() / 86400;
+    const { startDay, endDay } = range.input;
+
+    const startRange = new Date(
+      startDay.getFullYear(),
+      startDay.getMonth(),
+      startDay.getDate() + 1,
+      1,
+      0,
+      0
+    );
+
+    const endRange = new Date(
+      endDay.getFullYear(),
+      endDay.getMonth(),
+      endDay.getDate() + 1,
+      0,
+      59,
+      59
+    );
 
     const query = {
-      day: {
-        $gte: startDate,
-        $lt: endDate,
+      endTime: {
+        $lte: endRange,
       },
       owner: ctx.user._id,
+      startTime: {
+        $gte: startRange,
+      },
     };
 
     return this.mealPlanEventRepo.findBy(query);
@@ -62,6 +81,11 @@ export default class MealPlanService {
       throw new AuthenticationError('Provided user does not exist ');
     }
 
-    return this.mealPlanEventRepo.createWorkoutEvent(data, creator);
+    const created = await this.mealPlanEventRepo.createWorkoutEvent(
+      data,
+      creator
+    );
+
+    return created;
   }
 }

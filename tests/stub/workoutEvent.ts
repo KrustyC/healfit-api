@@ -10,7 +10,6 @@ const { ObjectId: MongooseObjectId } = mongoose.mongo;
 
 interface IWorkoutEventData {
   _id?: IObjectId;
-  date?: Date;
   endTime?: Date;
   excercises?: [string];
   owner: IObjectId;
@@ -21,11 +20,10 @@ interface IWorkoutEventData {
 export function fakeWorkoutEvent(data: IWorkoutEventData): IWorkoutEvent {
   return new WorkoutEvent({
     _id: data._id ? new MongooseObjectId(data._id) : new MongooseObjectId(),
-    date: data.date ? moment(data.date).unix() % 86400 : 17111.2222,
-    endTime: data.endTime ? moment(data.endTime).unix() / 86400 : 25200,
+    endTime: data.endTime || new Date(),
     excercises: data.excercises || [],
     owner: data.owner,
-    startTime: data.startTime ? moment(data.startTime).unix() / 86400 : 21600, // @TODO Here we should use current date
+    startTime: data.startTime || new Date(),
     workoutType: data.workoutType || null,
   });
 }
