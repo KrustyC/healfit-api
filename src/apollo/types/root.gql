@@ -5,6 +5,8 @@ enum Role {
   USER
 }
 
+scalar Date
+
 type ValueObject {
   id: String
   name: String

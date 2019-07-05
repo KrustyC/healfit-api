@@ -1,39 +1,42 @@
-# type MealEventRecipe {
-#   id: ID
-#   slug: String
-#   title: String
-#   picutre: String
-# }
-
-type MealEvent {
+interface MealPlanEvent {
   id: ID
   startTime: Date
   endTime: Date
-  mealType: String
-  recipes: [Recipe]
+  type: String
   owner: Account
 }
 
-type WorkoutEvent {
+type MealEvent implements MealPlanEvent {
   id: ID
   startTime: Date
   endTime: Date
+  type: String
+  owner: Account
   mealType: String
   recipes: [Recipe]
+}
+
+type WorkoutEvent implements MealPlanEvent {
+  id: ID
+  startTime: Date
+  endTime: Date
+  type: String
   owner: Account
 }
+
+union SearchResult = MealEvent | WorkoutEvent
 
 # INPUT
 input MealEventAddInput {
   startTime: Date!
   endTime: Date!
   recipes: [ID]!
-  mealType: string!
+  mealType: String!
 }
 
 input WorkoutEventAddInput {
-  startTime: Date;
-  endTime: Date;
+  startTime: Date!
+  endTime: Date!
 }
 
 input MealPlanRangeInput {
@@ -42,7 +45,7 @@ input MealPlanRangeInput {
 }
 
 type Query {
-  findWithinRange(input: MealPlanRangeInput!): [MealEvent | WorkoutEvent]
+  findWithinRange(input: MealPlanRangeInput!): [SearchResult]
 }
 
 type Mutation {
