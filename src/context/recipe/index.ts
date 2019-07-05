@@ -17,6 +17,8 @@ export default {
   delete: (id: IObjectId): Promise<boolean> => recipeService.delete(id),
   edit: (data: IRecipeEditInput, ctx: IContext): Promise<IRecipe> =>
     recipeService.edit(data, ctx),
+  findByIds: (ids: IObjectId[]): Promise<IRecipe[]> =>
+    recipeService.findByIds(ids),
   likeOrDislike: (data: IRecipeLikeInput, ctx: IContext): Promise<boolean> =>
     recipeService.likeOrDislike(data, ctx),
   list: (data: ILimitSkipInput): Promise<IRecipe[]> => recipeService.list(data),

@@ -23,8 +23,7 @@ export default {
   findWithinRange: (
     data: IMealPlanRangeInput,
     ctx: IContext
-  ): Promise<[IMealPlanEvent]> => mealPlanService.findWithinRange(data, ctx),
-
-  hello: () => 'Hello world!',
+  ): Promise<Array<IMealEvent | IWorkoutEvent>> =>
+    mealPlanService.findWithinRange(data, ctx),
   // list: (): Promise<IMealPlanEvent> => mealPlanService.list(),
 };

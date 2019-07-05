@@ -14,87 +14,41 @@ type MealEvent {
   owner: Account
 }
 
-# INPUT
-input RecipeLevelInput {
-  id: String
-  name: String
-}
-
-input RecipeCategoryInput {
-  id: String
-  name: String
-}
-
-input RecipeMeasurementInput {
-  id: String
-  name: String
-}
-
-input RecipeIngredientInput {
+type WorkoutEvent {
   id: ID
-  name: String
-  measurement: RecipeMeasurementInput
-  quantity: String
+  startTime: Date
+  endTime: Date
+  mealType: String
+  recipes: [Recipe]
+  owner: Account
 }
 
-input RecipeCreateInput {
-  title: String!
-  servings: Int!
-  description: String!
-  totalTime: Int!
-  category: RecipeCategoryInput!
-  level: RecipeLevelInput!
-  ingredients: [RecipeIngredientInput]!
-  method: String!
-  picture: String!
-  calories: Int
-  carbohydrates: Float
-  fiber: Float
-  protein: Float
-  fat: Float
+# INPUT
+input MealEventAddInput {
+  startTime: Date!
+  endTime: Date!
+  recipes: [ID]!
+  mealType: string!
 }
 
-input RecipeEditInput {
-  slug: String!
-  title: String!
-  description: String!
-  servings: Int!
-  totalTime: Int!
-  category: RecipeCategoryInput!
-  level: RecipeLevelInput!
-  ingredients: [RecipeIngredientInput]!
-  method: String!
-  picture: String!
-  calories: Int!
-  carbohydrates: Float!
-  fiber: Float
-  protein: Float!
-  fat: Float!
+input WorkoutEventAddInput {
+  startTime: Date;
+  endTime: Date;
 }
 
-input RecipeRateInput {
-  slug: String!
-  rate: Int!
-}
-
-input RecipeLikeInput {
-  slug: String!
+input MealPlanRangeInput {
+  startDay: Date!
+  endDay: Date!
 }
 
 type Query {
-  recipe(slug: String!): Recipe
-  recipes(limit: Int, skip: Int): [Recipe]
-  recipesByTitle(title: String): [Recipe],
+  findWithinRange(input: MealPlanRangeInput!): [MealEvent | WorkoutEvent]
 }
 
 type Mutation {
-  createRecipe(input: RecipeCreateInput!): Recipe
+  addMealEvent(input: MealEventAddInput!): MealEvent
     @auth(role: USER)
-  editRecipe(input: RecipeEditInput!): Recipe
-    @auth(role: USER)
-  likeOrDislikeRecipe(input: RecipeLikeInput!): Boolean
-    @auth(role: USER)
-  rateRecipe(input: RecipeRateInput!): RecipeRating
+  addWorkoutEvent(input: WorkoutEventAddInput!): WorkoutEvent
     @auth(role: USER)
   # deleteRecipe(id: ID!): Boolean @auth(role: USER)
 }

@@ -24,7 +24,7 @@ export default class MealPlanService {
   public async findWithinRange(
     range: IMealPlanRangeInput,
     ctx: IContext
-  ): Promise<[IMealPlanEvent]> {
+  ): Promise<[IMealEvent | IWorkoutEvent]> {
     const { startDay, endDay } = range.input;
 
     const startRange = new Date(
