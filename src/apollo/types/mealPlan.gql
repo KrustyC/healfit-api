@@ -22,8 +22,6 @@ type WorkoutEvent implements MealPlanEvent {
   owner: Account
 }
 
-union SearchResult = MealEvent | WorkoutEvent
-
 # INPUT
 input MealEventAddInput {
   startTime: Date!
