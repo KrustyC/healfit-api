@@ -5,10 +5,12 @@ import { IContext, IObjectId } from 'types/global';
 import {
   IMealEvent,
   IMealEventAddInput,
+  IMealEventEditInput,
   IMealPlanEvent,
   IMealPlanRangeInput,
   IWorkoutEvent,
   IWorkoutEventAddInput,
+  IWorkoutEventEditInput,
 } from 'types/mealPlan';
 import MealPlanRepo from '../repo';
 
@@ -65,10 +67,26 @@ export default class MealPlanService {
     const creator = await this.accountContext.findBy(ctx.user._id, '_id');
 
     if (!creator) {
-      throw new AuthenticationError('Provided user does not exist ');
+      throw new AuthenticationError('Provided user does not exist');
     }
 
     return this.mealPlanEventRepo.createMealEvent(data, creator);
+  }
+
+  public async editMealEvent(
+    data: IMealEventEditInput,
+    ctx: IContext
+  ): Promise<IMealEvent> {
+    const event = await this.mealPlanEventRepo.findOneBy({
+      _id: data.input._id,
+      owner: ctx.user._id,
+    });
+
+    if (!event) {
+      throw new Error('Provided evenet does not exist');
+    }
+
+    return event;
   }
 
   public async addWorkoutEvent(
@@ -78,7 +96,7 @@ export default class MealPlanService {
     const creator = await this.accountContext.findBy(ctx.user._id, '_id');
 
     if (!creator) {
-      throw new AuthenticationError('Provided user does not exist ');
+      throw new AuthenticationError('Provided user does not exist');
     }
 
     const created = await this.mealPlanEventRepo.createWorkoutEvent(
@@ -87,5 +105,40 @@ export default class MealPlanService {
     );
 
     return created;
+  }
+
+  public async editWorkoutEvent(
+    data: IWorkoutEventEditInput,
+    ctx: IContext
+  ): Promise<IWorkoutEvent> {
+    const event = await this.mealPlanEventRepo.findOneBy({
+      _id: data.input._id,
+      owner: ctx.user._id,
+    });
+
+    if (!event) {
+      throw new Error('Provided event does not exist');
+    }
+
+    return event;
+  }
+
+  public async deleteEvent(id: IObjectId, ctx: IContext): Promise<boolean> {
+    const event = await this.mealPlanEventRepo.findOneBy({
+      _id: id,
+      owner: ctx.user._id,
+    });
+
+    if (!event) {
+      throw new Error('Provided event does not exist');
+    }
+
+    await this.mealPlanEventRepo.hardDelete({ _id: id });
+
+    return true;
+  }
+
+  public async findBy(field: string, fieldName: string) {
+    return this.mealPlanEventRepo.findOneBy({ [fieldName]: field });
   }
 }

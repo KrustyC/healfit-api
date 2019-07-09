@@ -36,9 +36,27 @@ export interface IMealEventAddInput {
     mealType: string;
   };
 }
+export interface IMealEventEditInput {
+  input: {
+    _id: IObjectId;
+    startTime: Date;
+    endTime: Date;
+    recipes: [IObjectId];
+    mealType: string;
+  };
+}
 
 export interface IWorkoutEventAddInput {
   input: {
+    startTime: Date;
+    endTime: Date;
+  };
+}
+
+
+export interface IWorkoutEventEditInput {
+  input: {
+    _id: IObjectId;
     startTime: Date;
     endTime: Date;
   };

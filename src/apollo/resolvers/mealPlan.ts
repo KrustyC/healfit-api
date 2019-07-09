@@ -5,9 +5,11 @@ import { IContext, IObjectId } from 'types/global';
 import {
   IMealEvent,
   IMealEventAddInput,
+  IMealEventEditInput,
   IMealPlanRangeInput,
   IWorkoutEvent,
   IWorkoutEventAddInput,
+  IWorkoutEventEditInput,
 } from 'types/mealPlan';
 
 import { IRecipe } from 'types/recipe';
@@ -45,6 +47,21 @@ export default {
       data: IWorkoutEventAddInput,
       ctx: IContext
     ): Promise<IWorkoutEvent> => MealPlan.addWorkoutEvent(data, ctx),
+    deleteEvent: async (
+      _: object,
+      id: IObjectId,
+      ctx: IContext
+    ): Promise<boolean> => MealPlan.deleteEvent(id, ctx),
+    editMealEvent: async (
+      _: object,
+      data: IMealEventEditInput,
+      ctx: IContext
+    ): Promise<IMealEvent> => MealPlan.editMealEvent(data, ctx),
+    editWorkoutEvent: async (
+      _: object,
+      data: IWorkoutEventEditInput,
+      ctx: IContext
+    ): Promise<IWorkoutEvent> => MealPlan.editWorkoutEvent(data, ctx),
   },
   Query: {
     mealPlanEvents: async (
