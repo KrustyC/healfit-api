@@ -187,4 +187,8 @@ export default class RecipeService {
   public async show(slug: string): Promise<IRecipe> {
     return this.recipeRepo.findOneBy({ slug });
   }
+
+  public async findByIds(ids: IObjectId[]) {
+    return this.recipeRepo.findBy({ _id: { $in: ids } });
+  }
 }

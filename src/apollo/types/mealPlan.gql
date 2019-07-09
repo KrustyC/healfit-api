@@ -1,0 +1,55 @@
+interface MealPlanEvent {
+  _id: ID
+  startTime: Date
+  endTime: Date
+  owner: Account
+}
+
+type MealEvent implements MealPlanEvent {
+  _id: ID
+  startTime: Date
+  endTime: Date
+  owner: Account
+  mealType: String
+  recipes: [Recipe]
+}
+
+type WorkoutEvent implements MealPlanEvent {
+  _id: ID
+  startTime: Date
+  endTime: Date
+  workoutType: String
+  owner: Account
+}
+
+union SearchResult = MealEvent | WorkoutEvent
+
+# INPUT
+input MealEventAddInput {
+  startTime: Date!
+  endTime: Date!
+  recipes: [ID]!
+  mealType: String!
+}
+
+input WorkoutEventAddInput {
+  startTime: Date!
+  endTime: Date!
+}
+
+input MealPlanRangeInput {
+  startDay: Date!
+  endDay: Date!
+}
+
+type Query {
+  mealPlanEvents(input: MealPlanRangeInput!): [MealPlanEvent]
+}
+
+type Mutation {
+  addMealEvent(input: MealEventAddInput!): MealEvent
+    @auth(role: USER)
+  addWorkoutEvent(input: WorkoutEventAddInput!): WorkoutEvent
+    @auth(role: USER)
+  # deleteRecipe(id: ID!): Boolean @auth(role: USER)
+}

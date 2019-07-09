@@ -2,11 +2,11 @@ import Repository from '@lib/Repository';
 import slugify from 'slugify';
 import { IAccount } from 'types/account';
 import { IRecipe, IRecipeCreateInput } from 'types/recipe';
-import { Recipe } from '../schema';
+import { RecipeSchema } from '../schema';
 
 export default class RecipeRepo extends Repository {
   constructor() {
-    super(Recipe);
+    super(RecipeSchema);
   }
 
   public async create(
@@ -21,7 +21,7 @@ export default class RecipeRepo extends Repository {
       }),
     };
 
-    const recipe = new Recipe(recipeData);
+    const recipe = new RecipeSchema(recipeData);
     return recipe.save();
   }
 }

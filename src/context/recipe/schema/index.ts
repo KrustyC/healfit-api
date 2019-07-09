@@ -43,7 +43,7 @@ const recipeSchema = new mongoose.Schema(
 
 recipeSchema.index({ title: 'text' });
 
-export const Recipe: Model<IRecipe> = mongoose.model<IRecipe>(
+export const RecipeSchema: Model<IRecipe> = mongoose.model<IRecipe>(
   'Recipe',
   recipeSchema
 );

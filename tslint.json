@@ -12,6 +12,8 @@
     "no-implicit-dependencies": [
       true,
       [
+        "chai",
+        "mocha",
         "morgan",
         "config",
         "types",
