@@ -30,7 +30,21 @@ input MealEventAddInput {
   mealType: String!
 }
 
+input MealEventEditInput {
+  _id: ID!
+  startTime: Date!
+  endTime: Date!
+  recipes: [ID]!
+  mealType: String!
+}
+
 input WorkoutEventAddInput {
+  startTime: Date!
+  endTime: Date!
+}
+
+input WorkoutEventEditInput {
+  _id: ID!
   startTime: Date!
   endTime: Date!
 }
@@ -49,5 +63,10 @@ type Mutation {
     @auth(role: USER)
   addWorkoutEvent(input: WorkoutEventAddInput!): WorkoutEvent
     @auth(role: USER)
-  # deleteRecipe(id: ID!): Boolean @auth(role: USER)
+  deleteEvent(id: ID!): Boolean
+    @auth(role: USER)
+  editMealEvent(input: MealEventEditInput!): MealEvent
+    @auth(role: USER)
+  editWorkoutEvent(input: WorkoutEventEditInput!): WorkoutEvent
+    @auth(role: USER)
 }
