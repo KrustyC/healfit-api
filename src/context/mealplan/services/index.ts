@@ -30,7 +30,7 @@ export default class MealPlanService {
     const startRange = new Date(
       startDay.getFullYear(),
       startDay.getMonth(),
-      startDay.getDate() + 1,
+      startDay.getDate(),
       1,
       0,
       0

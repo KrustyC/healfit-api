@@ -1,26 +1,24 @@
 interface MealPlanEvent {
-  id: ID
+  _id: ID
   startTime: Date
   endTime: Date
-  type: String
   owner: Account
 }
 
 type MealEvent implements MealPlanEvent {
-  id: ID
+  _id: ID
   startTime: Date
   endTime: Date
-  type: String
   owner: Account
   mealType: String
   recipes: [Recipe]
 }
 
 type WorkoutEvent implements MealPlanEvent {
-  id: ID
+  _id: ID
   startTime: Date
   endTime: Date
-  type: String
+  workoutType: String
   owner: Account
 }
 
@@ -45,7 +43,7 @@ input MealPlanRangeInput {
 }
 
 type Query {
-  findWithinRange(input: MealPlanRangeInput!): [SearchResult]
+  mealPlanEvents(input: MealPlanRangeInput!): [MealPlanEvent]
 }
 
 type Mutation {

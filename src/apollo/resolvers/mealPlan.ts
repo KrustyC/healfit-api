@@ -16,10 +16,23 @@ import { IAccount } from 'types/account';
 
 export default {
   MealEvent: {
-    owner: async (mealPlanEvent: { owner: IObjectId }): Promise<IAccount> =>
-      Account.findBy(mealPlanEvent.owner, '_id'),
     recipes: async (mealEvent: { recipes: IObjectId[] }): Promise<IRecipe[]> =>
       Recipe.findByIds(mealEvent.recipes),
+  },
+  MealPlanEvent: {
+    __resolveType(obj: any) {
+      if (obj.type === 'MealEvent') {
+        return 'MealEvent';
+      }
+
+      if (obj.type === 'WorkoutEvent') {
+        return 'WorkoutEvent';
+      }
+
+      return null;
+    },
+    owner: async (mealPlanEvent: { owner: IObjectId }): Promise<IAccount> =>
+      Account.findBy(mealPlanEvent.owner, '_id'),
   },
   Mutation: {
     addMealEvent: async (
@@ -34,7 +47,7 @@ export default {
     ): Promise<IWorkoutEvent> => MealPlan.addWorkoutEvent(data, ctx),
   },
   Query: {
-    findWithinRange: async (
+    mealPlanEvents: async (
       _: object,
       input: IMealPlanRangeInput,
       ctx: IContext
