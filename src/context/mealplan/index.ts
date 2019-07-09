@@ -32,6 +32,8 @@ export default {
     data: IWorkoutEventEditInput,
     ctx: IContext
   ): Promise<IWorkoutEvent> => mealPlanService.editWorkoutEvent(data, ctx),
+  findBy: (field: string, fieldName: string) =>
+    mealPlanService.findBy(field, fieldName),
   findWithinRange: (
     data: IMealPlanRangeInput,
     ctx: IContext

@@ -1,8 +1,7 @@
 import chai, { expect } from 'chai';
 import chaiDatetime from 'chai-datetime';
 import 'mocha';
-import moment from 'moment';
-import mongoose from 'mongoose';
+
 import { IContext } from 'types/global';
 import {
   IMealEventAddInput,
@@ -21,9 +20,8 @@ import MealPlanContext from '../index';
 chai.use(chaiDatetime);
 
 describe('Meal Plan Context', () => {
-  const user1 = fakeAccount({
-    // _id: new mongoose.mongo.ObjectID('5d1c935b0a13de0022030159'),
-  });
+  const user1 = fakeAccount({});
+  const user2 = fakeAccount({});
 
   const recipe1 = fakeRecipe({ createdBy: user1._id });
   const recipe2 = fakeRecipe({ createdBy: user1._id });
@@ -49,6 +47,12 @@ describe('Meal Plan Context', () => {
     startTime: new Date('2019-08-28T13:30:00'),
   });
 
+  const mealEvent5 = fakeMealEvent({
+    endTime: new Date('2019-09-28T15:30:00'),
+    owner: user2._id,
+    startTime: new Date('2019-08-28T13:30:00'),
+  });
+
   const workoutEvent1 = fakeWorkoutEvent({
     endTime: new Date('2019-08-28T15:30:00'),
     owner: user1._id,
@@ -64,12 +68,14 @@ describe('Meal Plan Context', () => {
   before(async () => {
     try {
       await user1.save();
+      await user2.save();
       await recipe1.save();
       await recipe2.save();
       await mealEvent1.save();
       await mealEvent2.save();
       await mealEvent3.save();
       await mealEvent4.save();
+      await mealEvent5.save();
       await workoutEvent1.save();
       await workoutEvent2.save();
     } catch (e) {
@@ -174,5 +180,42 @@ describe('Meal Plan Context', () => {
       .to.have.property('endTime')
       .to.equalDate(new Date('2019-08-28T13:30:00'));
     expect(result).to.have.property('type', 'WorkoutEvent');
+  });
+
+  it('should delete an event', async () => {
+    const ctx: IContext = {
+      user: {
+        _id: user1._id,
+        email: user1.email,
+        firstName: user1.firstName,
+        lastName: user1.lastName,
+      },
+    };
+
+    await MealPlanContext.deleteEvent(mealEvent1._id, ctx);
+
+    const expected = await MealPlanContext.findBy(
+      mealEvent1._id.toString(),
+      '_id'
+    );
+
+    expect(expected).to.be.a('null');
+  });
+
+  it.only('should throw an error when deleting, if the user is not the owner', async () => {
+    const ctx: IContext = {
+      user: {
+        _id: user1._id,
+        email: user1.email,
+        firstName: user1.firstName,
+        lastName: user1.lastName,
+      },
+    };
+
+    try {
+      await MealPlanContext.deleteEvent(mealEvent5._id, ctx);
+    } catch (error) {
+      expect(error).to.be.an('error');
+    }
   });
 });
