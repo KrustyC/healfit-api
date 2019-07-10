@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import moment from 'moment';
 import mongoose, { Model } from 'mongoose';
 import { IMealPlanEvent } from 'types/mealPlan';
 

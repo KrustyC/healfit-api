@@ -5,8 +5,10 @@ import 'mocha';
 import { IContext } from 'types/global';
 import {
   IMealEventAddInput,
+  IMealEventEditInput,
   IMealPlanRangeInput,
   IWorkoutEventAddInput,
+  IWorkoutEventEditInput,
 } from 'types/mealPlan';
 import '../../../../tests';
 import { fakeAccount } from '../../../../tests/stub/account';
@@ -182,6 +184,62 @@ describe('Meal Plan Context', () => {
     expect(result).to.have.property('type', 'WorkoutEvent');
   });
 
+  it.only('should edit a workout WorkoutEvent', async () => {
+    const data: IWorkoutEventEditInput = {
+      input: {
+        _id: workoutEvent1._id,
+        endTime: new Date('2019-11-28T15:30:00'),
+        startTime: new Date('2019-11-28T14:30:00'),
+      },
+    };
+
+    const ctx: IContext = {
+      user: {
+        _id: user1._id,
+        email: user1.email,
+        firstName: user1.firstName,
+        lastName: user1.lastName,
+      },
+    };
+
+    const result = await MealPlanContext.editWorkoutEvent(data, ctx);
+
+    expect(result).to.have.property('_id');
+    expect(result).to.have.property('owner');
+    expect(result)
+      .to.have.property('startTime')
+      .to.equalDate(new Date('2019-11-28T14:30:00'));
+    expect(result)
+      .to.have.property('endTime')
+      .to.equalDate(new Date('2019-11-28T15:30:00'));
+    expect(result).to.have.property('type', 'WorkoutEvent');
+  });
+
+  it('should reject editing a WorkoutEvent if the owner is not correct', async () => {
+    const data: IWorkoutEventEditInput = {
+      input: {
+        _id: workoutEvent2._id,
+        endTime: new Date('2019-08-28T13:30:00'),
+        startTime: new Date('2019-08-28T12:30:00'),
+      },
+    };
+
+    const ctx: IContext = {
+      user: {
+        _id: user2._id,
+        email: user2.email,
+        firstName: user2.firstName,
+        lastName: user2.lastName,
+      },
+    };
+
+    try {
+      await MealPlanContext.editWorkoutEvent(data, ctx);
+    } catch (error) {
+      expect(error).to.be.an('error');
+    }
+  });
+
   it('should delete an event', async () => {
     const ctx: IContext = {
       user: {
@@ -202,7 +260,7 @@ describe('Meal Plan Context', () => {
     expect(expected).to.be.a('null');
   });
 
-  it.only('should throw an error when deleting, if the user is not the owner', async () => {
+  it('should throw an error when deleting, if the user is not the owner', async () => {
     const ctx: IContext = {
       user: {
         _id: user1._id,

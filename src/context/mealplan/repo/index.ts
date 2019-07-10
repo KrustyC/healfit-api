@@ -1,7 +1,6 @@
 import Repository from '@lib/Repository';
 import moment from 'moment';
 import { IAccount } from 'types/account';
-import { ITimezonedDate } from 'types/global';
 
 import {
   IMealEvent,
@@ -9,6 +8,7 @@ import {
   IMealPlanEvent,
   IWorkoutEvent,
   IWorkoutEventAddInput,
+  IWorkoutEventEditInput,
 } from 'types/mealPlan';
 import { MealPlanEvent } from '../schema';
 import { MealEvent } from '../schema/MealEvent';
@@ -49,5 +49,19 @@ export default class IMealPlanEventRepo extends Repository {
 
     const recipe = new WorkoutEvent(workoutEventData);
     return recipe.save();
+  }
+
+  public async editWorkoutEvent(
+    data: IWorkoutEventEditInput
+  ): Promise<IWorkoutEvent> {
+    const query = { _id: data.input._id };
+    const set = {
+      endTime: data.input.endTime,
+      startTime: data.input.startTime,
+      timezoneOffset: data.input.startTime.getTimezoneOffset(),
+    };
+
+    const upda = await this.findOneAndUpdate(query, set);
+    return upda;
   }
 }

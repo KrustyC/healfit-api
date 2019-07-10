@@ -120,7 +120,7 @@ export default class MealPlanService {
       throw new Error('Provided event does not exist');
     }
 
-    return event;
+    return this.mealPlanEventRepo.editWorkoutEvent(data);
   }
 
   public async deleteEvent(id: IObjectId, ctx: IContext): Promise<boolean> {
