@@ -2,7 +2,7 @@ import chai, { expect } from 'chai';
 import chaiDatetime from 'chai-datetime';
 import 'mocha';
 
-import { IContext } from 'types/global';
+import { IContext, IObjectId } from 'types/global';
 import {
   IMealEventAddInput,
   IMealEventEditInput,
@@ -118,126 +118,203 @@ describe('Meal Plan Context', () => {
     expect(eventIds).to.not.include(workoutEvent2._id.toString());
   });
 
-  it('should create a new MealEvent', async () => {
-    const data: IMealEventAddInput = {
-      input: {
-        endTime: new Date('2019-08-28T13:30:00'),
-        mealType: 'mt-1',
-        recipes: [recipe1._id],
-        startTime: new Date('2019-08-28T12:30:00'),
-      },
-    };
+  describe('Meal Event', () => {
+    it('should create a new MealEvent', async () => {
+      const data: IMealEventAddInput = {
+        input: {
+          endTime: new Date('2019-08-28T13:30:00'),
+          mealType: 'mt-1',
+          recipes: [recipe1._id],
+          startTime: new Date('2019-08-28T12:30:00'),
+        },
+      };
 
-    const ctx: IContext = {
-      user: {
-        _id: user1._id,
-        email: user1.email,
-        firstName: user1.firstName,
-        lastName: user1.lastName,
-      },
-    };
+      const ctx: IContext = {
+        user: {
+          _id: user1._id,
+          email: user1.email,
+          firstName: user1.firstName,
+          lastName: user1.lastName,
+        },
+      };
 
-    const result = await MealPlanContext.addMealEvent(data, ctx);
+      const result = await MealPlanContext.addMealEvent(data, ctx);
 
-    expect(result).to.have.property('_id');
-    expect(result).to.have.property('owner');
-    expect(result)
-      .to.have.property('startTime')
-      .to.equalDate(new Date('2019-08-28T12:30:00'));
-    expect(result)
-      .to.have.property('endTime')
-      .to.equalDate(new Date('2019-08-28T13:30:00'));
-    expect(result).to.have.property('mealType', 'mt-1');
-    expect(result).to.have.property('type', 'MealEvent');
-    expect(result.recipes)
-      .to.be.an('array')
-      .that.include(recipe1._id);
+      expect(result).to.have.property('_id');
+      expect(result).to.have.property('owner');
+      expect(result)
+        .to.have.property('startTime')
+        .to.equalDate(new Date('2019-08-28T12:30:00'));
+      expect(result)
+        .to.have.property('endTime')
+        .to.equalDate(new Date('2019-08-28T13:30:00'));
+      expect(result).to.have.property('mealType', 'mt-1');
+      expect(result).to.have.property('type', 'MealEvent');
+      expect(result.recipes)
+        .to.be.an('array')
+        .that.include(recipe1._id);
+    });
+
+    it('should edit a MealEvent', async () => {
+      const data: IMealEventEditInput = {
+        input: {
+          _id: mealEvent4._id,
+          endTime: new Date('2019-11-28T15:30:00'),
+          mealType: 'mt-2',
+          recipes: [recipe2._id],
+          startTime: new Date('2019-11-28T14:30:00'),
+        },
+      };
+
+      const ctx: IContext = {
+        user: {
+          _id: user1._id,
+          email: user1.email,
+          firstName: user1.firstName,
+          lastName: user1.lastName,
+        },
+      };
+
+      const result = await MealPlanContext.editMealEvent(data, ctx);
+
+      expect(result).to.have.property('_id');
+      expect(result).to.have.property('owner');
+      expect(result)
+        .to.have.property('startTime')
+        .to.equalDate(new Date('2019-11-28T14:30:00'));
+      expect(result)
+        .to.have.property('endTime')
+        .to.equalDate(new Date('2019-11-28T15:30:00'));
+      expect(result).to.have.property('mealType', 'mt-2');
+      expect(result).to.have.property('type', 'MealEvent');
+
+      expect(result.recipes).to.be.an('array');
+
+      const recipes = result.recipes.map((id: IObjectId) => id.toString());
+      expect(recipes)
+        .to.be.an('array')
+        .that.include(recipe2._id.toString());
+
+      // Ensure recipe 1 is removed
+      expect(recipes)
+        .to.be.an('array')
+        .that.not.include(recipe1._id.toString());
+    });
+
+    it('should reject editing a MealEvent if the owner is not correct', async () => {
+      const data: IMealEventEditInput = {
+        input: {
+          _id: mealEvent2._id,
+          endTime: new Date('2019-11-28T15:30:00'),
+          mealType: 'mt-2',
+          recipes: [recipe2._id],
+          startTime: new Date('2019-11-28T14:30:00'),
+        },
+      };
+
+      const ctx: IContext = {
+        user: {
+          _id: user2._id,
+          email: user2.email,
+          firstName: user2.firstName,
+          lastName: user2.lastName,
+        },
+      };
+
+      try {
+        await MealPlanContext.editMealEvent(data, ctx);
+      } catch (error) {
+        expect(error).to.be.an('error');
+      }
+    });
   });
 
-  it('should create a new WorkoutEvent', async () => {
-    const data: IWorkoutEventAddInput = {
-      input: {
-        endTime: new Date('2019-08-28T13:30:00'),
-        startTime: new Date('2019-08-28T12:30:00'),
-      },
-    };
+  describe('Workout Event', () => {
+    it('should create a new WorkoutEvent', async () => {
+      const data: IWorkoutEventAddInput = {
+        input: {
+          endTime: new Date('2019-08-28T13:30:00'),
+          startTime: new Date('2019-08-28T12:30:00'),
+        },
+      };
 
-    const ctx: IContext = {
-      user: {
-        _id: user1._id,
-        email: user1.email,
-        firstName: user1.firstName,
-        lastName: user1.lastName,
-      },
-    };
+      const ctx: IContext = {
+        user: {
+          _id: user1._id,
+          email: user1.email,
+          firstName: user1.firstName,
+          lastName: user1.lastName,
+        },
+      };
 
-    const result = await MealPlanContext.addWorkoutEvent(data, ctx);
+      const result = await MealPlanContext.addWorkoutEvent(data, ctx);
 
-    expect(result).to.have.property('_id');
-    expect(result).to.have.property('owner');
-    expect(result)
-      .to.have.property('startTime')
-      .to.equalDate(new Date('2019-08-28T12:30:00'));
-    expect(result)
-      .to.have.property('endTime')
-      .to.equalDate(new Date('2019-08-28T13:30:00'));
-    expect(result).to.have.property('type', 'WorkoutEvent');
-  });
+      expect(result).to.have.property('_id');
+      expect(result).to.have.property('owner');
+      expect(result)
+        .to.have.property('startTime')
+        .to.equalDate(new Date('2019-08-28T12:30:00'));
+      expect(result)
+        .to.have.property('endTime')
+        .to.equalDate(new Date('2019-08-28T13:30:00'));
+      expect(result).to.have.property('type', 'WorkoutEvent');
+    });
 
-  it.only('should edit a workout WorkoutEvent', async () => {
-    const data: IWorkoutEventEditInput = {
-      input: {
-        _id: workoutEvent1._id,
-        endTime: new Date('2019-11-28T15:30:00'),
-        startTime: new Date('2019-11-28T14:30:00'),
-      },
-    };
+    it('should edit a WorkoutEvent', async () => {
+      const data: IWorkoutEventEditInput = {
+        input: {
+          _id: workoutEvent1._id,
+          endTime: new Date('2019-11-28T15:30:00'),
+          startTime: new Date('2019-11-28T14:30:00'),
+        },
+      };
 
-    const ctx: IContext = {
-      user: {
-        _id: user1._id,
-        email: user1.email,
-        firstName: user1.firstName,
-        lastName: user1.lastName,
-      },
-    };
+      const ctx: IContext = {
+        user: {
+          _id: user1._id,
+          email: user1.email,
+          firstName: user1.firstName,
+          lastName: user1.lastName,
+        },
+      };
 
-    const result = await MealPlanContext.editWorkoutEvent(data, ctx);
+      const result = await MealPlanContext.editWorkoutEvent(data, ctx);
 
-    expect(result).to.have.property('_id');
-    expect(result).to.have.property('owner');
-    expect(result)
-      .to.have.property('startTime')
-      .to.equalDate(new Date('2019-11-28T14:30:00'));
-    expect(result)
-      .to.have.property('endTime')
-      .to.equalDate(new Date('2019-11-28T15:30:00'));
-    expect(result).to.have.property('type', 'WorkoutEvent');
-  });
+      expect(result).to.have.property('_id');
+      expect(result).to.have.property('owner');
+      expect(result)
+        .to.have.property('startTime')
+        .to.equalDate(new Date('2019-11-28T14:30:00'));
+      expect(result)
+        .to.have.property('endTime')
+        .to.equalDate(new Date('2019-11-28T15:30:00'));
+      expect(result).to.have.property('type', 'WorkoutEvent');
+    });
 
-  it('should reject editing a WorkoutEvent if the owner is not correct', async () => {
-    const data: IWorkoutEventEditInput = {
-      input: {
-        _id: workoutEvent2._id,
-        endTime: new Date('2019-08-28T13:30:00'),
-        startTime: new Date('2019-08-28T12:30:00'),
-      },
-    };
+    it('should reject editing a WorkoutEvent if the owner is not correct', async () => {
+      const data: IWorkoutEventEditInput = {
+        input: {
+          _id: workoutEvent2._id,
+          endTime: new Date('2019-08-28T13:30:00'),
+          startTime: new Date('2019-08-28T12:30:00'),
+        },
+      };
 
-    const ctx: IContext = {
-      user: {
-        _id: user2._id,
-        email: user2.email,
-        firstName: user2.firstName,
-        lastName: user2.lastName,
-      },
-    };
+      const ctx: IContext = {
+        user: {
+          _id: user2._id,
+          email: user2.email,
+          firstName: user2.firstName,
+          lastName: user2.lastName,
+        },
+      };
 
-    try {
-      await MealPlanContext.editWorkoutEvent(data, ctx);
-    } catch (error) {
-      expect(error).to.be.an('error');
-    }
+      try {
+        await MealPlanContext.editWorkoutEvent(data, ctx);
+      } catch (error) {
+        expect(error).to.be.an('error');
+      }
+    });
   });
 
   it('should delete an event', async () => {

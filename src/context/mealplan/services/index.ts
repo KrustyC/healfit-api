@@ -1,6 +1,5 @@
 import AccountContext, { IAccountContext } from '@context/account';
 import { AuthenticationError } from 'apollo-server';
-import moment from 'moment';
 import { IContext, IObjectId } from 'types/global';
 import {
   IMealEvent,
@@ -13,13 +12,19 @@ import {
   IWorkoutEventEditInput,
 } from 'types/mealPlan';
 import MealPlanRepo from '../repo';
+import MealEventRepo from '../repo/MealEventRepo';
+import WorkoutEventRepo from '../repo/WorkoutEventRepo';
 
 export default class MealPlanService {
   public mealPlanEventRepo: MealPlanRepo;
+  public mealEventRepo: MealEventRepo;
+  public workoutEventRepo: WorkoutEventRepo;
   public accountContext: IAccountContext;
 
   constructor() {
     this.mealPlanEventRepo = new MealPlanRepo();
+    this.mealEventRepo = new MealEventRepo();
+    this.workoutEventRepo = new WorkoutEventRepo();
     this.accountContext = AccountContext;
   }
 
@@ -70,23 +75,23 @@ export default class MealPlanService {
       throw new AuthenticationError('Provided user does not exist');
     }
 
-    return this.mealPlanEventRepo.createMealEvent(data, creator);
+    return this.mealEventRepo.create(data, creator);
   }
 
   public async editMealEvent(
     data: IMealEventEditInput,
     ctx: IContext
   ): Promise<IMealEvent> {
-    const event = await this.mealPlanEventRepo.findOneBy({
+    const event = await this.mealEventRepo.findOneBy({
       _id: data.input._id,
       owner: ctx.user._id,
     });
 
     if (!event) {
-      throw new Error('Provided evenet does not exist');
+      throw new Error('Provided event does not exist');
     }
 
-    return event;
+    return this.mealEventRepo.edit(data);
   }
 
   public async addWorkoutEvent(
@@ -99,10 +104,7 @@ export default class MealPlanService {
       throw new AuthenticationError('Provided user does not exist');
     }
 
-    const created = await this.mealPlanEventRepo.createWorkoutEvent(
-      data,
-      creator
-    );
+    const created = await this.workoutEventRepo.create(data, creator);
 
     return created;
   }
@@ -111,7 +113,7 @@ export default class MealPlanService {
     data: IWorkoutEventEditInput,
     ctx: IContext
   ): Promise<IWorkoutEvent> {
-    const event = await this.mealPlanEventRepo.findOneBy({
+    const event = await this.workoutEventRepo.findOneBy({
       _id: data.input._id,
       owner: ctx.user._id,
     });
@@ -120,7 +122,7 @@ export default class MealPlanService {
       throw new Error('Provided event does not exist');
     }
 
-    return this.mealPlanEventRepo.editWorkoutEvent(data);
+    return this.workoutEventRepo.edit(data);
   }
 
   public async deleteEvent(id: IObjectId, ctx: IContext): Promise<boolean> {

@@ -1,11 +1,10 @@
 import Repository from '@lib/Repository';
-import moment from 'moment';
 import { IAccount } from 'types/account';
 
 import {
   IMealEvent,
   IMealEventAddInput,
-  IMealPlanEvent,
+  IMealEventEditInput,
   IWorkoutEvent,
   IWorkoutEventAddInput,
   IWorkoutEventEditInput,
@@ -17,51 +16,5 @@ import { WorkoutEvent } from '../schema/WorkoutEvent';
 export default class IMealPlanEventRepo extends Repository {
   constructor() {
     super(MealPlanEvent);
-  }
-
-  public async createMealEvent(
-    data: IMealEventAddInput,
-    user: IAccount
-  ): Promise<IMealEvent> {
-    const mealEventData = {
-      endTime: data.input.endTime,
-      mealType: data.input.mealType,
-      owner: user._id,
-      recipes: data.input.recipes,
-      startTime: data.input.startTime,
-      timezoneOffset: data.input.startTime.getTimezoneOffset(),
-    };
-
-    const recipe = new MealEvent(mealEventData);
-    return recipe.save();
-  }
-
-  public async createWorkoutEvent(
-    data: IWorkoutEventAddInput,
-    user: IAccount
-  ): Promise<IWorkoutEvent> {
-    const workoutEventData = {
-      endTime: data.input.endTime,
-      owner: user._id,
-      startTime: data.input.startTime,
-      timezoneOffset: data.input.startTime.getTimezoneOffset(),
-    };
-
-    const recipe = new WorkoutEvent(workoutEventData);
-    return recipe.save();
-  }
-
-  public async editWorkoutEvent(
-    data: IWorkoutEventEditInput
-  ): Promise<IWorkoutEvent> {
-    const query = { _id: data.input._id };
-    const set = {
-      endTime: data.input.endTime,
-      startTime: data.input.startTime,
-      timezoneOffset: data.input.startTime.getTimezoneOffset(),
-    };
-
-    const upda = await this.findOneAndUpdate(query, set);
-    return upda;
   }
 }
