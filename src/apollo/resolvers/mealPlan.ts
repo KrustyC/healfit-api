@@ -49,7 +49,7 @@ export default {
     ): Promise<IWorkoutEvent> => MealPlan.addWorkoutEvent(data, ctx),
     deleteEvent: async (
       _: object,
-      id: IObjectId,
+      { id }: { id: IObjectId },
       ctx: IContext
     ): Promise<boolean> => MealPlan.deleteEvent(id, ctx),
     editMealEvent: async (
