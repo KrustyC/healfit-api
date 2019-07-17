@@ -33,7 +33,7 @@ export default class MealPlanService {
     ctx: IContext
   ): Promise<[IMealEvent | IWorkoutEvent]> {
     const { startDay, endDay } = range.input;
-    console.log(startDay);
+
     const startRange = new Date(
       startDay.getFullYear(),
       startDay.getMonth(),

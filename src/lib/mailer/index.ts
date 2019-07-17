@@ -18,6 +18,7 @@ interface IOptions {
 export default class Mailer {
   public options: IOptions;
   public sender: string;
+  public name: string;
 
   constructor() {
     this.options = {
@@ -28,6 +29,7 @@ export default class Mailer {
       method: 'POST',
       url: 'https://api.sendinblue.com/v3/smtp/email',
     };
+    this.name = 'Healfit Team';
     this.sender = config('sendInBlue.sender');
   }
 
@@ -54,7 +56,7 @@ export default class Mailer {
             NAME: params.name,
             RESET_PASSWORD_LINK: params.resetPasswordLink,
           },
-          templateId: 5,
+          templateId: 6,
         };
       default:
         throw new Error('Email type does not exists!');
@@ -81,7 +83,6 @@ export default class Mailer {
       if (error) {
         throw new Error(error);
       }
-      console.log('EMAIL');
     });
   }
 }
