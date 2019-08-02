@@ -32,3 +32,17 @@ export default {
     recipeService.searchByTitle(name),
   show: (slug: string): Promise<IRecipe> => recipeService.show(slug),
 };
+
+export interface IRecipeContext {
+  create: (data: IRecipeCreateInput, ctx: IContext) => Promise<IRecipe>;
+  delete: (id: IObjectId) => Promise<boolean>;
+  edit: (data: IRecipeEditInput, ctx: IContext) => Promise<IRecipe>;
+  findByIds: (ids: IObjectId[]) => Promise<IRecipe[]>;
+  likeOrDislike: (data: IRecipeLikeInput, ctx: IContext) => Promise<boolean>;
+  list: (data: ILimitSkipInput) => Promise<IRecipe[]>;
+  rate: (data: IRecipeRateInput, ctx: IContext) => Promise<IRecipeRating>;
+  rating: (recipeId: IObjectId) => Promise<number>;
+  ratings: (recipeId: IObjectId) => Promise<IRecipeRating[]>;
+  searchByTitle: (name: string) => Promise<IRecipe[]>;
+  show: (slug: string) => Promise<IRecipe>;
+}

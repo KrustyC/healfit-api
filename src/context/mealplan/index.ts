@@ -3,6 +3,7 @@ import {
   IMealEvent,
   IMealEventAddInput,
   IMealEventEditInput,
+  IMealMacro,
   IMealPlanEvent,
   IMealPlanRangeInput,
   IWorkoutEvent,
@@ -39,4 +40,6 @@ export default {
     ctx: IContext
   ): Promise<Array<IMealEvent | IWorkoutEvent>> =>
     mealPlanService.findWithinRange(data, ctx),
+  getMealMacros: (mealId: IObjectId): Promise<IMealMacro> =>
+    mealPlanService.getMealMacros(mealId),
 };

@@ -1,10 +1,12 @@
 import AccountContext, { IAccountContext } from '@context/account';
+import RecipeContext, { IRecipeContext } from '@context/recipe';
 import { AuthenticationError } from 'apollo-server';
 import { IContext, IObjectId } from 'types/global';
 import {
   IMealEvent,
   IMealEventAddInput,
   IMealEventEditInput,
+  IMealMacro,
   IMealPlanEvent,
   IMealPlanRangeInput,
   IWorkoutEvent,
@@ -20,12 +22,14 @@ export default class MealPlanService {
   public mealEventRepo: MealEventRepo;
   public workoutEventRepo: WorkoutEventRepo;
   public accountContext: IAccountContext;
+  public recipeContext: IRecipeContext;
 
   constructor() {
     this.mealPlanEventRepo = new MealPlanRepo();
     this.mealEventRepo = new MealEventRepo();
     this.workoutEventRepo = new WorkoutEventRepo();
     this.accountContext = AccountContext;
+    this.recipeContext = RecipeContext;
   }
 
   public async findWithinRange(
@@ -142,5 +146,22 @@ export default class MealPlanService {
 
   public async findBy(field: string, fieldName: string) {
     return this.mealPlanEventRepo.findOneBy({ [fieldName]: field });
+  }
+
+  public async getMealMacros(mealId: IObjectId): Promise<IMealMacro> {
+    const event = await this.mealPlanEventRepo.findById(mealId);
+    const recipes = await this.recipeContext.findByIds(event.recipes);
+
+    const macros: IMealMacro = recipes.reduce(
+      (acc, recipe) => ({
+        calories: acc.calories + recipe.calories,
+        carbs: acc.carbs + recipe.carbohydrates,
+        fat: acc.fat + recipe.fat,
+        protein: acc.protein + recipe.protein,
+      }),
+      { calories: 0, carbs: 0, fat: 0, protein: 0 }
+    );
+
+    return macros;
   }
 }

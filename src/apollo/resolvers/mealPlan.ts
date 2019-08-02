@@ -6,6 +6,7 @@ import {
   IMealEvent,
   IMealEventAddInput,
   IMealEventEditInput,
+  IMealMacro,
   IMealPlanRangeInput,
   IWorkoutEvent,
   IWorkoutEventAddInput,
@@ -18,6 +19,8 @@ import { IAccount } from 'types/account';
 
 export default {
   MealEvent: {
+    macros: async (mealEvent: { _id: IObjectId }): Promise<IMealMacro> =>
+      MealPlan.getMealMacros(mealEvent._id),
     recipes: async (mealEvent: { recipes: IObjectId[] }): Promise<IRecipe[]> =>
       Recipe.findByIds(mealEvent.recipes),
   },

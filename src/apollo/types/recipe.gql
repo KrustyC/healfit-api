@@ -52,7 +52,7 @@ type Recipe {
 
 # INPUT
 input RecipeLevelInput {
-  _id: String
+  id: String
   name: String
 }
 

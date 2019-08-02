@@ -5,6 +5,13 @@ interface MealPlanEvent {
   owner: Account
 }
 
+type MealMacros {
+  carbs: Float
+  protein: Float
+  fat: Float
+  calories: Float
+}
+
 type MealEvent implements MealPlanEvent {
   _id: ID
   startTime: Date
@@ -12,6 +19,7 @@ type MealEvent implements MealPlanEvent {
   owner: Account
   mealType: String
   recipes: [Recipe]
+  macros: MealMacros
 }
 
 type WorkoutEvent implements MealPlanEvent {
